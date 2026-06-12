@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measurement & Graph Training — Math ± Relation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,0.13);--blue-border:rgba(59,130,246,0.38);
+  --bg:#09090b;--bg2:#111113;--bg3:#17171b;--bg4:#1c1c21;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#efefef;--text2:#8888a0;--text3:#50505f;
+  --green:#22c55e;--green-dim:rgba(34,197,94,0.11);--green-border:rgba(34,197,94,0.32);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.1);--red-border:rgba(248,113,113,0.3);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.12);--amber-border:rgba(245,158,11,0.35);
+  --teal:#2dd4bf;--teal-dim:rgba(45,212,191,0.11);--teal-border:rgba(45,212,191,0.33);
+  --green2:#4ade80;--green2-dim:rgba(74,222,128,0.1);--green2-border:rgba(74,222,128,0.3);
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+  --r:10px;--rl:16px;
+}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100%}
+body{
+  min-height:100vh;background:var(--bg);
+  background-image:radial-gradient(ellipse 80% 30% at 50% 0%,rgba(59,130,246,0.06) 0%,transparent 60%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 16px 100px;
+}
+
+/* NAV */
+nav{width:100%;max-width:700px;display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:.5px solid var(--border);margin-bottom:0}
+.logo{font-family:var(--mono);font-size:13px;letter-spacing:.03em;color:var(--text2)}
+.logo span{color:var(--blue)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-score{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.nav-score b{color:var(--text);font-weight:700}
+
+/* PROGRESS */
+.prog-wrap{width:100%;max-width:700px;height:2px;background:var(--bg3);margin-bottom:0;overflow:hidden}
+.prog-bar{height:100%;background:var(--blue);width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* SECTION HEADER */
+.section-header{
+  width:100%;max-width:700px;
+  padding:28px 0 20px;
+  border-bottom:.5px solid var(--border);
+  margin-bottom:24px;
+}
+.section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
+.section-title{font-size:22px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.3}
+.section-formula{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:16px;
+  background:var(--bg3);border:.5px solid var(--border2);
+  padding:10px 18px;border-radius:8px;
+  margin-top:4px;
+}
+.section-formula.amber{color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)}
+.section-formula.teal{color:var(--teal);border-color:var(--teal-border);background:var(--teal-dim)}
+.section-formula.green{color:var(--green2);border-color:var(--green2-border);background:var(--green2-dim)}
+.section-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-top:12px;max-width:520px}
+
+/* PATTERN CARD */
+.pattern-card{
+  width:100%;max-width:700px;
+  background:var(--bg2);border:.5px solid var(--border);
+  border-radius:var(--rl);padding:20px 22px;
+  margin-bottom:20px;
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.pattern-step{
+  flex:1;min-width:140px;
+  background:var(--bg3);border-radius:var(--r);
+  padding:12px 14px;border:.5px solid var(--border);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.pattern-num{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  color:var(--blue);min-width:20px;padding-top:1px;
+}
+.pattern-text{font-size:13px;color:var(--text2);line-height:1.5}
+.pattern-text b{color:var(--text);font-weight:500}
+
+/* QUESTION CARD */
+.main{width:100%;max-width:700px}
+.tags{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:4px 10px;border-radius:4px;text-transform:uppercase;border:.5px solid}
+.tag-circ{background:var(--amber-dim);color:var(--amber);border-color:var(--amber-border)}
+.tag-tri{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-border)}
+.tag-rect{background:var(--teal-dim);color:var(--teal);border-color:var(--teal-border)}
+.tag-graph{background:var(--green2-dim);color:var(--green2);border-color:var(--green2-border)}
+.tag-sub{background:var(--bg3);color:var(--text2);border-color:var(--border)}
+.tag-num{margin-left:auto;color:var(--text3);background:none;border:none}
+
+.q-card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:26px 26px 22px;margin-bottom:12px}
+.q-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--text3);margin-bottom:12px;text-transform:uppercase}
+.q-text{font-family:var(--mono);font-size:15px;line-height:1.85;color:var(--text);white-space:pre-line}
+
+/* FORMULA CHIP IN QUESTION */
+.q-formula-wrap{margin-top:14px;padding-top:14px;border-top:.5px solid var(--border)}
+.q-formula-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
+.q-formula{
+  display:inline-block;font-family:var(--mono);font-size:15px;font-weight:700;
+  padding:8px 16px;border-radius:7px;letter-spacing:.02em;
+}
+.q-formula.amber{color:var(--amber);background:var(--amber-dim);border:.5px solid var(--amber-border)}
+.q-formula.teal{color:var(--teal);background:var(--teal-dim);border:.5px solid var(--teal-border)}
+.q-formula.green{color:var(--green2);background:var(--green2-dim);border:.5px solid var(--green2-border)}
+
+/* SHAPE DIAGRAM */
+.shape-area{
+  margin-top:14px;padding:16px 20px;
+  background:var(--bg3);border-radius:var(--r);
+  border:.5px solid var(--border);
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+}
+.shape-dims{font-family:var(--mono);font-size:13px;color:var(--text2);line-height:2}
+.shape-dims span{color:var(--text);font-weight:700}
+
+/* CHART */
+.chart-area{margin-top:14px;padding:16px 14px 8px;background:var(--bg3);border-radius:var(--r);border:.5px solid var(--border)}
+.chart-title{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;margin-bottom:12px}
+
+/* OPTIONS */
+.options{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.opt{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);padding:14px 16px;font-size:14px;font-family:var(--sans);color:var(--text2);cursor:pointer;text-align:left;transition:background .12s,border-color .12s,color .12s;line-height:1.4}
+.opt:hover:not(:disabled){background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.opt.selected{background:var(--blue-dim);border-color:var(--blue-border);color:var(--blue)}
+.opt.correct{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
+.opt.wrong{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
+.opt:disabled{cursor:default}
+
+/* BUTTONS */
+.btn{width:100%;padding:13px;font-size:12px;font-family:var(--mono);letter-spacing:.07em;font-weight:700;cursor:pointer;border-radius:var(--r);background:transparent;border:.5px solid var(--border2);color:var(--text2);transition:background .12s,color .12s,border-color .12s;text-transform:uppercase}
+.btn:hover:not(:disabled){background:var(--bg3);color:var(--text)}
+.btn:disabled{opacity:.2;cursor:default}
+.btn.correct-s{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
+.btn.wrong-s{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
+.btn.next{border-color:var(--blue-border);color:var(--blue);background:var(--blue-dim);margin-top:10px}
+.btn.next:hover{background:rgba(59,130,246,.22)}
+
+/* STEPS PANEL */
+.steps-panel{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:22px;margin-top:12px;display:none;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.breakdown-row{display:flex;gap:14px;padding:14px 0;border-bottom:.5px solid var(--border)}
+.breakdown-row:first-of-type{padding-top:0}
+.breakdown-row:last-of-type{border-bottom:none;padding-bottom:0}
+.breakdown-num{font-family:var(--mono);font-size:10px;color:var(--blue);font-weight:700;min-width:22px;padding-top:2px}
+.breakdown-body{}
+.breakdown-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+.breakdown-detail{font-size:13px;color:var(--text2);line-height:1.75;font-family:var(--mono)}
+.breakdown-detail b{color:var(--text);font-weight:700}
+.breakdown-detail .hl{color:var(--amber);font-weight:700}
+
+/* WORKING IT OUT BOX */
+.working-box{
+  margin:14px 0 0;padding:14px 16px;
+  background:var(--bg4);border-radius:var(--r);
+  border:.5px solid var(--border);font-family:var(--mono);
+}
+.working-label{font-size:9px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
+.working-line{font-size:13px;color:var(--text2);margin-bottom:6px;line-height:1.6;display:flex;align-items:center;gap:8px}
+.working-line:last-child{margin-bottom:0}
+.working-line.final{color:var(--green);font-weight:700}
+.working-line .arrow{color:var(--text3);font-size:11px}
+.working-line .formula-part{color:var(--amber)}
+
+/* COACHING NOTE */
+.coaching{margin-top:14px;padding:14px 16px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--blue)}
+.coaching-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:7px}
+.coaching-text{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* RESULT */
+.result-screen{width:100%;max-width:700px;display:none;animation:fadeUp .4s ease}
+.result-card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:44px 28px 36px;text-align:center;margin-bottom:12px}
+.result-brand{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:20px}
+.result-big{font-family:var(--mono);font-size:60px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px}
+.result-pct{font-family:var(--mono);font-size:20px;color:var(--text3);margin-bottom:24px}
+.result-msg{font-size:14px;color:var(--text2);line-height:1.8;max-width:400px;margin:0 auto 28px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:0 auto 24px}
+.r-stat{padding:14px 8px;background:var(--bg3);border-radius:var(--r);border:.5px solid var(--border)}
+.r-stat-n{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text);margin-bottom:3px}
+.r-stat-l{font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.cat-results{margin:0 auto 24px;max-width:400px;text-align:left}
+.cr-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.cr-label{font-size:11px;color:var(--text2);font-family:var(--mono);min-width:130px}
+.cr-bar-w{flex:1;background:var(--bg3);border-radius:3px;height:5px;overflow:hidden}
+.cr-bar{height:100%;border-radius:3px;transition:width .8s ease}
+.cr-pct{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:34px;text-align:right}
+.div{height:.5px;background:var(--border);margin:22px 0}
+.philosophy{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.04em;line-height:2.2}
+.philosophy span{color:var(--blue)}
+
+footer{width:100%;max-width:700px;padding:26px 0 0;border-top:.5px solid var(--border);margin-top:32px;display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em}
+.footer-brand span{color:var(--blue)}
+.footer-link{font-family:var(--mono);font-size:10px;color:var(--text3);text-decoration:none;transition:color .12s}
+.footer-link:hover{color:var(--blue)}
+@media(max-width:520px){
+  .q-text{font-size:14px}.q-card{padding:20px 16px}
+  .result-big{font-size:44px}
+  .pattern-card{gap:8px}.pattern-step{min-width:100%}
+  footer{flex-direction:column;gap:10px;text-align:center}
+  .cr-label{min-width:100px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">MATH <span>&#177;</span> RELATION</div>
+  <div class="nav-right">
+    <div class="nav-score" id="nav-score">Measurement &amp; Graph Training</div>
+  </div>
+</nav>
+<div class="prog-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+
+<div class="main" id="main"></div>
+<div class="result-screen" id="result-screen"></div>
+
+<footer>
+  <div class="footer-brand">MATH <span>&#177;</span> RELATION &#8212; ARPEC Training System</div>
+  <a href="https://mathrelation.com" class="footer-link" target="_blank">mathrelation.com</a>
+</footer>
+
+<script>
+/* ── SVG CHARTS ─────────────────────────────────────────────────── */
+function makeBarSVG(bars,yMax){
+  var W=460,H=160,leftPad=48,bottomPad=30,topPad=18,rightPad=20;
+  var plotW=W-leftPad-rightPad,plotH=H-bottomPad-topPad;
+  var barW=Math.floor(plotW/(bars.length*2))-4;
+  var scale=plotH/yMax;
+  var gridVals=[0,Math.round(yMax/3),Math.round(2*yMax/3),yMax];
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">';
+  gridVals.forEach(function(v){
+    var y=topPad+plotH-v*scale;
+    svg+='<line x1="'+leftPad+'" y1="'+y+'" x2="'+(W-rightPad)+'" y2="'+y+'" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4,3"/>';
+    svg+='<text x="'+(leftPad-6)+'" y="'+(y+4)+'" text-anchor="end" fill="rgba(255,255,255,0.28)" font-size="9" font-family="Space Mono,monospace">'+v+'</text>';
+  });
+  svg+='<line x1="'+leftPad+'" y1="'+topPad+'" x2="'+leftPad+'" y2="'+(topPad+plotH)+'" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>';
+  svg+='<line x1="'+leftPad+'" y1="'+(topPad+plotH)+'" x2="'+(W-rightPad)+'" y2="'+(topPad+plotH)+'" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>';
+  var spacing=plotW/bars.length;
+  bars.forEach(function(b,i){
+    var bh=Math.max(b.v*scale,2);
+    var bx=leftPad+i*spacing+(spacing-barW)/2;
+    var by=topPad+plotH-bh;
+    var alpha=0.6+0.4*(b.v/yMax);
+    svg+='<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+bh+'" rx="3" fill="#3B82F6" opacity="'+alpha.toFixed(2)+'"/>';
+    svg+='<text x="'+(bx+barW/2)+'" y="'+(by-5)+'" text-anchor="middle" fill="rgba(255,255,255,'+(alpha*0.85).toFixed(2)+')" font-size="9" font-family="Space Mono,monospace">'+b.v+'</text>';
+    svg+='<text x="'+(bx+barW/2)+'" y="'+(topPad+plotH+16)+'" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Space Mono,monospace">'+b.label+'</text>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+
+function makeDoubleBarSVG(pairs,yMax){
+  var W=480,H=165,leftPad=48,bottomPad=30,topPad=18,rightPad=20;
+  var plotW=W-leftPad-rightPad,plotH=H-bottomPad-topPad;
+  var groupW=plotW/pairs.length;
+  var barW=Math.floor(groupW*0.28);
+  var scale=plotH/yMax;
+  var gridVals=[0,Math.round(yMax/3),Math.round(2*yMax/3),yMax];
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">';
+  gridVals.forEach(function(v){
+    var y=topPad+plotH-v*scale;
+    svg+='<line x1="'+leftPad+'" y1="'+y+'" x2="'+(W-rightPad)+'" y2="'+y+'" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4,3"/>';
+    svg+='<text x="'+(leftPad-6)+'" y="'+(y+4)+'" text-anchor="end" fill="rgba(255,255,255,0.28)" font-size="9" font-family="Space Mono,monospace">'+v+'</text>';
+  });
+  svg+='<line x1="'+leftPad+'" y1="'+topPad+'" x2="'+leftPad+'" y2="'+(topPad+plotH)+'" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>';
+  svg+='<line x1="'+leftPad+'" y1="'+(topPad+plotH)+'" x2="'+(W-rightPad)+'" y2="'+(topPad+plotH)+'" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>';
+  pairs.forEach(function(p,i){
+    var cx=leftPad+i*groupW+groupW/2;
+    var b1h=Math.max(p.a*scale,2),b2h=Math.max(p.b*scale,2);
+    var b1x=cx-barW-2,b2x=cx+2;
+    svg+='<rect x="'+b1x+'" y="'+(topPad+plotH-b1h)+'" width="'+barW+'" height="'+b1h+'" rx="2" fill="#3B82F6" opacity="0.9"/>';
+    svg+='<text x="'+(b1x+barW/2)+'" y="'+(topPad+plotH-b1h-4)+'" text-anchor="middle" fill="rgba(59,130,246,0.85)" font-size="8" font-family="Space Mono,monospace">'+p.a+'</text>';
+    svg+='<rect x="'+b2x+'" y="'+(topPad+plotH-b2h)+'" width="'+barW+'" height="'+b2h+'" rx="2" fill="#2dd4bf" opacity="0.85"/>';
+    svg+='<text x="'+(b2x+barW/2)+'" y="'+(topPad+plotH-b2h-4)+'" text-anchor="middle" fill="rgba(45,212,191,0.85)" font-size="8" font-family="Space Mono,monospace">'+p.b+'</text>';
+    svg+='<text x="'+cx+'" y="'+(topPad+plotH+16)+'" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Space Mono,monospace">'+p.label+'</text>';
+  });
+  svg+='<rect x="'+(W-rightPad-70)+'" y="'+topPad+'" width="8" height="8" rx="1" fill="#3B82F6" opacity="0.9"/>';
+  svg+='<text x="'+(W-rightPad-58)+'" y="'+(topPad+8)+'" fill="rgba(255,255,255,0.45)" font-size="9" font-family="Space Mono,monospace">Team A</text>';
+  svg+='<rect x="'+(W-rightPad-70)+'" y="'+(topPad+14)+'" width="8" height="8" rx="1" fill="#2dd4bf" opacity="0.85"/>';
+  svg+='<text x="'+(W-rightPad-58)+'" y="'+(topPad+22)+'" fill="rgba(255,255,255,0.45)" font-size="9" font-family="Space Mono,monospace">Team B</text>';
+  svg+='</svg>';
+  return svg;
+}
+
+var BARS1=makeBarSVG([{v:20,label:'Jan'},{v:35,label:'Feb'},{v:50,label:'Mar'},{v:40,label:'Apr'}],60);
+var BARS2=makeDoubleBarSVG([{a:15,b:20,label:'Jan'},{a:25,b:18,label:'Feb'},{a:30,b:28,label:'Mar'}],40);
+
+/* ── QUESTIONS ──────────────────────────────────────────────────── */
+var questions=[
+
+/* CIRCUMFERENCE */
+{cat:'circ',area:'Circumference',tag:'C = \u03c0 \u00d7 d',fcolor:'amber',
+q:'A circle has a diameter of 10 inches.\n\nFind the circumference.\nUse \u03c0 = 3.14',
+formula:'C = \u03c0 \u00d7 d',
+shape:{type:'circle',dims:[['Diameter (d)','10 inches']]},
+opts:['A.  15.70 inches','B.  31.40 inches','C.  78.50 inches','D.  62.80 inches'],ci:1,
+steps:[
+  {t:'Identify what you have',d:'The problem gives you the <b>diameter</b>: d = 10.',w:null},
+  {t:'Write the formula',d:'Circumference uses diameter: <span class="hl">C = \u03c0 \u00d7 d</span>',w:null},
+  {t:'Substitute the numbers',d:'Replace \u03c0 with 3.14 and d with 10.',w:['C = \u03c0 \u00d7 d','C = 3.14 \u00d7 10','C = 31.4 inches']},
+],
+coaching:'Diameter goes straight across the full circle. Radius only goes halfway. If you see diameter \u2014 use C = \u03c0 \u00d7 d. No extra steps needed.'},
+
+{cat:'circ',area:'Circumference',tag:'C = 2\u03c0r',fcolor:'amber',
+q:'A circle has a radius of 6 inches.\n\nFind the circumference.\nUse \u03c0 = 3.14',
+formula:'C = 2 \u00d7 \u03c0 \u00d7 r',
+shape:{type:'circle',dims:[['Radius (r)','6 inches'],['Diameter (d)','12 inches (2 \u00d7 r)']]},
+opts:['A.  18.84 inches','B.  28.26 inches','C.  37.68 inches','D.  56.52 inches'],ci:2,
+steps:[
+  {t:'Identify what you have',d:'The problem gives you the <b>radius</b>: r = 6.',w:null},
+  {t:'Write the formula',d:'Radius version: <span class="hl">C = 2 \u00d7 \u03c0 \u00d7 r</span>',w:null},
+  {t:'Substitute',d:'Replace \u03c0 with 3.14 and r with 6.',w:['C = 2 \u00d7 \u03c0 \u00d7 r','C = 2 \u00d7 3.14 \u00d7 6','C = 6.28 \u00d7 6','C = 37.68 inches']},
+],
+coaching:'Radius to diameter is easy: diameter = 2 \u00d7 radius. If you prefer one formula, convert radius to diameter first, then use C = \u03c0 \u00d7 d. Both routes give the same answer.'},
+
+{cat:'circ',area:'Circumference',tag:'C = \u03c0 \u00d7 d',fcolor:'amber',
+q:'A circle has a diameter of 15 cm.\n\nFind the circumference.\nUse \u03c0 = 3.14',
+formula:'C = \u03c0 \u00d7 d',
+shape:{type:'circle',dims:[['Diameter (d)','15 cm']]},
+opts:['A.  47.10 cm','B.  31.40 cm','C.  94.20 cm','D.  23.55 cm'],ci:0,
+steps:[
+  {t:'Identify what you have',d:'Diameter: d = 15.',w:null},
+  {t:'Write the formula',d:'<span class="hl">C = \u03c0 \u00d7 d</span>',w:null},
+  {t:'Substitute and calculate',d:'Replace \u03c0 with 3.14 and d with 15.',w:['C = 3.14 \u00d7 15','C = 47.1 cm']},
+],
+coaching:'The move is always the same: write the formula \u2192 identify what you have \u2192 substitute \u2192 calculate. Same structure every circle problem.'},
+
+/* AREA OF TRIANGLE */
+{cat:'tri',area:'Area of Triangle',tag:'A = \u00bd \u00d7 b \u00d7 h',fcolor:'blue',
+q:'A triangle has:\n\nBase = 8\nHeight = 5\n\nFind the area.',
+formula:'A = \u00bd \u00d7 b \u00d7 h',
+shape:{type:'triangle',dims:[['Base (b)','8'],['Height (h)','5']]},
+opts:['A.  13','B.  20','C.  40','D.  80'],ci:1,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = \u00bd \u00d7 base \u00d7 height</span>',w:null},
+  {t:'Identify the numbers',d:'Base = 8, Height = 5.',w:null},
+  {t:'Multiply base and height first',d:'Do this before applying the \u00bd.',w:['8 \u00d7 5 = 40']},
+  {t:'Apply the half',d:'Divide by 2 at the end.',w:['A = 40 \u00f7 2','A = 20 square units']},
+],
+coaching:'Always multiply the base and height FIRST. Then cut in half. Students who divide first often make errors. The \u00bd comes last.'},
+
+{cat:'tri',area:'Area of Triangle',tag:'A = \u00bd \u00d7 b \u00d7 h',fcolor:'blue',
+q:'A triangle has:\n\nBase = 12\nHeight = 9\n\nFind the area.',
+formula:'A = \u00bd \u00d7 b \u00d7 h',
+shape:{type:'triangle',dims:[['Base (b)','12'],['Height (h)','9']]},
+opts:['A.  21','B.  42','C.  54','D.  108'],ci:2,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = \u00bd \u00d7 b \u00d7 h</span>',w:null},
+  {t:'Multiply base \u00d7 height first',d:'12 \u00d7 9 = ?',w:['12 \u00d7 9 = 108']},
+  {t:'Apply the half',d:'Divide the result by 2.',w:['A = 108 \u00f7 2','A = 54 square units']},
+],
+coaching:'Check: is a triangle half of a rectangle with the same base and height? Yes. That\u2019s exactly why the formula has a \u00bd \u2014 it\u2019s the rectangle formula cut in half.'},
+
+{cat:'tri',area:'Area of Triangle',tag:'A = \u00bd \u00d7 b \u00d7 h',fcolor:'blue',
+q:'A triangle has:\n\nBase = 10\nHeight = 6\n\nFind the area.',
+formula:'A = \u00bd \u00d7 b \u00d7 h',
+shape:{type:'triangle',dims:[['Base (b)','10'],['Height (h)','6']]},
+opts:['A.  30','B.  16','C.  60','D.  8'],ci:0,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = \u00bd \u00d7 b \u00d7 h</span>',w:null},
+  {t:'Multiply base \u00d7 height first',d:'10 \u00d7 6 = ?',w:['10 \u00d7 6 = 60']},
+  {t:'Apply the half',d:'60 \u00f7 2 = ?',w:['A = 60 \u00f7 2','A = 30 square units']},
+],
+coaching:'Notice the pattern: multiply first, halve second. The formula never changes. The only thing that changes is the numbers you plug in.'},
+
+/* AREA OF RECTANGLE */
+{cat:'rect',area:'Area of Rectangle',tag:'A = l \u00d7 w',fcolor:'teal',
+q:'A rectangle has:\n\nLength = 8\nWidth = 7\n\nFind the area.',
+formula:'A = l \u00d7 w',
+shape:{type:'rect',dims:[['Length (l)','8'],['Width (w)','7']]},
+opts:['A.  15','B.  30','C.  56','D.  112'],ci:2,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = length \u00d7 width</span>',w:null},
+  {t:'Identify the numbers',d:'Length = 8, Width = 7.',w:null},
+  {t:'Multiply',d:'Calculate 8 \u00d7 7.',w:['A = 8 \u00d7 7','A = 56 square units']},
+],
+coaching:'Rectangle area is the most straightforward of all. No fractions, no \u03c0. Just length times width. If you see a four-sided shape with right angles \u2014 multiply the two sides.'},
+
+{cat:'rect',area:'Area of Rectangle',tag:'A = l \u00d7 w',fcolor:'teal',
+q:'A rectangle has:\n\nLength = 15\nWidth = 9\n\nFind the area.',
+formula:'A = l \u00d7 w',
+shape:{type:'rect',dims:[['Length (l)','15'],['Width (w)','9']]},
+opts:['A.  24','B.  48','C.  120','D.  135'],ci:3,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = length \u00d7 width</span>',w:null},
+  {t:'Substitute',d:'Length = 15, Width = 9.',w:null},
+  {t:'Multiply',d:'Calculate 15 \u00d7 9.',w:['15 \u00d7 9 = ?','Think: 10\u00d79=90, 5\u00d79=45','90 + 45 = 135','A = 135 square units']},
+],
+coaching:'Breaking up the multiplication helps: 15 \u00d7 9 = (10\u00d79) + (5\u00d79) = 90 + 45 = 135. That mental split makes any larger multiplication manageable.'},
+
+{cat:'rect',area:'Area of Rectangle',tag:'A = l \u00d7 w',fcolor:'teal',
+q:'A rectangle has:\n\nLength = 12\nWidth = 4\n\nFind the area.',
+formula:'A = l \u00d7 w',
+shape:{type:'rect',dims:[['Length (l)','12'],['Width (w)','4']]},
+opts:['A.  16','B.  32','C.  48','D.  96'],ci:2,
+steps:[
+  {t:'Write the formula',d:'<span class="hl">A = length \u00d7 width</span>',w:null},
+  {t:'Substitute',d:'Length = 12, Width = 4.',w:null},
+  {t:'Multiply',d:'Calculate 12 \u00d7 4.',w:['A = 12 \u00d7 4','A = 48 square units']},
+],
+coaching:'Rectangle is one formula, two numbers, one step. Write formula \u2192 identify numbers \u2192 multiply. Every time.'},
+
+/* BAR GRAPHS */
+{cat:'graph',area:'Graph Interpretation',tag:'Bar Graph',fcolor:'green',
+q:'Use the bar graph below.\n\nWhich month had the highest sales?',
+chart:'single',
+opts:['A.  January','B.  February','C.  March','D.  April'],ci:2,
+steps:[
+  {t:'Read the question first',d:'Before looking at the graph \u2014 the question asks: which month is <b>highest</b>? That means find the tallest bar.',w:null},
+  {t:'Scan all bars for height',d:'Compare bar heights: Jan \u2192 20, Feb \u2192 35, Mar \u2192 50, Apr \u2192 40.',w:null},
+  {t:'Identify the tallest bar',d:'March reaches 50. No other bar goes higher.',w:['March = 50 \u2190 highest','Answer: March']},
+],
+coaching:'Bar graph questions are not math problems \u2014 they are reading problems. Always read the question first. Then scan the graph for the specific thing the question asks for.'},
+
+{cat:'graph',area:'Graph Interpretation',tag:'Bar Graph \u2014 Subtraction',fcolor:'green',
+q:'Use the bar graph below.\n\nHow many MORE sales in March\nthan in January?',
+chart:'single',
+opts:['A.  10','B.  20','C.  30','D.  50'],ci:2,
+steps:[
+  {t:'Read the question first',d:'The word <b>\u201cmore\u201d</b> means subtraction. You are finding a difference.',w:null},
+  {t:'Find March\u2019s value',d:'Locate the March bar and read its height: 50.',w:['March = 50']},
+  {t:'Find January\u2019s value',d:'Locate the January bar and read its height: 20.',w:['January = 20']},
+  {t:'Subtract',d:'March minus January.',w:['50 \u2212 20 = 30','March had 30 MORE sales than January.']},
+],
+coaching:'Key word to know: "MORE than" or "greater than" = subtraction. "TOTAL" or "combined" = addition. Read the question, identify the key word, then pick your operation.'},
+
+{cat:'graph',area:'Graph Interpretation',tag:'Double Bar \u2014 Compare',fcolor:'green',
+q:'Use the double bar graph below.\n\nIn which month did Team A score\nmore points than Team B?',
+chart:'double',
+opts:['A.  January','B.  February','C.  March','D.  All months'],ci:1,
+steps:[
+  {t:'Understand the graph',d:'Two bars per group: <b>blue = Team A</b>, <b>teal = Team B</b>. Compare pairs by month.',w:null},
+  {t:'Check January',d:'Team A = 15, Team B = 20. Team B is higher in January.',w:['Jan: A=15, B=20 \u2192 Team B wins']},
+  {t:'Check February',d:'Team A = 25, Team B = 18. Team A is higher in February.',w:['Feb: A=25, B=18 \u2192 Team A wins \u2713']},
+  {t:'Check March',d:'Team A = 30, Team B = 28. Team A is higher, but the question asks for ONE month.',w:['Mar: A=30, B=28 \u2192 Team A wins too']},
+  {t:'Answer the question',d:'The question asks in which month FIRST. February is the first month where Team A beats Team B.',w:['Answer: February']},
+],
+coaching:'Double bar graphs compare two groups side by side. Always match color to label first. Then compare the pair for the specific month the question asks about. Don\u2019t compare across months unless asked.'}
+];
+
+/* ── STATE ──────────────────────────────────────────────────────── */
+var cur=0,score=0,answered=false,sel=-1;
+var catScores={circ:[],tri:[],rect:[],graph:[]};
+var catNames={circ:'Circumference',tri:'Triangle Area',rect:'Rectangle Area',graph:'Bar Graphs'};
+var catColors={circ:'#f59e0b',tri:'#3B82F6',rect:'#2dd4bf',graph:'#4ade80'};
+
+function updateNav(){
+  var el=document.getElementById('nav-score');
+  if(cur===0&&!answered){el.innerHTML='Measurement &amp; Graph Training';return;}
+  var done=Math.min(cur+(answered?1:0),questions.length);
+  el.innerHTML='Score <b>'+score+'</b> / '+done;
+}
+
+/* ── SHAPE SVG ──────────────────────────────────────────────────── */
+function shapeSVG(q){
+  if(!q.shape)return'';
+  var dims=q.shape.dims.map(function(d){
+    return'<div class="shape-dims" style="font-size:13px"><span>'+d[0]+'</span><span style="color:var(--text3);margin:0 6px">=</span><span style="color:var(--amber);font-weight:700">'+d[1]+'</span></div>';
+  }).join('');
+  var icon='';
+  if(q.shape.type==='circle'){
+    icon='<svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/><line x1="6" y1="28" x2="50" y2="28" stroke="rgba(245,158,11,0.6)" stroke-width="1" stroke-dasharray="3,2"/><text x="28" y="24" text-anchor="middle" fill="rgba(245,158,11,0.8)" font-size="8" font-family="Space Mono,monospace">d</text></svg>';
+  }else if(q.shape.type==='triangle'){
+    icon='<svg width="56" height="50" viewBox="0 0 56 50"><polygon points="28,4 4,46 52,46" fill="none" stroke="rgba(59,130,246,0.4)" stroke-width="1.5"/><line x1="28" y1="4" x2="28" y2="46" stroke="rgba(59,130,246,0.5)" stroke-width="1" stroke-dasharray="3,2"/><text x="28" y="32" text-anchor="middle" fill="rgba(59,130,246,0.7)" font-size="7" font-family="Space Mono,monospace">h</text><text x="40" y="52" text-anchor="middle" fill="rgba(59,130,246,0.7)" font-size="7" font-family="Space Mono,monospace">b</text></svg>';
+  }else if(q.shape.type==='rect'){
+    icon='<svg width="64" height="44" viewBox="0 0 64 44"><rect x="4" y="4" width="56" height="36" fill="none" stroke="rgba(45,212,191,0.4)" stroke-width="1.5" rx="1"/><text x="32" y="27" text-anchor="middle" fill="rgba(45,212,191,0.6)" font-size="8" font-family="Space Mono,monospace">l</text><text x="60" y="24" text-anchor="start" fill="rgba(45,212,191,0.6)" font-size="8" font-family="Space Mono,monospace">w</text></svg>';
+  }
+  return'<div class="shape-area">'+icon+'<div>'+dims+'</div></div>';
+}
+
+/* ── CHART HTML ─────────────────────────────────────────────────── */
+function chartHTML(q){
+  if(!q.chart)return'';
+  var svg=q.chart==='double'?BARS2:BARS1;
+  return'<div class="chart-area"><p class="chart-title">'+(q.chart==='double'?'Team Scores by Month':'Monthly Sales \u2014 Units Sold')+'</p>'+svg+'</div>';
+}
+
+/* ── FORMULA CHIP ───────────────────────────────────────────────── */
+function formulaHTML(q){
+  if(!q.formula)return'';
+  return'<div class="q-formula-wrap">'+
+    '<p class="q-formula-label">Formula to use</p>'+
+    '<span class="q-formula '+q.fcolor+'">'+q.formula+'</span>'+
+  '</div>';
+}
+
+/* ── WORKING BOX ────────────────────────────────────────────────── */
+function workingHTML(lines){
+  if(!lines||!lines.length)return'';
+  var html='<div class="working-box"><p class="working-label">Working it out</p>';
+  lines.forEach(function(l,i){
+    var isFinal=i===lines.length-1;
+    html+='<div class="working-line'+(isFinal?' final':'')+'">'+
+      (i>0?'<span class="arrow">\u2192</span>':'')+
+      '<span>'+l+'</span>'+
+    '</div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+/* ── TAG COLOR ──────────────────────────────────────────────────── */
+var tagClass={circ:'tag-circ',tri:'tag-tri',rect:'tag-rect',graph:'tag-graph'};
+
+/* ── RENDER ─────────────────────────────────────────────────────── */
+function render(){
+  if(cur>=questions.length){showResult();return;}
+  var q=questions[cur];
+  document.getElementById('prog-bar').style.width=((cur/questions.length)*100)+'%';
+  updateNav();
+  var stepsHTML=q.steps.map(function(s,i){
+    return'<div class="breakdown-row">'+
+      '<div class="breakdown-num">0'+(i+1)+'</div>'+
+      '<div class="breakdown-body">'+
+        '<p class="breakdown-title">'+s.t+'</p>'+
+        '<p class="breakdown-detail">'+s.d+'</p>'+
+        workingHTML(s.w)+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('main').innerHTML=
+    '<div class="tags">'+
+      '<span class="tag '+tagClass[q.cat]+'">'+q.area+'</span>'+
+      '<span class="tag tag-sub">'+q.tag+'</span>'+
+      '<span class="tag tag-num">'+(cur+1)+' of '+questions.length+'</span>'+
+    '</div>'+
+    '<div class="q-card">'+
+      '<p class="q-label">Question '+(cur+1)+'</p>'+
+      '<p class="q-text">'+q.q+'</p>'+
+      formulaHTML(q)+
+      shapeSVG(q)+
+      chartHTML(q)+
+    '</div>'+
+    '<div class="options" id="opts">'+
+      q.opts.map(function(o,i){return'<button class="opt" id="o'+i+'" onclick="pick('+i+')">'+o+'</button>';}).join('')+
+    '</div>'+
+    '<button class="btn" id="check-btn" onclick="checkAnswer()" disabled>Check Answer</button>'+
+    '<div class="steps-panel" id="steps-panel">'+
+      '<p class="steps-label" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:18px">Step-by-step breakdown</p>'+
+      stepsHTML+
+      '<div class="coaching"><p class="coaching-label">Coaching Note</p><p class="coaching-text">'+q.coaching+'</p></div>'+
+      '<button class="btn next" onclick="nextQ()">'+(cur+1<questions.length?'Next Question \u2192':'See Results \u2192')+'</button>'+
+    '</div>';
+}
+
+function pick(i){
+  if(answered)return;sel=i;
+  document.querySelectorAll('.opt').forEach(function(b,idx){b.className='opt'+(idx===i?' selected':'');});
+  document.getElementById('check-btn').disabled=false;
+}
+
+function checkAnswer(){
+  if(answered||sel===-1)return;
+  answered=true;
+  var q=questions[cur];var right=sel===q.ci;
+  if(right)score++;catScores[q.cat].push(right?1:0);
+  document.querySelectorAll('.opt').forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.ci)b.className='opt correct';
+    else if(i===sel&&!right)b.className='opt wrong';
+    else b.className='opt';
+  });
+  updateNav();
+  var cb=document.getElementById('check-btn');
+  cb.disabled=true;
+  cb.className='btn '+(right?'correct-s':'wrong-s');
+  cb.textContent=right?'\u2713  Correct':'\u2717  Incorrect \u2014 see breakdown below';
+  var sp=document.getElementById('steps-panel');
+  sp.style.display='block';
+  setTimeout(function(){sp.scrollIntoView({behavior:'smooth',block:'nearest'});},120);
+}
+
+function nextQ(){
+  cur++;answered=false;sel=-1;
+  window.scrollTo({top:0,behavior:'smooth'});render();
+}
+
+function showResult(){
+  document.getElementById('prog-bar').style.width='100%';
+  document.getElementById('main').style.display='none';
+  var pct=Math.round((score/questions.length)*100);
+  var msg=pct===100?'Every formula. Every pattern. Locked in.':
+    pct>=80?'Strong session. The structure is building.':
+    pct>=50?'The weak spots are clear now. That\u2019s the work.':
+    'Starting point found. Now the training begins.';
+  var catRows=Object.entries(catScores).map(function(e){
+    var cat=e[0],arr=e[1];if(!arr.length)return'';
+    var p=Math.round((arr.reduce(function(a,b){return a+b;},0)/arr.length)*100);
+    return'<div class="cr-row"><span class="cr-label">'+catNames[cat]+'</span>'+
+      '<div class="cr-bar-w"><div class="cr-bar" style="width:'+p+'%;background:'+catColors[cat]+'"></div></div>'+
+      '<span class="cr-pct">'+p+'%</span></div>';
+  }).join('');
+  document.getElementById('nav-score').innerHTML='Final Score <b>'+score+'/'+questions.length+'</b>';
+  var rs=document.getElementById('result-screen');
+  rs.style.display='block';
+  rs.innerHTML=
+    '<div class="result-card">'+
+      '<p class="result-brand">Math \u00b1 Relation \u2014 ARPEC Training</p>'+
+      '<p class="result-big">'+score+'/'+questions.length+'</p>'+
+      '<p class="result-pct">'+pct+'%</p>'+
+      '<p class="result-msg">'+msg+'</p>'+
+      '<div class="result-grid">'+
+        '<div class="r-stat"><div class="r-stat-n">'+score+'</div><div class="r-stat-l">Correct</div></div>'+
+        '<div class="r-stat"><div class="r-stat-n">'+(questions.length-score)+'</div><div class="r-stat-l">Review</div></div>'+
+        '<div class="r-stat"><div class="r-stat-n">'+pct+'%</div><div class="r-stat-l">Score</div></div>'+
+      '</div>'+
+      '<div class="cat-results">'+catRows+'</div>'+
+      '<div class="div"></div>'+
+      '<p class="philosophy">Calm Mind. <span>Clear Steps.</span> Strong Math.<br>Once you\u2019re in \u2014 you can\u2019t unsee it.</p>'+
+    '</div>'+
+    '<button class="btn next" onclick="restart()">Retake Test</button>';
+}
+
+function restart(){
+  cur=0;score=0;answered=false;sel=-1;
+  Object.keys(catScores).forEach(function(k){catScores[k]=[];});
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('main').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});render();
+}
+
+render();
+</script>
+</body>
+</html>
