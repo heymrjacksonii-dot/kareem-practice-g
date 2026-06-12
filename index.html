@@ -1,1 +1,303 @@
-# kareem-practice-g
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARPEC Practice Test — Math ± Relation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.35);
+  --bg:#0a0a0b;--bg2:#111114;--bg3:#18181c;--bg4:#1e1e23;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#f0f0f0;--text2:#8a8a9a;--text3:#555565;
+  --green:#22c55e;--green-dim:rgba(34,197,94,0.1);--green-border:rgba(34,197,94,0.3);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.1);--red-border:rgba(239,68,68,0.3);
+  --teal:#2dd4bf;--teal-dim:rgba(45,212,191,0.1);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.1);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.1);
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+  --radius:10px;--radius-lg:16px;
+}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100%}
+body{
+  min-height:100vh;background:var(--bg);
+  background-image:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(59,130,246,0.07) 0%,transparent 70%);
+  display:flex;flex-direction:column;align-items:center;padding:0 16px 80px;
+}
+nav{width:100%;max-width:680px;display:flex;align-items:center;justify-content:space-between;padding:24px 0 20px;border-bottom:0.5px solid var(--border);margin-bottom:32px}
+.logo{font-family:var(--mono);font-size:13px;letter-spacing:.03em;color:var(--text2)}
+.logo span{color:var(--blue)}
+.nav-score{font-family:var(--mono);font-size:12px;color:var(--text3)}
+.nav-score b{color:var(--text);font-weight:700}
+.progress-wrap{width:100%;max-width:680px;background:var(--bg3);border-radius:2px;height:2px;margin-bottom:28px;overflow:hidden}
+.progress-bar{height:100%;background:var(--blue);width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.cat-strip{width:100%;max-width:680px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:26px}
+.cat-pip{font-family:var(--mono);font-size:9px;letter-spacing:.07em;padding:4px 10px;border-radius:4px;text-transform:uppercase;border:.5px solid;opacity:.3;transition:opacity .2s,font-weight .2s}
+.cat-algebra{color:var(--blue);border-color:var(--blue-border);background:var(--blue-dim)}
+.cat-fractions{color:var(--teal);border-color:rgba(45,212,191,.3);background:var(--teal-dim)}
+.cat-geometry{color:var(--purple);border-color:rgba(167,139,250,.3);background:var(--purple-dim)}
+.cat-measurement{color:var(--amber);border-color:rgba(245,158,11,.3);background:var(--amber-dim)}
+.cat-graphs{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.main{width:100%;max-width:680px}
+.tags{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:4px 10px;border-radius:4px;text-transform:uppercase;border:.5px solid}
+.tag-algebra{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-border)}
+.tag-fractions{background:var(--teal-dim);color:var(--teal);border-color:rgba(45,212,191,.3)}
+.tag-geometry{background:var(--purple-dim);color:var(--purple);border-color:rgba(167,139,250,.3)}
+.tag-measurement{background:var(--amber-dim);color:var(--amber);border-color:rgba(245,158,11,.3)}
+.tag-graphs{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.tag-type{background:var(--bg3);color:var(--text2);border-color:var(--border)}
+.tag-num{margin-left:auto;color:var(--text3);background:none;border:none}
+.q-card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:28px 28px 24px;margin-bottom:14px}
+.q-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text3);margin-bottom:14px;text-transform:uppercase}
+.q-text{font-family:var(--mono);font-size:16px;line-height:1.8;color:var(--text);white-space:pre-line}
+.formula-chip{display:inline-block;font-family:var(--mono);font-size:14px;background:var(--bg4);border:.5px solid var(--border2);padding:6px 14px;border-radius:6px;color:var(--amber);margin:10px 0;letter-spacing:.03em}
+.chart-area{margin-top:18px;padding:16px;background:var(--bg3);border-radius:var(--radius);border:.5px solid var(--border)}
+.chart-label{font-family:var(--mono);font-size:10px;letter-spacing:.07em;color:var(--text3);text-transform:uppercase;margin-bottom:12px}
+.options{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.opt{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius);padding:14px 18px;font-size:15px;font-family:var(--sans);color:var(--text2);cursor:pointer;text-align:left;transition:background .12s,border-color .12s,color .12s}
+.opt:hover:not(:disabled){background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.opt.selected{background:var(--blue-dim);border-color:var(--blue-border);color:var(--blue)}
+.opt.correct{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
+.opt.wrong{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
+.opt:disabled{cursor:default}
+.action-btn{width:100%;padding:14px;font-size:13px;font-family:var(--mono);letter-spacing:.06em;font-weight:700;cursor:pointer;border-radius:var(--radius);background:transparent;border:.5px solid var(--border2);color:var(--text2);transition:background .12s,color .12s,border-color .12s;text-transform:uppercase}
+.action-btn:hover:not(:disabled){background:var(--bg3);color:var(--text)}
+.action-btn:disabled{opacity:.22;cursor:default}
+.action-btn.correct-state{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
+.action-btn.wrong-state{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
+.action-btn.next-btn{border-color:var(--blue-border);color:var(--blue);background:var(--blue-dim);margin-top:10px}
+.action-btn.next-btn:hover{background:rgba(59,130,246,.2)}
+.steps-panel{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-top:12px;display:none;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.steps-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:20px}
+.step{display:flex;gap:14px;margin-bottom:14px;padding-bottom:14px;border-bottom:.5px solid var(--border)}
+.step:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.step-num{font-family:var(--mono);font-size:11px;color:var(--blue);min-width:24px;padding-top:2px;font-weight:700}
+.step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+.step-detail{font-size:13px;color:var(--text2);line-height:1.7;font-family:var(--mono)}
+.formula-ref{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-top:18px}
+.formula-ref-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--amber);text-transform:uppercase;margin-bottom:12px}
+.formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.formula-item{background:var(--bg2);border-radius:8px;padding:10px 12px;border:.5px solid var(--border)}
+.formula-name{font-size:11px;color:var(--text3);margin-bottom:5px;font-family:var(--mono)}
+.formula-eq{font-family:var(--mono);font-size:13px;color:var(--amber)}
+.coaching{margin-top:18px;padding:16px 18px;background:var(--bg3);border-radius:var(--radius);border-left:2px solid var(--blue)}
+.coaching-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:8px}
+.coaching-text{font-size:13px;color:var(--text2);line-height:1.7}
+.result-screen{width:100%;max-width:680px;display:none;animation:fadeUp .4s ease}
+.result-card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--radius-lg);padding:48px 32px 40px;text-align:center;margin-bottom:14px}
+.result-brand{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:24px}
+.result-score-big{font-family:var(--mono);font-size:64px;font-weight:700;color:var(--text);line-height:1;margin-bottom:6px}
+.result-pct{font-family:var(--mono);font-size:22px;color:var(--text3);margin-bottom:28px}
+.result-msg{font-size:15px;color:var(--text2);line-height:1.75;max-width:400px;margin:0 auto 32px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:340px;margin:0 auto 28px}
+.result-stat{padding:16px 8px;background:var(--bg3);border-radius:var(--radius);border:.5px solid var(--border)}
+.result-stat-num{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px}
+.result-stat-label{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.cat-results{margin:0 auto 28px;max-width:420px;text-align:left}
+.cat-result-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.cat-result-label{font-size:12px;color:var(--text2);font-family:var(--mono);min-width:140px}
+.cat-result-bar-wrap{flex:1;background:var(--bg3);border-radius:3px;height:5px;overflow:hidden}
+.cat-result-bar{height:100%;border-radius:3px;transition:width .6s ease}
+.cat-result-pct{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:36px;text-align:right}
+.divider{height:.5px;background:var(--border);margin:24px 0}
+.philosophy{font-family:var(--mono);font-size:12px;color:var(--text3);letter-spacing:.05em;line-height:2}
+.philosophy span{color:var(--blue)}
+footer{width:100%;max-width:680px;padding:28px 0 0;border-top:.5px solid var(--border);margin-top:36px;display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.06em}
+.footer-brand span{color:var(--blue)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none;letter-spacing:.04em;transition:color .12s}
+.footer-link:hover{color:var(--blue)}
+@media(max-width:520px){
+  .q-text{font-size:14px}.q-card{padding:20px 16px}
+  .result-score-big{font-size:48px}.formula-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:12px;text-align:center}
+  .cat-result-label{min-width:100px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">MATH <span>&#177;</span> RELATION</div>
+  <div class="nav-score" id="nav-score">ARPEC Practice &#8212; Level 1</div>
+</nav>
+
+<div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+
+<div class="cat-strip" id="cat-strip">
+  <span class="cat-pip cat-algebra"    data-cat="algebra">Algebra</span>
+  <span class="cat-pip cat-fractions"  data-cat="fractions">Fractions</span>
+  <span class="cat-pip cat-geometry"   data-cat="geometry">Geometry</span>
+  <span class="cat-pip cat-measurement" data-cat="measurement">Measurement</span>
+  <span class="cat-pip cat-graphs"     data-cat="graphs">Graphs</span>
+</div>
+
+<div class="main" id="main"></div>
+<div class="result-screen" id="result-screen"></div>
+
+<footer>
+  <div class="footer-brand">MATH <span>&#177;</span> RELATION &#8212; ARPEC Training System</div>
+  <a href="https://mathrelation.com" class="footer-link" target="_blank">mathrelation.com</a>
+</footer>
+
+<script>
+var BAR_SVG='<svg viewBox="0 0 480 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><line x1="48" y1="20" x2="48" y2="145" stroke="rgba(255,255,255,0.07)" stroke-width="1"/><line x1="48" y1="145" x2="460" y2="145" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><line x1="48" y1="105" x2="460" y2="105" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4,3"/><line x1="48" y1="65" x2="460" y2="65" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4,3"/><line x1="48" y1="25" x2="460" y2="25" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4,3"/><text x="40" y="148" text-anchor="end" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Mono,monospace">0</text><text x="40" y="108" text-anchor="end" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Mono,monospace">20</text><text x="40" y="68" text-anchor="end" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Mono,monospace">40</text><text x="40" y="28" text-anchor="end" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Mono,monospace">60</text><rect x="80" y="105" width="60" height="40" rx="3" fill="#3B82F6" opacity="0.7"/><text x="110" y="100" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="Space Mono,monospace">20</text><text x="110" y="162" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Space Mono,monospace">Jan</text><rect x="180" y="75" width="60" height="70" rx="3" fill="#3B82F6" opacity="0.8"/><text x="210" y="70" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="Space Mono,monospace">35</text><text x="210" y="162" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Space Mono,monospace">Feb</text><rect x="280" y="45" width="60" height="100" rx="3" fill="#3B82F6" opacity="1"/><text x="310" y="40" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10" font-family="Space Mono,monospace">50</text><text x="310" y="162" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Space Mono,monospace">Mar</text><rect x="380" y="65" width="60" height="80" rx="3" fill="#3B82F6" opacity="0.85"/><text x="410" y="60" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Space Mono,monospace">40</text><text x="410" y="162" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-family="Space Mono,monospace">Apr</text></svg>';
+
+var questions=[
+  {area:"Pre-Algebra & Algebra",cat:"algebra",tag:"Substitution",q:"Solve for x:\n\n3(x + 2y) = 7y \u2212 9,  when y = 3",opts:["A.  \u22122","B.  \u22121","C.  2","D.  3"],ci:0,steps:[{title:"Substitute",detail:"Replace every y with 3.   \u2192   3(x + 2\u00b73) = 7\u00b73 \u2212 9"},{title:"Simplify both sides",detail:"Left: 2 \u00d7 3 = 6, so 3(x + 6).   Right: 21 \u2212 9 = 12.   \u2192   3(x + 6) = 12"},{title:"Distribute",detail:"3 \u00d7 x = 3x and 3 \u00d7 6 = 18.   \u2192   3x + 18 = 12"},{title:"Isolate x",detail:"Subtract 18: 3x = \u22126.   Divide by 3: x = \u22122"},{title:"Verify",detail:"Plug x = \u22122, y = 3 back in: 3(\u22122 + 6) = 3(4) = 12.   Right: 7(3) \u2212 9 = 12. \u2713"}],coaching:"The move never changes: substitute first \u2192 simplify \u2192 isolate. Lock in that order and every substitution problem becomes mechanical."},
+  {area:"Fractions & Decimals",cat:"fractions",tag:"Improper Fractions",q:"13/7 is equal to:",opts:["A.  26/49","B.  1 and 18/49","C.  1 and 6/7","D.  2 and 7/49"],ci:2,steps:[{title:"Fractions are division",detail:"13/7 means 13 \u00f7 7. How many full 7s fit inside 13?"},{title:"Find the whole number",detail:"7 \u00d7 1 = 7 (fits).   7 \u00d7 2 = 14 (too big).   Whole number = 1."},{title:"Find the remainder",detail:"13 \u2212 7 = 6.   The remainder is 6."},{title:"Write the mixed number",detail:"1 whole + 6 leftover out of 7.   Answer: 1 and 6/7."}],coaching:"Fractions are division in disguise. Every improper fraction: divide \u2192 find whole \u2192 find remainder. That pattern never changes."},
+  {area:"Pre-Algebra & Algebra",cat:"algebra",tag:"Two-Step Equation",q:"Solve for x:\n\n5x + 8 = 23",opts:["A.  3","B.  4","C.  6","D.  7"],ci:0,steps:[{title:"Identify what\u2019s blocking x",detail:"x is multiplied by 5, and there\u2019s a +8 attached. Both need to go."},{title:"Remove the constant first",detail:"Subtract 8 from both sides.   5x + 8 \u2212 8 = 23 \u2212 8   \u2192   5x = 15"},{title:"Remove the coefficient",detail:"Divide both sides by 5.   5x \u00f7 5 = 15 \u00f7 5   \u2192   x = 3"},{title:"Verify",detail:"5(3) + 8 = 15 + 8 = 23. \u2713"}],coaching:"Two-step equations always follow the same order: constant first, coefficient second. Never flip it. That order is the structure."},
+  {area:"Geometry & Trigonometry",cat:"geometry",tag:"Triangle Angles",q:"A triangle has two known angles: 60\u00b0 and 45\u00b0.\n\nWhat is x, the third angle?",opts:["A.  15\u00b0","B.  30\u00b0","C.  60\u00b0","D.  75\u00b0"],ci:3,steps:[{title:"Block out the noise",detail:"Ignore extra lines. Zoom in on one triangle only."},{title:"State the rule",detail:"All three angles in any triangle add up to exactly 180\u00b0."},{title:"Write the equation",detail:"x + 60 + 45 = 180"},{title:"Solve",detail:"x + 105 = 180   \u2192   x = 75\u00b0"}],coaching:"Isolate one shape, write the rule for that shape, solve. Every time. The diagram is a distraction until you find your shape."},
+  {area:"Rational Numbers",cat:"fractions",tag:"Comparison & Estimation",q:"Compare the two expressions.\nChoose the correct symbol:\n\n16 \u00d7 3     ?     122 \u00f7 3",opts:["A.  <","B.  =","C.  \u2265","D.  >"],ci:3,steps:[{title:"Compute the left side",detail:"16 \u00d7 3.   Break it: 10 \u00d7 3 = 30, and 6 \u00d7 3 = 18.   30 + 18 = 48."},{title:"Estimate the right side",detail:"122 \u00f7 3.   Think: 3 \u00d7 40 = 120.   So 122 \u00f7 3 \u2248 40.7."},{title:"Compare",detail:"48 vs 40.7.   48 is clearly larger."},{title:"Choose the symbol",detail:"Left (48) > Right (40.7).   Answer: >"}],coaching:"You don\u2019t need exact answers to compare \u2014 you need ranges. Estimate both sides quickly, then decide. That skill is what timed sections test."},
+  {area:"Fractions & Decimals",cat:"fractions",tag:"Different Denominators",q:"1/3 + 1/4 = ?",opts:["A.  2/7","B.  7/12","C.  1/6","D.  5/12"],ci:1,steps:[{title:"Check denominators",detail:"3 and 4 are different. Cannot add yet."},{title:"Find common denominator",detail:"Smallest number both 3 and 4 divide into evenly: 12."},{title:"Convert 1/3",detail:"Multiply top and bottom by 4.   1/3 = 4/12."},{title:"Convert 1/4",detail:"Multiply top and bottom by 3.   1/4 = 3/12."},{title:"Add \u2014 tops only",detail:"4/12 + 3/12 = 7/12.   Denominator stays. Never add the bottoms."}],coaching:"Never add the bottom numbers. Find common denominator, convert, then add tops only. The denominator is fixed once they match."},
+  {area:"Measurement & Geometry",cat:"measurement",tag:"Circumference",q:"A circle has a diameter of 10 inches.\n\nWhat is the circumference?\n(Use \u03c0 = 3.14)",formula:"C = \u03c0 \u00d7 d",opts:["A.  15.70 in","B.  31.40 in","C.  78.50 in","D.  62.80 in"],ci:1,steps:[{title:"Identify what you have",detail:"You have the diameter: d = 10 inches."},{title:"Write the formula",detail:"C = \u03c0 \u00d7 d"},{title:"Substitute",detail:"C = 3.14 \u00d7 10"},{title:"Calculate",detail:"C = 31.4 inches"}],coaching:"Circle questions give you either radius or diameter. If diameter: C = \u03c0 \u00d7 d.  If radius: C = 2 \u00d7 \u03c0 \u00d7 r.  Identify what you have, plug it in.",formulaRef:[{name:"Circumference (diameter)",eq:"C = \u03c0 \u00d7 d"},{name:"Circumference (radius)",eq:"C = 2 \u00d7 \u03c0 \u00d7 r"},{name:"Area of circle",eq:"A = \u03c0 \u00d7 r\u00b2"}]},
+  {area:"Measurement & Geometry",cat:"measurement",tag:"Area of Triangle",q:"A triangle has:\n\nBase = 12\nHeight = 9\n\nWhat is the area?",formula:"A = \u00bd \u00d7 b \u00d7 h",opts:["A.  21","B.  42","C.  54","D.  108"],ci:2,steps:[{title:"Write the formula",detail:"A = \u00bd \u00d7 base \u00d7 height"},{title:"Substitute",detail:"A = \u00bd \u00d7 12 \u00d7 9"},{title:"Multiply first",detail:"12 \u00d7 9 = 108"},{title:"Apply the half",detail:"108 \u00f7 2 = 54"}],coaching:"The \u00bd in the triangle formula trips people up. Do the full multiplication first \u2014 then cut it in half. Same result every time.",formulaRef:[{name:"Area of triangle",eq:"A = \u00bd \u00d7 b \u00d7 h"},{name:"Area of rectangle",eq:"A = l \u00d7 w"},{name:"Area of circle",eq:"A = \u03c0 \u00d7 r\u00b2"}]},
+  {area:"Measurement & Geometry",cat:"measurement",tag:"Area of Rectangle",q:"A rectangle has:\n\nLength = 15\nWidth = 9\n\nWhat is the area?",formula:"A = l \u00d7 w",opts:["A.  24","B.  48","C.  120","D.  135"],ci:3,steps:[{title:"Write the formula",detail:"A = length \u00d7 width"},{title:"Substitute",detail:"A = 15 \u00d7 9"},{title:"Calculate",detail:"A = 135 square units"}],coaching:"Rectangle area is the simplest formula. Length \u00d7 width, no fractions, no \u03c0. If you see a rectangle \u2014 multiply the two sides. Done.",formulaRef:[{name:"Area of rectangle",eq:"A = l \u00d7 w"},{name:"Area of triangle",eq:"A = \u00bd \u00d7 b \u00d7 h"},{name:"Circumference",eq:"C = \u03c0 \u00d7 d"}]},
+  {area:"Graph Interpretation",cat:"graphs",tag:"Bar Graph Reading",q:"Use the bar graph below.\n\nHow many more sales occurred in March than in January?",chart:true,opts:["A.  10","B.  20","C.  30","D.  50"],ci:2,steps:[{title:"Read the question carefully",detail:"It asks for a difference \u2014 'how many MORE.' That means subtraction."},{title:"Find March\u2019s value",detail:"Locate the March bar. It reaches 50."},{title:"Find January\u2019s value",detail:"Locate the January bar. It reaches 20."},{title:"Subtract",detail:"50 \u2212 20 = 30.   March had 30 more sales than January."}],coaching:"Bar graph questions are reading problems, not math problems. Ask: what is the graph measuring? Am I adding, subtracting, or comparing? Find the bars. Then calculate."}
+];
+
+var catColors={algebra:"#3B82F6",fractions:"#2dd4bf",geometry:"#a78bfa",measurement:"#f59e0b",graphs:"#22c55e"};
+var cur=0,score=0,answered=false,sel=-1;
+var catScores={algebra:[],fractions:[],geometry:[],measurement:[],graphs:[]};
+
+function updateNav(){
+  var el=document.getElementById('nav-score');
+  if(cur===0&&!answered){el.innerHTML='ARPEC Practice &#8212; Level 1';return;}
+  var done=Math.min(cur+(answered?1:0),questions.length);
+  el.innerHTML='Score <b>'+score+'</b> / '+done;
+}
+
+function updateCatStrip(activeCat){
+  document.querySelectorAll('.cat-pip').forEach(function(pip){
+    if(pip.dataset.cat===activeCat){pip.style.opacity='1';pip.style.fontWeight='700';}
+    else{pip.style.opacity='0.25';pip.style.fontWeight='400';}
+  });
+}
+
+function render(){
+  if(cur>=questions.length){showResult();return;}
+  var q=questions[cur];
+  document.getElementById('progress-bar').style.width=((cur/questions.length)*100)+'%';
+  updateNav();updateCatStrip(q.cat);
+  var tagMap={algebra:'tag-algebra',fractions:'tag-fractions',geometry:'tag-geometry',measurement:'tag-measurement',graphs:'tag-graphs'};
+  var formulaChip=q.formula?'<div style="margin-top:12px"><span class="formula-chip">'+q.formula+'</span></div>':'';
+  var chartBlock=q.chart?'<div class="chart-area"><p class="chart-label">Monthly Sales &#8212; Units Sold</p>'+BAR_SVG+'</div>':'';
+  var formulaRefBlock='';
+  if(q.formulaRef){
+    formulaRefBlock='<div class="formula-ref"><p class="formula-ref-label">Formula Reference</p><div class="formula-grid">'+
+      q.formulaRef.map(function(f){return'<div class="formula-item"><div class="formula-name">'+f.name+'</div><div class="formula-eq">'+f.eq+'</div></div>';}).join('')+
+      '</div></div>';
+  }
+  document.getElementById('main').innerHTML=
+    '<div class="tags">'+
+      '<span class="tag '+tagMap[q.cat]+'">'+q.area+'</span>'+
+      '<span class="tag tag-type">'+q.tag+'</span>'+
+      '<span class="tag tag-num">'+(cur+1)+' of '+questions.length+'</span>'+
+    '</div>'+
+    '<div class="q-card">'+
+      '<p class="q-label">Question '+(cur+1)+'</p>'+
+      '<p class="q-text">'+q.q+'</p>'+
+      formulaChip+chartBlock+
+    '</div>'+
+    '<div class="options" id="opts">'+
+      q.opts.map(function(o,i){return'<button class="opt" id="o'+i+'" onclick="pick('+i+')">'+o+'</button>';}).join('')+
+    '</div>'+
+    '<button class="action-btn" id="check-btn" onclick="checkAnswer()" disabled>Check Answer</button>'+
+    '<div class="steps-panel" id="steps-panel">'+
+      '<p class="steps-label">Step-by-step breakdown</p>'+
+      q.steps.map(function(s,i){return'<div class="step"><div class="step-num">0'+(i+1)+'</div><div><p class="step-title">'+s.title+'</p><p class="step-detail">'+s.detail+'</p></div></div>';}).join('')+
+      formulaRefBlock+
+      '<div class="coaching"><p class="coaching-label">Coaching Note</p><p class="coaching-text">'+q.coaching+'</p></div>'+
+      '<button class="action-btn next-btn" onclick="nextQ()">'+(cur+1<questions.length?'Next Question \u2192':'See Results \u2192')+'</button>'+
+    '</div>';
+}
+
+function pick(i){
+  if(answered)return;sel=i;
+  document.querySelectorAll('.opt').forEach(function(b,idx){b.className='opt'+(idx===i?' selected':'');});
+  document.getElementById('check-btn').disabled=false;
+}
+
+function checkAnswer(){
+  if(answered||sel===-1)return;
+  answered=true;
+  var q=questions[cur];var right=sel===q.ci;
+  if(right)score++;catScores[q.cat].push(right?1:0);
+  document.querySelectorAll('.opt').forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.ci)b.className='opt correct';
+    else if(i===sel&&!right)b.className='opt wrong';
+    else b.className='opt';
+  });
+  updateNav();
+  var cb=document.getElementById('check-btn');
+  cb.disabled=true;
+  cb.className='action-btn '+(right?'correct-state':'wrong-state');
+  cb.textContent=right?'\u2713  Correct':'\u2717  Incorrect \u2014 see breakdown below';
+  var sp=document.getElementById('steps-panel');
+  sp.style.display='block';
+  setTimeout(function(){sp.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+
+function nextQ(){
+  cur++;answered=false;sel=-1;
+  window.scrollTo({top:0,behavior:'smooth'});render();
+}
+
+function showResult(){
+  document.getElementById('progress-bar').style.width='100%';
+  document.getElementById('main').style.display='none';
+  var pct=Math.round((score/questions.length)*100);
+  var msg=pct===100?'Structure is automatic. This is what it looks like.':
+    pct>=80?'Strong session. The foundation is there. Keep building.':
+    pct>=50?'Good work. The weak spots are visible now \u2014 that is useful information.':
+    'This is the starting point. Not the ending point. Trust the process.';
+  var catNames={algebra:'Algebra',fractions:'Fractions',geometry:'Geometry',measurement:'Measurement',graphs:'Graphs'};
+  var catRows=Object.entries(catScores).map(function(entry){
+    var cat=entry[0],arr=entry[1];
+    if(!arr.length)return'';
+    var p=Math.round((arr.reduce(function(a,b){return a+b;},0)/arr.length)*100);
+    return'<div class="cat-result-row">'+
+      '<span class="cat-result-label">'+catNames[cat]+'</span>'+
+      '<div class="cat-result-bar-wrap"><div class="cat-result-bar" style="width:'+p+'%;background:'+catColors[cat]+'"></div></div>'+
+      '<span class="cat-result-pct">'+p+'%</span>'+
+    '</div>';
+  }).join('');
+  document.getElementById('nav-score').innerHTML='Final Score <b>'+score+'/'+questions.length+'</b>';
+  var rs=document.getElementById('result-screen');
+  rs.style.display='block';
+  rs.innerHTML=
+    '<div class="result-card">'+
+      '<p class="result-brand">Math &#177; Relation &#8212; ARPEC Training</p>'+
+      '<p class="result-score-big">'+score+'/'+questions.length+'</p>'+
+      '<p class="result-pct">'+pct+'%</p>'+
+      '<p class="result-msg">'+msg+'</p>'+
+      '<div class="result-grid">'+
+        '<div class="result-stat"><div class="result-stat-num">'+score+'</div><div class="result-stat-label">Correct</div></div>'+
+        '<div class="result-stat"><div class="result-stat-num">'+(questions.length-score)+'</div><div class="result-stat-label">Review</div></div>'+
+        '<div class="result-stat"><div class="result-stat-num">'+pct+'%</div><div class="result-stat-label">Score</div></div>'+
+      '</div>'+
+      '<div class="cat-results">'+catRows+'</div>'+
+      '<div class="divider"></div>'+
+      '<p class="philosophy">Calm Mind. <span>Clear Steps.</span> Strong Math.<br>Once you\'re in &#8212; you can\'t unsee it.</p>'+
+    '</div>'+
+    '<button class="action-btn next-btn" onclick="restart()">Retake Test</button>';
+}
+
+function restart(){
+  cur=0;score=0;answered=false;sel=-1;
+  Object.keys(catScores).forEach(function(k){catScores[k]=[];});
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('main').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});render();
+}
+
+render();
+</script>
+</body>
+</html>
