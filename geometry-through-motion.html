@@ -38,8 +38,8 @@ nav{width:100%;max-width:720px;display:flex;align-items:center;justify-content:s
 .prog-pip.active{background:rgba(59,130,246,0.45)}
 .prog-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--text3);text-transform:uppercase}
 /* SCREEN */
-.screen{width:100%;max-width:720px;padding-top:32px;display:none;animation:fadeUp .35s ease}
-.screen.active{display:block}
+.screen{width:100%;max-width:720px;padding-top:32px;display:none}
+.screen.active{display:block !important;visibility:visible !important;opacity:1 !important;animation:fadeUp .25s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 /* COMMON */
 .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
@@ -484,7 +484,47 @@ footer{width:100%;max-width:720px;padding:24px 0 0;border-top:.5px solid var(--b
 </div>
 
 <!-- SCREENS -->
-<div id="s0" class="screen active"></div>
+<div id="s0" class="screen active" style="display:block"><div class="mission-hero">
+<div class="mission-badge"><div class="mission-badge-dot"></div>Academy Mission 01</div>
+<h1 class="mission-title">Geometry<br><span>Through Motion</span>&#8482;</h1>
+<p class="mission-sub">Before we calculate anything, we observe. This mission teaches circles, measurement, and mathematical relationships through the world you already know.</p>
+<div class="mission-stats">
+<div class="m-stat"><div class="m-stat-n">7</div><div class="m-stat-l">Phases</div></div>
+<div class="m-stat"><div class="m-stat-n">5</div><div class="m-stat-l">Dimensions</div></div>
+<div class="m-stat"><div class="m-stat-n">Scout<br>Report</div><div class="m-stat-l">At the End</div></div>
+</div>
+</div>
+<div class="briefing-card">
+<p class="eyebrow blue">Student Briefing</p>
+<h2>Before the formula, there is the observation.</h2>
+<div class="briefing-scene">
+<b>Stephen Curry shoots a three-pointer.</b><br><br>
+The basketball leaves his fingertips.<br>
+The ball rotates as it travels through the air.<br>
+It follows a curved arc.<br>
+It passes through the rim.<br><br>
+Now the question is not: <i>&#8220;What formula do I use?&#8221;</i><br><br>
+The question is: <i>&#8220;What mathematical relationships are happening right now?&#8221;</i>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-bottom:14px">The basketball in that moment contains:</p>
+<div class="question-reveal">
+<div class="qr-item">Circle</div>
+<div class="qr-item">Rotation</div>
+<div class="qr-item">Arc</div>
+<div class="qr-item">Circumference</div>
+<div class="qr-item">Radius</div>
+<div class="qr-item">Diameter</div>
+<div class="qr-item">Distance Traveled</div>
+<div class="qr-item">Area</div>
+</div>
+</div>
+<div class="briefing-card">
+<p class="eyebrow amber">Mission Objective</p>
+<p style="font-size:14px;color:var(--text2);line-height:1.8">By the end of this mission, you will be able to <strong style="color:var(--text)">recognize, calculate, explain, apply, and teach</strong> every circle relationship. Not because you memorized a formula. Because you understand what the formula is actually saying.</p>
+<div style="margin-top:20px;text-align:center">
+<button class="btn-primary" onclick="goPhase(1)">Begin Mission &rarr;</button>
+</div>
+</div></div>
 <div id="s1" class="screen"></div>
 <div id="s2" class="screen"></div>
 <div id="s3" class="screen"></div>
@@ -525,15 +565,16 @@ function goPhase(n){
   phase=n;
   document.getElementById('s'+phase).className='screen active';
   window.scrollTo({top:0,behavior:'smooth'});
-  // update progress pips
   for(var i=0;i<10;i++){
     var pip=document.getElementById('pip-'+i);
-    if(i<n) pip.className='prog-pip done';
-    else if(i===n) pip.className='prog-pip active';
-    else pip.className='prog-pip';
+    if(pip){
+      if(i<n) pip.className='prog-pip done';
+      else if(i===n) pip.className='prog-pip active';
+      else pip.className='prog-pip';
+    }
   }
   document.getElementById('prog-label').textContent=phaseLabels[n];
-  renderPhase(n);
+  setTimeout(function(){ renderPhase(n); }, 10);
 }
 
 function renderPhase(n){
@@ -1155,7 +1196,7 @@ function restart_legacy_unused(){
 }
 
 /* ── BOOT ── */
-renderBrief();
+document.addEventListener("DOMContentLoaded", function(){ renderBrief(); });
 
 /* ══════════════════════════════════════════════
    PATTERN ANALYSIS ENGINE
