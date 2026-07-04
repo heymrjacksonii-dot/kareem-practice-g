@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometry Through Motion™ — Math ± Relation</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.35);
+  --bg:#09090b;--bg2:#111113;--bg3:#17171b;--bg4:#1d1d22;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#efefef;--text2:#8888a0;--text3:#505060;
+  --green:#22c55e;--green-dim:rgba(34,197,94,0.11);--green-border:rgba(34,197,94,0.3);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.1);--red-border:rgba(248,113,113,0.32);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.12);--amber-border:rgba(245,158,11,0.35);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.11);--purple-border:rgba(167,139,250,0.3);
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+  --r:10px;--rl:16px;
+}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100%}
+body{
+  min-height:100vh;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 16px 80px;
+}
+/* NAV */
+nav{width:100%;max-width:720px;display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:.5px solid var(--border);margin-bottom:0}
+.logo{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--text2)}
+.logo span{color:var(--blue)}
+.nav-mission{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.03em}
+/* PROGRESS */
+.prog-outer{width:100%;max-width:720px;padding:14px 0 0;margin-bottom:0}
+.prog-phases{display:flex;gap:4px;margin-bottom:6px}
+.prog-pip{height:3px;flex:1;border-radius:2px;background:var(--bg3);transition:background .4s}
+.prog-pip.done{background:var(--blue)}
+.prog-pip.active{background:rgba(59,130,246,0.45)}
+.prog-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--text3);text-transform:uppercase}
+/* SCREEN */
+.screen{width:100%;max-width:720px;padding-top:32px;display:none;animation:fadeUp .35s ease}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* COMMON */
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
+.eyebrow.blue{color:var(--blue)}
+.eyebrow.amber{color:var(--amber)}
+.eyebrow.green{color:var(--green)}
+.eyebrow.purple{color:var(--purple)}
+h1{font-size:28px;font-weight:500;line-height:1.25;margin-bottom:12px;color:var(--text)}
+h2{font-size:20px;font-weight:500;margin-bottom:10px;color:var(--text)}
+.lead{font-size:15px;color:var(--text2);line-height:1.8;max-width:580px;margin-bottom:24px}
+.card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:24px}
+.card+.card{margin-top:12px}
+/* BUTTONS */
+.btn-primary{
+  display:inline-block;padding:13px 28px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;
+  border-radius:var(--r);background:var(--blue);color:#fff;border:none;
+  transition:background .15s,transform .1s;
+}
+.btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+.btn-ghost{
+  display:inline-block;padding:12px 24px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;
+  border-radius:var(--r);background:transparent;color:var(--blue);
+  border:.5px solid var(--blue-border);transition:background .15s;
+}
+.btn-ghost:hover{background:var(--blue-dim)}
+.btn-next{
+  width:100%;padding:14px;font-family:var(--mono);font-size:12px;letter-spacing:.07em;
+  font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:var(--r);
+  background:var(--blue-dim);color:var(--blue);border:.5px solid var(--blue-border);
+  margin-top:14px;transition:background .15s;display:none;
+}
+.btn-next:hover{background:rgba(59,130,246,.22)}
+.btn-next.show{display:block}
+/* OPTIONS */
+.opts{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.opt{
+  background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);
+  padding:14px 18px;font-size:14px;color:var(--text2);cursor:pointer;text-align:left;
+  transition:all .12s;font-family:var(--sans);line-height:1.4;
+}
+.opt:hover:not(:disabled){background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.opt.selected{background:var(--blue-dim);border-color:var(--blue-border);color:var(--blue)}
+.opt.correct{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
+.opt.wrong{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
+.opt:disabled{cursor:default}
+/* FEEDBACK BOX */
+.feedback{
+  padding:14px 16px;border-radius:var(--r);border-left:2px solid;
+  font-size:13px;line-height:1.7;font-family:var(--mono);margin-top:10px;display:none;
+}
+.feedback.correct{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.feedback.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.feedback.show{display:block}
+/* TAGS */
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:4px 10px;border-radius:4px;text-transform:uppercase;border:.5px solid;margin-right:6px;margin-bottom:8px}
+.tag-blue{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-border)}
+.tag-amber{background:var(--amber-dim);color:var(--amber);border-color:var(--amber-border)}
+.tag-green{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.tag-purple{background:var(--purple-dim);color:var(--purple);border-color:var(--purple-border)}
+
+/* ── PHASE 0: MISSION BRIEF ───────────────────────── */
+.mission-hero{
+  text-align:center;padding:48px 0 32px;
+}
+.mission-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--bg2);border:.5px solid var(--border2);
+  border-radius:var(--rl);padding:10px 20px;margin-bottom:28px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text2);
+}
+.mission-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.mission-title{font-size:36px;font-weight:500;margin-bottom:14px;line-height:1.2}
+.mission-title span{color:var(--blue)}
+.mission-sub{font-size:15px;color:var(--text2);line-height:1.8;max-width:500px;margin:0 auto 36px}
+.mission-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:0 auto 36px}
+.m-stat{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);padding:16px 8px;text-align:center}
+.m-stat-n{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px}
+.m-stat-l{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.briefing-card{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:28px;margin-bottom:20px;text-align:left;
+}
+.briefing-scene{
+  font-family:var(--mono);font-size:14px;color:var(--text2);line-height:2;
+  margin-bottom:20px;padding:16px;background:var(--bg3);border-radius:var(--r);
+  border-left:2px solid var(--blue);
+}
+.briefing-scene b{color:var(--text)}
+.question-reveal{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px;
+}
+.qr-item{
+  background:var(--bg3);border:.5px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--blue);
+  display:flex;align-items:center;gap:8px;
+}
+.qr-item::before{content:'\2713';color:var(--blue);opacity:.6}
+
+/* ── PHASE 1: DIAGNOSTIC ──────────────────────────── */
+.diag-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;
+}
+.diag-counter{font-family:var(--mono);font-size:12px;color:var(--text3)}
+.diag-dots{display:flex;gap:6px}
+.diag-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:.5px solid var(--border);transition:background .3s}
+.diag-dot.done{background:var(--green);border-color:var(--green-border)}
+.diag-dot.active{background:var(--blue);border-color:var(--blue-border)}
+
+/* ── PHASE 2: CIRCLE EXPLORER ─────────────────────── */
+.explorer-wrap{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.explorer-svg-wrap{flex:0 0 280px}
+.explorer-info{flex:1;min-width:220px}
+.explorer-part{
+  padding:14px 16px;background:var(--bg2);border:.5px solid var(--border);
+  border-radius:var(--r);cursor:pointer;margin-bottom:8px;transition:all .15s;
+  display:flex;align-items:center;gap:12px;
+}
+.explorer-part:hover{background:var(--bg3);border-color:var(--border2)}
+.explorer-part.active{background:var(--blue-dim);border-color:var(--blue-border)}
+.explorer-part-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0}
+.ep-center .explorer-part-icon{background:rgba(245,158,11,.15);color:var(--amber)}
+.ep-radius .explorer-part-icon{background:var(--blue-dim);color:var(--blue)}
+.ep-diameter .explorer-part-icon{background:var(--purple-dim);color:var(--purple)}
+.ep-circumference .explorer-part-icon{background:var(--green-dim);color:var(--green)}
+.ep-area .explorer-part-icon{background:rgba(248,113,113,.1);color:var(--red)}
+.explorer-part-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.explorer-part-desc{font-size:12px;color:var(--text2)}
+.explorer-detail{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:20px;margin-top:16px;min-height:120px;
+}
+.ed-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px}
+.ed-body{font-size:13px;color:var(--text2);line-height:1.75;font-family:var(--mono)}
+.ed-formula{display:inline-block;font-family:var(--mono);font-size:14px;font-weight:700;padding:6px 14px;border-radius:6px;margin-top:10px}
+.ed-formula.amber{color:var(--amber);background:var(--amber-dim);border:.5px solid var(--amber-border)}
+.ed-formula.blue{color:var(--blue);background:var(--blue-dim);border:.5px solid var(--blue-border)}
+.ed-formula.green{color:var(--green);background:var(--green-dim);border:.5px solid var(--green-border)}
+.ed-formula.purple{color:var(--purple);background:var(--purple-dim);border:.5px solid var(--purple-border)}
+.ed-formula.red{color:var(--red);background:var(--red-dim);border:.5px solid var(--red-border)}
+
+/* ── PHASE 3: CONCEPT CONSTRUCTION ───────────────── */
+.concept-step{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:22px;margin-bottom:12px;
+}
+.cs-num{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:10px}
+.cs-q{font-size:15px;font-weight:500;color:var(--text);margin-bottom:14px;line-height:1.5}
+.cs-reveal{
+  background:var(--bg3);border-radius:var(--r);padding:14px 16px;
+  font-family:var(--mono);font-size:13px;color:var(--text2);line-height:1.7;
+  display:none;border-left:2px solid var(--blue);margin-top:10px;
+}
+.cs-reveal b{color:var(--text)}
+.cs-reveal.show{display:block}
+.reveal-btn{
+  padding:8px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:7px;
+  background:var(--bg3);color:var(--text2);border:.5px solid var(--border2);
+  transition:all .15s;
+}
+.reveal-btn:hover{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-border)}
+
+/* ── PHASE 4: SKILL LEVELS ────────────────────────── */
+.level-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;
+}
+.level-badge{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 12px;border-radius:4px;border:.5px solid;
+}
+.level-badge.l1{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.level-badge.l2{color:var(--blue);border-color:var(--blue-border);background:var(--blue-dim)}
+.level-badge.l3{color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)}
+.level-badge.l4{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.level-badge.l5{color:var(--red);border-color:var(--red-border);background:var(--red-dim)}
+.level-badge.l6{color:#f97316;border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.1)}
+.level-title-text{font-size:17px;font-weight:500;color:var(--text)}
+.level-desc{font-size:13px;color:var(--text2);margin-bottom:16px;font-style:italic}
+.formula-chip{
+  display:inline-block;font-family:var(--mono);font-size:13px;font-weight:700;
+  padding:7px 15px;border-radius:7px;margin-bottom:14px;
+}
+.working-box{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-top:10px;font-family:var(--mono)}
+.working-label{font-size:9px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
+.wl{font-size:13px;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:8px;line-height:1.5}
+.wl:last-child{margin-bottom:0;color:var(--green);font-weight:700}
+.wl .arr{color:var(--text3);font-size:11px}
+.level-progress{display:flex;gap:6px;margin-bottom:20px}
+.lp-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:.5px solid var(--border);transition:background .3s,border-color .3s}
+.lp-dot.done{background:var(--blue);border-color:var(--blue-border)}
+.lp-dot.active{background:rgba(59,130,246,.4);border-color:var(--blue-border)}
+
+/* ── PHASE 5: APPLICATION ─────────────────────────── */
+.app-scenario{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:26px;margin-bottom:14px;
+}
+.app-context{
+  font-family:var(--mono);font-size:13px;color:var(--text2);line-height:1.9;
+  padding:14px;background:var(--bg3);border-radius:var(--r);margin-bottom:16px;
+  border-left:2px solid var(--amber);
+}
+.app-context b{color:var(--text)}
+.think-steps{margin:14px 0}
+.think-step{
+  display:flex;gap:12px;padding:10px 0;border-bottom:.5px solid var(--border);
+  font-size:13px;color:var(--text2);line-height:1.6;
+}
+.think-step:last-child{border-bottom:none}
+.ts-num{font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700;min-width:22px;padding-top:1px}
+
+/* ── PHASE 6: REFLECTION ──────────────────────────── */
+.reflect-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.reflect-item{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--r);
+  padding:16px;cursor:pointer;transition:all .15s;border-left:2px solid transparent;
+}
+.reflect-item:hover{border-color:var(--blue);background:var(--bg3)}
+.reflect-item.chosen{border-color:var(--blue);background:var(--blue-dim)}
+.reflect-q{font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.reflect-a{font-size:13px;color:var(--text2);line-height:1.6}
+.reflect-item.chosen .reflect-a{color:var(--text)}
+.reflect-input{
+  width:100%;background:var(--bg2);border:.5px solid var(--border2);
+  border-radius:var(--r);padding:14px 16px;font-size:14px;
+  font-family:var(--sans);color:var(--text);outline:none;resize:vertical;
+  min-height:80px;margin-bottom:10px;transition:border-color .15s;
+}
+.reflect-input:focus{border-color:var(--blue-border)}
+.reflect-input::placeholder{color:var(--text3)}
+
+/* ── PHASE 7: SCOUT REPORT ────────────────────────── */
+.scout-header{text-align:center;padding:32px 0 24px}
+.scout-badge{
+  display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--blue);text-transform:uppercase;margin-bottom:16px;
+  padding:6px 16px;border-radius:4px;background:var(--blue-dim);border:.5px solid var(--blue-border);
+}
+.scout-score{font-family:var(--mono);font-size:56px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px}
+.scout-label{font-size:13px;color:var(--text3);font-family:var(--mono);margin-bottom:20px}
+.thinking-profile{
+  display:inline-block;padding:8px 20px;border-radius:var(--r);
+  font-family:var(--mono);font-size:13px;font-weight:700;margin-bottom:8px;
+}
+.profile-builder{background:var(--blue-dim);color:var(--blue);border:.5px solid var(--blue-border)}
+.profile-thinker{background:var(--purple-dim);color:var(--purple);border:.5px solid var(--purple-border)}
+.profile-foundation{background:var(--amber-dim);color:var(--amber);border:.5px solid var(--amber-border)}
+.profile-ready{background:var(--green-dim);color:var(--green);border:.5px solid var(--green-border)}
+.profile-desc{font-size:13px;color:var(--text2);max-width:400px;margin:0 auto 28px;line-height:1.7}
+
+.scout-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.scout-section{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:20px}
+.scout-section-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.ss-wins .scout-section-label{color:var(--green)}
+.ss-growth .scout-section-label{color:var(--amber)}
+.ss-recommend .scout-section-label{color:var(--blue)}
+.scout-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:var(--text2);line-height:1.6}
+.scout-item:last-child{margin-bottom:0}
+.si-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.si-dot.green{background:var(--green)}
+.si-dot.amber{background:var(--amber)}
+.si-dot.blue{background:var(--blue)}
+
+.dimension-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
+.dim-row{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;gap:14px}
+.dim-label{font-size:12px;color:var(--text2);min-width:130px;font-family:var(--mono)}
+.dim-bar-wrap{flex:1;background:var(--bg3);border-radius:3px;height:5px;overflow:hidden}
+.dim-bar{height:100%;border-radius:3px;transition:width 1s ease}
+.dim-status{font-family:var(--mono);font-size:10px;min-width:80px;text-align:right}
+.status-strong{color:var(--green)}
+.status-developing{color:var(--amber)}
+.status-needs{color:var(--red)}
+
+.academy-progress{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:20px;margin-bottom:14px}
+.ap-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.ap-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;font-size:13px}
+.ap-row:last-child{margin-bottom:0}
+.ap-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ap-name{color:var(--text2);flex:1}
+.ap-status{font-family:var(--mono);font-size:10px;letter-spacing:.04em}
+.ap-status.done{color:var(--green)}
+.ap-status.active{color:var(--blue)}
+.ap-status.locked{color:var(--text3)}
+
+.coach-note{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:14px;border-left:2px solid var(--blue)}
+.cn-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.cn-text{font-size:14px;color:var(--text2);line-height:1.8;font-style:italic}
+.cn-sig{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:10px}
+
+.divider{height:.5px;background:var(--border);margin:20px 0}
+.philosophy{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.05em;line-height:2.2;text-align:center}
+.philosophy span{color:var(--blue)}
+
+footer{width:100%;max-width:720px;padding:24px 0 0;border-top:.5px solid var(--border);margin-top:32px;display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.footer-brand span{color:var(--blue)}
+.footer-link{font-family:var(--mono);font-size:10px;color:var(--text3);text-decoration:none;transition:color .12s}
+.footer-link:hover{color:var(--blue)}
+
+@media(max-width:560px){
+  h1{font-size:22px}.mission-title{font-size:26px}
+  .explorer-wrap{flex-direction:column}.explorer-svg-wrap{flex:unset;width:100%}
+  .scout-grid{grid-template-columns:1fr}.reflect-grid{grid-template-columns:1fr}
+  .question-reveal{grid-template-columns:1fr}.mission-stats{max-width:100%}
+  footer{flex-direction:column;gap:8px;text-align:center}
+  .dim-label{min-width:100px;font-size:10px}
+}
+
+/* ── THINKING MIRROR ──────────────────────────────── */
+.mirror-intro{text-align:center;padding:32px 0 24px}
+.mirror-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--blue-dim);border:.5px solid var(--blue-border);
+  margin:0 auto 16px;display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+}
+.mirror-section{
+  background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:24px;margin-bottom:12px;opacity:0;transform:translateY(12px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.mirror-section.visible{opacity:1;transform:translateY(0)}
+.mirror-section-num{
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.mirror-section-num.blue{color:var(--blue)}
+.mirror-section-num.amber{color:var(--amber)}
+.mirror-section-num.green{color:var(--green)}
+.mirror-section-num.purple{color:var(--purple)}
+.mirror-heading{font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px}
+.mirror-body{font-size:14px;color:var(--text2);line-height:1.85;font-family:var(--mono)}
+.mirror-body b{color:var(--text)}
+.mirror-body em{color:var(--blue)}
+.pattern-tag{
+  display:inline-block;font-family:var(--mono);font-size:11px;
+  padding:5px 12px;border-radius:4px;margin:4px 4px 4px 0;
+  border:.5px solid;
+}
+.pt-strength{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.pt-gap{color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)}
+.pt-critical{color:var(--red);border-color:var(--red-border);background:var(--red-dim)}
+
+/* ONE THING */
+.one-thing{
+  background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--rl);
+  padding:24px;margin-top:14px;text-align:center;border-top:2px solid var(--blue);
+}
+.ot-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.ot-action{font-size:16px;color:var(--text);line-height:1.75;font-weight:500;margin-bottom:0;max-width:420px;margin-left:auto;margin-right:auto}
+
+/* IDENTITY REFLECTION */
+.identity-opts{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.id-opt{
+  background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);
+  padding:13px 16px;font-size:14px;color:var(--text2);cursor:pointer;text-align:left;
+  transition:all .15s;display:flex;align-items:center;gap:12px;
+}
+.id-opt:hover{background:var(--bg4);border-color:var(--border2);color:var(--text)}
+.id-opt.chosen{background:var(--blue-dim);border-color:var(--blue-border);color:var(--blue)}
+.id-radio{
+  width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);
+  flex-shrink:0;transition:all .15s;
+}
+.id-opt.chosen .id-radio{background:var(--blue);border-color:var(--blue)}
+.id-response{
+  background:var(--bg3);border-radius:var(--r);padding:14px 16px;
+  border-left:2px solid var(--blue);font-size:13px;color:var(--text2);
+  line-height:1.75;font-family:var(--mono);display:none;margin-top:8px;
+}
+.id-response.show{display:block}
+
+/* PERFORMANCE PRESCRIPTION */
+.rx-header{text-align:center;padding:28px 0 20px}
+.rx-badge{
+  display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;padding:6px 16px;border-radius:4px;
+  background:var(--amber-dim);color:var(--amber);border:.5px solid var(--amber-border);
+  margin-bottom:16px;
+}
+.rx-card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:24px;margin-bottom:12px}
+.rx-row{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px;padding-bottom:14px;border-bottom:.5px solid var(--border)}
+.rx-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.rx-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:1px}
+.rx-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.rx-value{font-size:14px;color:var(--text);line-height:1.6}
+.rx-sub{font-size:12px;color:var(--text2);margin-top:3px;font-family:var(--mono)}
+
+/* COACH'S PROMISE */
+.promise-card{
+  background:var(--bg2);border:.5px solid var(--blue-border);border-radius:var(--rl);
+  padding:28px;margin-bottom:14px;position:relative;overflow:hidden;
+}
+.promise-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);
+}
+.promise-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.promise-text{font-size:15px;color:var(--text2);line-height:1.9;font-style:italic;margin-bottom:16px}
+.promise-text b{color:var(--text);font-style:normal}
+.promise-sig{font-family:var(--mono);font-size:11px;color:var(--text3)}
+
+.retrain-btn{
+  width:100%;padding:16px;font-family:var(--mono);font-size:13px;letter-spacing:.06em;
+  font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:var(--r);
+  background:var(--blue);color:#fff;border:none;transition:background .15s,transform .1s;
+  margin-bottom:10px;
+}
+.retrain-btn:hover{background:#2563eb;transform:translateY(-1px)}
+.restart-full-btn{
+  width:100%;padding:13px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:var(--r);
+  background:transparent;color:var(--text3);border:.5px solid var(--border);
+  transition:all .15s;
+}
+.restart-full-btn:hover{color:var(--text);border-color:var(--border2)}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">MATH <span>&#177;</span> RELATION</div>
+  <div class="nav-mission" id="nav-mission">Geometry Through Motion&#8482;</div>
+</nav>
+
+<div class="prog-outer">
+  <div class="prog-phases" id="prog-phases">
+    <div class="prog-pip active" id="pip-0"></div>
+    <div class="prog-pip" id="pip-1"></div>
+    <div class="prog-pip" id="pip-2"></div>
+    <div class="prog-pip" id="pip-3"></div>
+    <div class="prog-pip" id="pip-4"></div>
+    <div class="prog-pip" id="pip-5"></div>
+    <div class="prog-pip" id="pip-6"></div>
+    <div class="prog-pip" id="pip-7"></div>
+    <div class="prog-pip" id="pip-8"></div>
+    <div class="prog-pip" id="pip-9"></div>
+  </div>
+  <div class="prog-label" id="prog-label">Mission Brief</div>
+</div>
+
+<!-- SCREENS -->
+<div id="s0" class="screen active"></div>
+<div id="s1" class="screen"></div>
+<div id="s2" class="screen"></div>
+<div id="s3" class="screen"></div>
+<div id="s4" class="screen"></div>
+<div id="s5" class="screen"></div>
+<div id="s6" class="screen"></div>
+<div id="s7" class="screen"></div>
+
+
+<div id="s8" class="screen"></div>
+<div id="s9" class="screen"></div>
+
+<footer>
+  <div class="footer-brand">MATH <span>&#177;</span> RELATION &#8212; ARPEC Training System</div>
+  <a href="https://mathrelation.com" class="footer-link" target="_blank">mathrelation.com</a>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+var phase=0;
+var diagScores=[null,null,null];
+var practiceScores=[null,null,null,null,null,null];
+var appScore=null;
+var reflectionDone=false;
+var currentDiag=0;
+var currentLevel=0;
+var explorerVisited=new Set();
+
+var phaseLabels=['Mission Brief','Diagnostic','Circle Explorer','Concept Construction','Skill Training','Application','Reflection','Scout Report','Thinking Mirror','Prescription'];
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function goPhase(n){
+  document.getElementById('s'+phase).className='screen';
+  phase=n;
+  document.getElementById('s'+phase).className='screen active';
+  window.scrollTo({top:0,behavior:'smooth'});
+  // update progress pips
+  for(var i=0;i<10;i++){
+    var pip=document.getElementById('pip-'+i);
+    if(i<n) pip.className='prog-pip done';
+    else if(i===n) pip.className='prog-pip active';
+    else pip.className='prog-pip';
+  }
+  document.getElementById('prog-label').textContent=phaseLabels[n];
+  renderPhase(n);
+}
+
+function renderPhase(n){
+  if(n===0) renderBrief();
+  else if(n===1) renderDiag();
+  else if(n===2) renderExplorer();
+  else if(n===3) renderConcept();
+  else if(n===4) renderLevel();
+  else if(n===5) renderApp();
+  else if(n===6) renderReflect();
+  else if(n===7) renderScout();
+  else if(n===8) renderMirror();
+  else if(n===9) renderPrescription();
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 0 — MISSION BRIEF
+══════════════════════════════════════════════ */
+function renderBrief(){
+  var s=document.getElementById('s0');
+  s.innerHTML=
+  '<div class="mission-hero">'+
+    '<div class="mission-badge"><div class="mission-badge-dot"></div>Academy Mission 01</div>'+
+    '<h1 class="mission-title">Geometry<br><span>Through Motion</span>&#8482;</h1>'+
+    '<p class="mission-sub">Before we calculate anything, we observe. This mission teaches circles, measurement, and mathematical relationships through the world you already know.</p>'+
+    '<div class="mission-stats">'+
+      '<div class="m-stat"><div class="m-stat-n">7</div><div class="m-stat-l">Phases</div></div>'+
+      '<div class="m-stat"><div class="m-stat-n">5</div><div class="m-stat-l">Dimensions</div></div>'+
+      '<div class="m-stat"><div class="m-stat-n">Scout<br>Report</div><div class="m-stat-l">At the End</div></div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="briefing-card">'+
+    '<p class="eyebrow blue">Student Briefing</p>'+
+    '<h2>Before the formula, there is the observation.</h2>'+
+    '<div class="briefing-scene">'+
+      '<b>Stephen Curry shoots a three-pointer.</b><br><br>'+
+      'The basketball leaves his fingertips.<br>'+
+      'The ball rotates as it travels through the air.<br>'+
+      'It follows a curved arc.<br>'+
+      'It passes through the rim.<br><br>'+
+      'Now the question is not: <i>"What formula do I use?"</i><br><br>'+
+      'The question is: <i>"What mathematical relationships are happening right now?"</i>'+
+    '</div>'+
+    '<p style="font-size:14px;color:var(--text2);margin-bottom:14px">The basketball in that moment contains:</p>'+
+    '<div class="question-reveal">'+
+      '<div class="qr-item">Circle</div>'+
+      '<div class="qr-item">Rotation</div>'+
+      '<div class="qr-item">Arc</div>'+
+      '<div class="qr-item">Circumference</div>'+
+      '<div class="qr-item">Radius</div>'+
+      '<div class="qr-item">Diameter</div>'+
+      '<div class="qr-item">Distance Traveled</div>'+
+      '<div class="qr-item">Area</div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="briefing-card">'+
+    '<p class="eyebrow amber">Mission Objective</p>'+
+    '<p style="font-size:14px;color:var(--text2);line-height:1.8">By the end of this mission, you will be able to <strong style="color:var(--text)">recognize, calculate, explain, apply, and teach</strong> every circle relationship. Not because you memorized a formula. Because you understand what the formula is actually saying.</p>'+
+    '<div style="margin-top:20px;text-align:center">'+
+      '<button class="btn-primary" onclick="goPhase(1)">Begin Mission &rarr;</button>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 1 — DIAGNOSTIC
+══════════════════════════════════════════════ */
+var diagQs=[
+  {
+    q:"Before we start training, let's see where you are right now.\n\nWhat do you call the distance around the outside edge of a circle?",
+    opts:["A.  Diameter","B.  Area","C.  Circumference","D.  Radius"],
+    ci:2,
+    why:"Circumference is the total distance around the outside of any circle — like wrapping a measuring tape around a basketball."
+  },
+  {
+    q:"A circle has a radius of 6 cm. What is its diameter?",
+    opts:["A.  3 cm","B.  6 cm","C.  12 cm","D.  18 cm"],
+    ci:2,
+    why:"The diameter always passes through the center and is exactly twice the radius. Diameter = 2 × radius = 2 × 6 = 12 cm."
+  },
+  {
+    q:"Which formula finds the circumference of a circle when you know the diameter?",
+    opts:["A.  A = \u03c0 \u00d7 r\u00b2","B.  C = \u03c0 \u00d7 d","C.  A = l \u00d7 w","D.  C = \u00bd \u00d7 b \u00d7 h"],
+    ci:1,
+    why:"C = \u03c0 \u00d7 d is the circumference formula when you know the diameter. \u03c0 (pi) \u2248 3.14 tells us how many times the diameter fits around the outside of the circle."
+  }
+];
+
+function renderDiag(){
+  var s=document.getElementById('s1');
+  var q=diagQs[currentDiag];
+  var dots='';
+  for(var i=0;i<3;i++){
+    var cl='diag-dot'+(i<currentDiag?' done':i===currentDiag?' active':'');
+    dots+='<div class="'+cl+'"></div>';
+  }
+  s.innerHTML=
+  '<p class="eyebrow blue">Phase 1 of 7 &mdash; Diagnostic</p>'+
+  '<div class="diag-header">'+
+    '<h2>Where are you right now?</h2>'+
+    '<div style="display:flex;align-items:center;gap:12px">'+
+      '<span class="diag-counter">Question '+(currentDiag+1)+' of 3</span>'+
+      '<div class="diag-dots">'+dots+'</div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="card">'+
+    '<p style="font-family:var(--mono);font-size:15px;line-height:1.8;color:var(--text);white-space:pre-line">'+q.q+'</p>'+
+    '<div class="opts">'+
+      q.opts.map(function(o,i){return'<button class="opt" id="do'+i+'" onclick="pickDiag('+i+')">'+o+'</button>';}).join('')+
+    '</div>'+
+    '<div class="feedback" id="diag-fb"></div>'+
+    '<button class="btn-next" id="diag-next" onclick="nextDiag()">'+
+      (currentDiag<2?'Next Question &rarr;':'See Circle Explorer &rarr;')+
+    '</button>'+
+  '</div>';
+}
+
+function pickDiag(i){
+  var q=diagQs[currentDiag];
+  var right=i===q.ci;
+  diagScores[currentDiag]=right?1:0;
+  document.querySelectorAll('#s1 .opt').forEach(function(b,idx){
+    b.disabled=true;
+    if(idx===q.ci)b.className='opt correct';
+    else if(idx===i&&!right)b.className='opt wrong';
+  });
+  var fb=document.getElementById('diag-fb');
+  fb.className='feedback '+(right?'correct':'wrong')+' show';
+  fb.textContent=(right?'\u2713 Correct. ':'Not quite. ')+q.why;
+  document.getElementById('diag-next').className='btn-next show';
+}
+
+function nextDiag(){
+  currentDiag++;
+  if(currentDiag>=3) goPhase(2);
+  else renderDiag();
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 2 — CIRCLE EXPLORER
+══════════════════════════════════════════════ */
+var explorerParts=[
+  {id:'center',label:'Center',icon:'C',cls:'ep-center',
+   title:'Center',
+   body:'The center is the exact middle point of a circle. Every measurement in a circle starts from or relates to the center. It is equidistant from every point on the circle\'s edge.',
+   formula:null},
+  {id:'radius',label:'Radius',icon:'r',cls:'ep-radius',
+   title:'Radius (r)',
+   body:'The radius is the distance from the center to any point on the edge of the circle. Every radius in a circle is equal. If the radius doubles, the diameter doubles, and the circumference doubles.',
+   formula:{text:'d = 2 \u00d7 r',color:'blue'}},
+  {id:'diameter',label:'Diameter',icon:'d',cls:'ep-diameter',
+   title:'Diameter (d)',
+   body:'The diameter passes through the center from one edge to the other. It is always exactly twice the radius. The diameter is the longest straight line you can draw inside a circle.',
+   formula:{text:'d = 2r   \u2022   r = d \u00f7 2',color:'purple'}},
+  {id:'circumference',label:'Circumference',icon:'C',cls:'ep-circumference',
+   title:'Circumference (C)',
+   body:'Circumference is the total distance around the outside of a circle — like wrapping a measuring tape around a basketball. It is always \u03c0 times the diameter, no matter how large or small the circle.',
+   formula:{text:'C = \u03c0 \u00d7 d   \u2022   C = 2\u03c0r',color:'green'}},
+  {id:'area',label:'Area',icon:'A',cls:'ep-area',
+   title:'Area (A)',
+   body:'Area is the space inside the circle — the amount of surface covered. While circumference grows at the same rate as the radius, area grows much faster because it uses radius squared.',
+   formula:{text:'A = \u03c0 \u00d7 r\u00b2',color:'red'}},
+];
+
+function makeCircleSVG(active){
+  var colors={center:'#f59e0b',radius:'#3B82F6',diameter:'#a78bfa',circumference:'#22c55e',area:'#f87171'};
+  var c=colors[active]||'rgba(255,255,255,0.15)';
+  var baseStroke='rgba(255,255,255,0.12)';
+  var cStroke=active==='circumference'?c:baseStroke;
+  var cW=active==='circumference'?2.5:1;
+  var rStroke=active==='radius'?c:baseStroke;
+  var dStroke=active==='diameter'?c:baseStroke;
+  var dotC=active==='center'?c:'rgba(255,255,255,0.3)';
+  var aFill=active==='area'?'rgba(248,113,113,0.08)':'none';
+  return'<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">'+
+    '<circle cx="120" cy="120" r="90" fill="'+aFill+'" stroke="'+cStroke+'" stroke-width="'+cW+'"/>'+
+    (active==='circumference'?'<circle cx="120" cy="120" r="90" fill="none" stroke="'+c+'" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>':'')+
+    '<line x1="120" y1="120" x2="210" y2="120" stroke="'+rStroke+'" stroke-width="'+(active==='radius'?2.5:1)+'" '+(active==='radius'?'':'')+' />'+
+    (active==='radius'?'<text x="168" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">r</text>':'')+
+    '<line x1="30" y1="120" x2="210" y2="120" stroke="'+dStroke+'" stroke-width="'+(active==='diameter'?2.5:1)+'" '+(active==='diameter'?'stroke-dasharray="6,3"':'')+' />'+
+    (active==='diameter'?'<text x="120" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">d</text>':'')+
+    '<circle cx="120" cy="120" r="5" fill="'+dotC+'" />'+
+    (active==='center'?'<circle cx="120" cy="120" r="5" fill="'+c+'" /><text x="130" y="112" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">center</text>':'')+
+    (active==='area'?'<text x="120" y="125" text-anchor="middle" fill="'+c+'" font-size="14" font-family="Space Mono,monospace" opacity="0.6">A = \u03c0r\u00b2</text>':'')+
+    (active==='circumference'?'<text x="120" y="30" text-anchor="middle" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">C</text>':'')+
+  '</svg>';
+}
+
+var activeExplorer='center';
+
+function renderExplorer(){
+  var s=document.getElementById('s2');
+  s.innerHTML=
+  '<p class="eyebrow blue">Phase 2 of 7 &mdash; Circle Explorer</p>'+
+  '<h2>Discover every part of a circle.</h2>'+
+  '<p class="lead">Click each part to learn what it measures and how it connects to everything else.</p>'+
+  '<div class="explorer-wrap">'+
+    '<div class="explorer-svg-wrap"><div id="circ-svg">'+makeCircleSVG(activeExplorer)+'</div></div>'+
+    '<div class="explorer-info">'+
+      explorerParts.map(function(p){
+        return'<div class="explorer-part '+p.cls+(activeExplorer===p.id?' active':'')+'" onclick="selectPart(\''+p.id+'\')">'+
+          '<div class="explorer-part-icon">'+p.icon+'</div>'+
+          '<div><div class="explorer-part-label">'+p.label+'</div></div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+  '</div>'+
+  '<div class="explorer-detail" id="exp-detail"></div>'+
+  '<p style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:14px" id="exp-hint">Explore all 5 parts to continue.</p>'+
+  '<button class="btn-next" id="exp-next" onclick="goPhase(3)">Continue to Concept Construction &rarr;</button>';
+  updateExplorerDetail();
+}
+
+function selectPart(id){
+  activeExplorer=id;
+  explorerVisited.add(id);
+  document.getElementById('circ-svg').innerHTML=makeCircleSVG(id);
+  document.querySelectorAll('.explorer-part').forEach(function(el){
+    el.className=el.className.replace(' active','');
+    if(el.onclick.toString().indexOf("'"+id+"'")>-1) el.className+=' active';
+  });
+  updateExplorerDetail();
+  if(explorerVisited.size>=5){
+    document.getElementById('exp-hint').textContent='\u2713 All parts explored. You\u2019re ready to continue.';
+    document.getElementById('exp-next').className='btn-next show';
+  }
+}
+
+function updateExplorerDetail(){
+  var p=explorerParts.find(function(x){return x.id===activeExplorer;});
+  if(!p)return;
+  var fHtml=p.formula?'<div class="ed-formula '+p.formula.color+'">'+p.formula.text+'</div>':'';
+  document.getElementById('exp-detail').innerHTML=
+    '<p class="ed-title">'+p.title+'</p>'+
+    '<p class="ed-body">'+p.body+'</p>'+
+    fHtml;
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 3 — CONCEPT CONSTRUCTION
+══════════════════════════════════════════════ */
+var conceptSteps=[
+  {num:'01',q:'If you wrapped a measuring tape around a basketball, what exactly would you be measuring?',answer:'You would be measuring the <b>circumference</b> — the total distance around the outside of the circle. This is the most misunderstood measurement because students confuse it with diameter (which goes across) or area (which measures the inside space). Circumference is the perimeter of a circle.'},
+  {num:'02',q:'The basketball has a diameter of 9.5 inches. Why does \u03c0 (pi) appear in the circumference formula?',answer:'\u03c0 (approximately 3.14) is the ratio of any circle\'s circumference to its diameter. Always. No exceptions. This means if you divide any circle\'s circumference by its diameter, you always get \u03c0. The formula C = \u03c0 \u00d7 d comes directly from this relationship: <b>circumference = \u03c0 \u00d7 how wide it is.</b>'},
+  {num:'03',q:'What is the difference between circumference and area? Most students confuse them — can you explain both?',answer:'<b>Circumference</b> measures the boundary — the distance you would walk if you walked all the way around the circle. Like a running track around a field.\n\n<b>Area</b> measures the inside surface — how much space the circle covers. Like the grass inside that same running track.\n\nSame circle. Two completely different measurements. The formula tells you which one you\'re finding: C uses \u03c0d (one dimension), A uses \u03c0r\u00b2 (two dimensions, which is why area grows faster).'},
+  {num:'04',q:'If the radius of a circle doubles from 5 to 10, what happens to the circumference? What happens to the area? Why are they different?',answer:'<b>Circumference doubles</b> (from 31.4 to 62.8): C = \u03c0d, and d = 2r, so circumference is proportional to r. Double the radius \u2192 double the circumference.\n\n<b>Area quadruples</b> (from 78.5 to 314): A = \u03c0r\u00b2, and r\u00b2 means radius is multiplied by itself. Double the radius \u2192 2\u00b2 = 4 times the area.\n\nThis is why a circle that looks twice as wide actually covers four times as much space.'},
+];
+
+var conceptRevealed=0;
+
+function renderConcept(){
+  var s=document.getElementById('s3');
+  s.innerHTML=
+  '<p class="eyebrow amber">Phase 3 of 7 &mdash; Concept Construction</p>'+
+  '<h2>Discover the relationships before the formula.</h2>'+
+  '<p class="lead">Think through each question before revealing the answer. This is where real understanding forms.</p>'+
+  conceptSteps.map(function(cs,i){
+    return'<div class="concept-step">'+
+      '<p class="cs-num">Question '+cs.num+'</p>'+
+      '<p class="cs-q">'+cs.q+'</p>'+
+      '<button class="reveal-btn" id="rev-btn-'+i+'" onclick="revealConcept('+i+')">Reveal Answer</button>'+
+      '<div class="cs-reveal" id="rev-'+i+'">'+cs.answer+'</div>'+
+    '</div>';
+  }).join('')+
+  '<button class="btn-next show" id="concept-next" style="margin-top:4px" onclick="goPhase(4)">Begin Skill Training &rarr;</button>';
+}
+
+function revealConcept(i){
+  document.getElementById('rev-'+i).className='cs-reveal show';
+  document.getElementById('rev-btn-'+i).style.display='none';
+  conceptRevealed++;
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 4 — SKILL LEVELS
+══════════════════════════════════════════════ */
+var levels=[
+  {badge:'l1',name:'Level 1 — Identify',desc:'Name the parts without calculating.',
+   q:'A circle is drawn in front of you. The line from the exact center to any point on the edge is called:',
+   formula:null,
+   opts:['A.  Diameter','B.  Circumference','C.  Radius','D.  Area'],ci:2,
+   why:'The radius is the line from the center to the edge. The diameter goes all the way across through the center — it is twice the radius.',
+   work:null},
+  {badge:'l2',name:'Level 2 — Connect',desc:'Find relationships between measurements.',
+   q:'A circle has a radius of 7 cm. What is its diameter?',
+   formula:null,
+   opts:['A.  3.5 cm','B.  7 cm','C.  14 cm','D.  21 cm'],ci:2,
+   why:'Diameter = 2 \u00d7 radius = 2 \u00d7 7 = 14 cm. The diameter always goes through the center and is exactly twice the radius.',
+   work:['d = 2 \u00d7 r','d = 2 \u00d7 7','d = 14 cm']},
+  {badge:'l3',name:'Level 3 — Calculate Circumference',desc:'Apply the formula correctly.',
+   q:'A circle has a diameter of 8 inches.\nFind the circumference. (Use \u03c0 = 3.14)',
+   formula:{text:'C = \u03c0 \u00d7 d',color:'green'},
+   opts:['A.  12.56 in','B.  25.12 in','C.  50.24 in','D.  200.96 in'],ci:1,
+   why:'C = \u03c0 \u00d7 d = 3.14 \u00d7 8 = 25.12 inches.',
+   work:['C = \u03c0 \u00d7 d','C = 3.14 \u00d7 8','C = 25.12 inches']},
+  {badge:'l4',name:'Level 4 — Calculate Area',desc:'Apply the area formula correctly.',
+   q:'A circle has a radius of 5 cm.\nFind the area. (Use \u03c0 = 3.14)',
+   formula:{text:'A = \u03c0 \u00d7 r\u00b2',color:'amber'},
+   opts:['A.  15.70 cm\u00b2','B.  31.40 cm\u00b2','C.  78.50 cm\u00b2','D.  314 cm\u00b2'],ci:2,
+   why:'A = \u03c0 \u00d7 r\u00b2 = 3.14 \u00d7 5\u00b2 = 3.14 \u00d7 25 = 78.5 cm\u00b2. Always square the radius BEFORE multiplying by \u03c0.',
+   work:['A = \u03c0 \u00d7 r\u00b2','A = 3.14 \u00d7 5\u00b2','A = 3.14 \u00d7 25','A = 78.5 cm\u00b2']},
+  {badge:'l5',name:'Level 5 — Compare',desc:'Reason about two circles at once.',
+   q:'Circle A has a radius of 4.\nCircle B has a radius of 8.\n\nHow many times greater is Circle B\'s circumference compared to Circle A?',
+   formula:null,
+   opts:['A.  Same size','B.  2 times greater','C.  4 times greater','D.  8 times greater'],ci:1,
+   why:'Circumference is proportional to radius (C = 2\u03c0r). Double the radius \u2192 double the circumference. Circle B has double the radius, so its circumference is exactly 2\u00d7 greater. Area would be 4\u00d7 greater because area uses r\u00b2.',
+   work:['C_A = 2 \u00d7 3.14 \u00d7 4 = 25.12','C_B = 2 \u00d7 3.14 \u00d7 8 = 50.24','50.24 \u00f7 25.12 = 2\u00d7 greater']},
+  {badge:'l6',name:'Level 6 — Word Problem',desc:'Recognize the math inside a real situation.',
+   q:'A basketball has a diameter of 9.5 inches.\nIt rolls across the floor and completes exactly 10 full rotations.\n\nHow far did the basketball travel? (Use \u03c0 = 3.14)',
+   formula:{text:'C = \u03c0 \u00d7 d',color:'green'},
+   opts:['A.  29.83 inches','B.  94.5 inches','C.  298.3 inches','D.  945 inches'],ci:2,
+   why:'Each full rotation covers exactly one circumference. C = 3.14 \u00d7 9.5 = 29.83 inches per rotation. 10 rotations \u00d7 29.83 = 298.3 inches.',
+   work:['One rotation = C = \u03c0 \u00d7 d','C = 3.14 \u00d7 9.5 = 29.83 inches','10 rotations = 10 \u00d7 29.83','Distance = 298.3 inches']},
+];
+
+function renderLevel(){
+  var s=document.getElementById('s4');
+  var lv=levels[currentLevel];
+  var dots='';
+  for(var i=0;i<6;i++){
+    var dc='lp-dot'+(i<currentLevel?' done':i===currentLevel?' active':'');
+    dots+='<div class="'+dc+'"></div>';
+  }
+  var fHtml=lv.formula?'<div class="formula-chip '+lv.formula.color+'" style="background:var(--'+lv.formula.color+'-dim);color:var(--'+lv.formula.color+');border:.5px solid var(--'+lv.formula.color+'-border)">'+lv.formula.text+'</div>':'';
+  s.innerHTML=
+  '<p class="eyebrow amber">Phase 4 of 7 &mdash; Skill Training</p>'+
+  '<div class="level-header">'+
+    '<span class="level-badge '+lv.badge+'">'+lv.name+'</span>'+
+    '<span style="font-size:13px;color:var(--text3);font-family:var(--mono)">'+(currentLevel+1)+' of 6</span>'+
+  '</div>'+
+  '<div class="level-progress">'+dots+'</div>'+
+  '<div class="card">'+
+    '<p class="level-desc">'+lv.desc+'</p>'+
+    fHtml+
+    '<p style="font-family:var(--mono);font-size:15px;line-height:1.85;color:var(--text);white-space:pre-line">'+lv.q+'</p>'+
+    '<div class="opts">'+
+      lv.opts.map(function(o,i){return'<button class="opt" id="lo'+i+'" onclick="pickLevel('+i+')">'+o+'</button>';}).join('')+
+    '</div>'+
+    '<div class="feedback" id="level-fb"></div>'+
+    (lv.work?'<div class="working-box" id="level-work" style="display:none"><p class="working-label">Working it out</p>'+
+      lv.work.map(function(w,i){return'<div class="wl">'+(i>0?'<span class="arr">\u2192</span>':'')+w+'</div>';}).join('')+
+    '</div>':'')+'</div>'+
+  '<button class="btn-next" id="level-next" onclick="nextLevel()">'+
+    (currentLevel<5?'Next Level &rarr;':'Continue to Application &rarr;')+
+  '</button>';
+}
+
+function pickLevel(i){
+  var lv=levels[currentLevel];
+  var right=i===lv.ci;
+  practiceScores[currentLevel]=right?1:0;
+  document.querySelectorAll('#s4 .opt').forEach(function(b,idx){
+    b.disabled=true;
+    if(idx===lv.ci)b.className='opt correct';
+    else if(idx===i&&!right)b.className='opt wrong';
+  });
+  var fb=document.getElementById('level-fb');
+  fb.className='feedback '+(right?'correct':'wrong')+' show';
+  fb.textContent=(right?'\u2713 Correct. ':'Not quite. ')+lv.why;
+  if(lv.work) document.getElementById('level-work').style.display='block';
+  document.getElementById('level-next').className='btn-next show';
+}
+
+function nextLevel(){
+  currentLevel++;
+  if(currentLevel>=6) goPhase(5);
+  else renderLevel();
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 5 — APPLICATION
+══════════════════════════════════════════════ */
+function renderApp(){
+  var s=document.getElementById('s5');
+  s.innerHTML=
+  '<p class="eyebrow green">Phase 5 of 7 &mdash; Application</p>'+
+  '<h2>Recognize the math in the real world.</h2>'+
+  '<p class="lead">This is where understanding becomes durable. The mathematics doesn\'t change — only the situation does.</p>'+
+  '<div class="app-scenario">'+
+    '<span class="tag tag-blue">Sports</span><span class="tag tag-amber">Engineering</span>'+
+    '<h2 style="margin-bottom:12px">The Basketball Wheel Problem</h2>'+
+    '<div class="app-context">'+
+      '<b>A robot is being built to retrieve basketballs.</b><br><br>'+
+      'The robot\'s wheel has a diameter of 6 inches.<br>'+
+      'The robot needs to travel 10 feet (120 inches) to reach the ball.<br><br>'+
+      'How many complete rotations does the wheel make to travel 120 inches?\n(Use \u03c0 = 3.14, round to nearest whole rotation)'+
+    '</div>'+
+    '<p style="font-size:13px;color:var(--text2);margin-bottom:12px;font-family:var(--mono)">Think through the steps before answering:</p>'+
+    '<div class="think-steps">'+
+      '<div class="think-step"><div class="ts-num">01</div><div>What do I need to find? <em style="color:var(--blue)">How many rotations = distance \u00f7 circumference per rotation</em></div></div>'+
+      '<div class="think-step"><div class="ts-num">02</div><div>What is the circumference of the wheel? <em style="color:var(--blue)">C = \u03c0 \u00d7 d = 3.14 \u00d7 6 = 18.84 inches per rotation</em></div></div>'+
+      '<div class="think-step"><div class="ts-num">03</div><div>How many times does that fit into 120 inches? <em style="color:var(--blue)">120 \u00f7 18.84 \u2248 6.37 \u2192 rounds to 7 rotations</em></div></div>'+
+    '</div>'+
+    '<div class="opts">'+
+      ['A.  5 rotations','B.  6 rotations','C.  7 rotations','D.  10 rotations'].map(function(o,i){
+        return'<button class="opt" id="ao'+i+'" onclick="pickApp('+i+')">'+o+'</button>';
+      }).join('')+
+    '</div>'+
+    '<div class="feedback" id="app-fb"></div>'+
+  '</div>'+
+  '<button class="btn-next" id="app-next" onclick="goPhase(6)">Continue to Reflection &rarr;</button>';
+}
+
+function pickApp(i){
+  var right=i===2;
+  appScore=right?1:0;
+  document.querySelectorAll('#s5 .opt').forEach(function(b,idx){
+    b.disabled=true;
+    if(idx===2)b.className='opt correct';
+    else if(idx===i&&!right)b.className='opt wrong';
+  });
+  var fb=document.getElementById('app-fb');
+  fb.className='feedback '+(right?'correct':'wrong')+' show';
+  fb.textContent=(right?'\u2713 Correct. ':'Not quite. ')+'C = 3.14 \u00d7 6 = 18.84 inches per rotation. 120 \u00f7 18.84 \u2248 6.37, which rounds up to 7 complete rotations to cover the full distance.';
+  document.getElementById('app-next').className='btn-next show';
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 6 — REFLECTION
+══════════════════════════════════════════════ */
+var reflectChosen={};
+
+function renderReflect(){
+  var s=document.getElementById('s6');
+  s.innerHTML=
+  '<p class="eyebrow purple">Phase 6 of 7 &mdash; Reflection</p>'+
+  '<h2>Ownership is the final step.</h2>'+
+  '<p class="lead">Mastery isn\'t demonstrated by solving. It\'s demonstrated by understanding what changed in your thinking.</p>'+
+  '<div class="card" style="margin-bottom:12px">'+
+    '<p class="eyebrow blue" style="margin-bottom:14px">What changed in your thinking today?</p>'+
+    '<div class="reflect-grid">'+
+      [
+        {q:'Before this mission I thought...',a:'Formulas are something to memorize'},
+        {q:'Now I understand that...',a:'Every formula describes a real relationship'},
+        {q:'The part that surprised me was...',a:'How much circumference and area differ when the radius grows'},
+        {q:'I can now explain...',a:'Why \u03c0 appears in every circle formula'},
+      ].map(function(r,i){
+        return'<div class="reflect-item" id="ri'+i+'" onclick="pickReflect('+i+')">'+
+          '<p class="reflect-q">'+r.q+'</p>'+
+          '<p class="reflect-a">'+r.a+'</p>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+  '</div>'+
+  '<div class="card">'+
+    '<p class="eyebrow amber" style="margin-bottom:12px">Where will you see this in the real world this week?</p>'+
+    '<textarea class="reflect-input" id="reflect-text" placeholder="Write one place you will notice circles, circumference, or area this week..."></textarea>'+
+    '<p style="font-size:12px;color:var(--text3);font-family:var(--mono)">Examples: basketball court, pizza, wheels, clocks, stadium track, coins...</p>'+
+  '</div>'+
+  '<button class="btn-next show" onclick="finishReflect()">See My Scout Report &rarr;</button>';
+}
+
+function pickReflect(i){
+  reflectChosen[i]=true;
+  document.getElementById('ri'+i).className='reflect-item chosen';
+}
+
+function finishReflect(){
+  reflectionDone=true;
+  goPhase(7);
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 7 — SCOUT REPORT
+══════════════════════════════════════════════ */
+function renderScout(){
+  var diagTotal=diagScores.reduce(function(a,b){return a+(b||0);},0);
+  var practTotal=practiceScores.reduce(function(a,b){return a+(b||0);},0);
+  var appTotal=appScore||0;
+  var overall=diagTotal+practTotal+appTotal;
+  var maxScore=10;
+  var pct=Math.round((overall/maxScore)*100);
+
+  // Dimension scores
+  var dimKnowledge=diagTotal/3;
+  var dimRecognition=(practiceScores[0]||0+practiceScores[4]||0)/2;
+  var dimProcedure=(practiceScores[2]||0+practiceScores[3]||0)/2;
+  var dimReasoning=(practiceScores[4]||0+practiceScores[5]||0)/2;
+  var dimTransfer=appTotal;
+
+  function dPct(v){return Math.round(v*100)}
+  function dStatus(v){
+    if(v>=0.85)return{label:'Strong',cls:'status-strong'};
+    if(v>=0.5)return{label:'Developing',cls:'status-developing'};
+    return{label:'Needs Support',cls:'status-needs'};
+  }
+  function dBarColor(v){
+    if(v>=0.85)return'var(--green)';
+    if(v>=0.5)return'var(--amber)';
+    return'var(--red)';
+  }
+
+  // Profile
+  var profile,profileCls,profileDesc,coachNote;
+  if(pct>=85){
+    profile='Ready to Advance';profileCls='profile-ready';
+    profileDesc='Strong performance across all dimensions. Conceptual understanding and procedural fluency are both present. Continue to Application challenges.';
+    coachNote='Kareem demonstrates consistent understanding across recognition, calculation, and transfer. The foundation is solid. The recommended next step is Algebra Through Relationships to continue building pattern recognition.';
+  } else if(diagTotal>=2&&practTotal<=3){
+    profile='Builder';profileCls='profile-builder';
+    profileDesc='Strong conceptual understanding. Procedural calculation needs more repetition. The thinking is right — the execution needs more practice reps.';
+    coachNote='Kareem understands the relationships well, which is the harder skill to develop. The gaps are in procedural execution — arithmetic in multi-step problems and formula application. Focused calculation drills using known formulas will close this gap quickly.';
+  } else if(diagTotal<=1&&practTotal>=3){
+    profile='Practitioner';profileCls='profile-thinker';
+    profileDesc='Solid with calculation mechanics. Conceptual vocabulary and relationship-building need reinforcement. Calculation without understanding is fragile under pressure.';
+    coachNote='Kareem can execute procedures reliably but needs to deepen the conceptual foundation. When question formats change, conceptual gaps create confusion. Visualization and real-world application will make the procedural skills more durable.';
+  } else {
+    profile='Foundation Building';profileCls='profile-foundation';
+    profileDesc='Both conceptual understanding and procedural fluency are developing. This is exactly where structured training makes the biggest difference.';
+    coachNote='Kareem is at the stage where consistent, structured exposure will produce the most growth. The key is building the visualization layer first — once the mental model is clear, the formulas follow naturally.';
+  }
+
+  // Wins and growth
+  var wins=[],growth=[];
+  if(diagTotal>=2)wins.push('Demonstrated vocabulary knowledge of circle measurements');
+  if(practiceScores[0])wins.push('Correctly identified circle parts by name');
+  if(practiceScores[2])wins.push('Applied circumference formula accurately');
+  if(practiceScores[3])wins.push('Applied area formula with correct order of operations');
+  if(appTotal)wins.push('Successfully translated a real-world engineering problem into circle mathematics');
+  if(wins.length<2)wins.push('Completed all seven phases of the mission');
+  if(!practiceScores[1])growth.push('Relationship between radius and diameter — review the 2\u00d7 rule');
+  if(!practiceScores[4])growth.push('Circumference vs area comparison — radius doubles \u2192 C doubles, A quadruples');
+  if(!practiceScores[5])growth.push('Multi-step word problems — identify the operation needed before solving');
+  if(!appTotal)growth.push('Application transfer — recognizing circumference problems in real-world scenarios');
+  if(growth.length===0)growth.push('Push to Level 6 challenges — real-world multi-step problems');
+
+  var dims=[
+    {label:'Knowledge',val:dimKnowledge},
+    {label:'Recognition',val:dimRecognition},
+    {label:'Procedure',val:dimProcedure},
+    {label:'Reasoning',val:dimReasoning},
+    {label:'Transfer',val:dimTransfer},
+  ];
+
+  var s=document.getElementById('s7');
+  s.innerHTML=
+  '<div class="scout-header">'+
+    '<div class="scout-badge">Scout Report &mdash; Geometry Through Motion&#8482;</div>'+
+    '<p style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:12px">Kareem Davis &mdash; Mission Score</p>'+
+    '<p class="scout-score">'+overall+'/'+maxScore+'</p>'+
+    '<p class="scout-label">'+pct+'% &mdash; '+phaseLabels[7]+'</p>'+
+    '<div class="thinking-profile '+profileCls+'">Thinking Profile: '+profile+'</div>'+
+    '<p class="profile-desc">'+profileDesc+'</p>'+
+  '</div>'+
+
+  '<div class="dimension-grid">'+
+    dims.map(function(d){
+      var st=dStatus(d.val);
+      return'<div class="dim-row">'+
+        '<span class="dim-label">'+d.label+'</span>'+
+        '<div class="dim-bar-wrap"><div class="dim-bar" style="width:'+dPct(d.val)+'%;background:'+dBarColor(d.val)+'"></div></div>'+
+        '<span class="dim-status '+st.cls+'">'+st.label+'</span>'+
+      '</div>';
+    }).join('')+
+  '</div>'+
+
+  '<div class="scout-grid">'+
+    '<div class="scout-section ss-wins">'+
+      '<p class="scout-section-label">Wins</p>'+
+      wins.map(function(w){return'<div class="scout-item"><div class="si-dot green"></div><div>'+w+'</div></div>';}).join('')+
+    '</div>'+
+    '<div class="scout-section ss-growth">'+
+      '<p class="scout-section-label">Growth Areas</p>'+
+      growth.map(function(g){return'<div class="scout-item"><div class="si-dot amber"></div><div>'+g+'</div></div>';}).join('')+
+    '</div>'+
+  '</div>'+
+
+  '<div class="academy-progress">'+
+    '<p class="ap-label">Academy Progress</p>'+
+    [
+      {icon:'\u2705',name:'Foundation Academy',status:'done',sl:'Mastered'},
+      {icon:'\uD83D\uDFE1',name:'Geometry Through Motion\u2122',status:'active',sl:'In Progress \u2014 '+pct+'%'},
+      {icon:'\uD83D\uDD12',name:'Algebra Through Relationships\u2122',status:'locked',sl:'Unlocks at 90% Geometry'},
+      {icon:'\uD83D\uDD12',name:'Applied Problem Solving\u2122',status:'locked',sl:'Unlocks after Algebra'},
+    ].map(function(r){
+      return'<div class="ap-row">'+
+        '<div class="ap-icon">'+r.icon+'</div>'+
+        '<span class="ap-name">'+r.name+'</span>'+
+        '<span class="ap-status '+r.status+'">'+r.sl+'</span>'+
+      '</div>';
+    }).join('')+
+  '</div>'+
+
+  '<div class="coach-note">'+
+    '<p class="cn-label">Coach Note</p>'+
+    '<p class="cn-text">'+coachNote+'</p>'+
+    '<p class="cn-sig">&#8212; Math \u00b1 Relation Coaching System</p>'+
+  '</div>'+
+
+  '<div style="background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:20px;margin-bottom:14px">'+
+    '<p class="eyebrow blue" style="margin-bottom:12px">Advancement Requirement</p>'+
+    '<p style="font-size:13px;color:var(--text2);line-height:1.75">To advance to <strong style="color:var(--text)">Algebra Through Relationships\u2122</strong>, Kareem must demonstrate mastery across all five dimensions: Knowledge, Recognition, Procedure, Reasoning, and Transfer. The target score is 90%.</p>'+
+    '<div style="margin-top:14px;background:var(--bg3);border-radius:var(--r);height:8px;overflow:hidden">'+
+      '<div style="width:'+pct+'%;height:100%;background:'+( pct>=85?'var(--green)':pct>=60?'var(--amber)':'var(--red)')+';border-radius:var(--r);transition:width 1s ease"></div>'+
+    '</div>'+
+    '<div style="display:flex;justify-content:space-between;margin-top:6px;font-family:var(--mono);font-size:10px;color:var(--text3)">'+
+      '<span>Current: '+pct+'%</span><span>Target: 90%</span>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="divider"></div>'+
+  '<p class="philosophy">Calm Mind. <span>Clear Steps.</span> Strong Math.<br>Once you\'re in &#8212; you can\'t unsee it.</p>'+
+  '<div style="text-align:center;margin-top:24px">'+
+    '<button class="btn-primary" onclick="goPhase(8)">Enter Thinking Mirror™ →</button>'+
+  '<div style="text-align:center;margin-top:10px"><button class="btn-ghost" onclick="restartFull()">Skip — Restart Full Mission</button></div>'+
+  '</div>';
+
+  // animate bars after render
+  setTimeout(function(){
+    document.querySelectorAll('.dim-bar').forEach(function(b){b.style.width=b.style.width;});
+  },100);
+}
+
+function restart_legacy_unused(){
+  phase=0;currentDiag=0;currentLevel=0;
+  diagScores=[null,null,null];practiceScores=[null,null,null,null,null,null];
+  appScore=null;reflectionDone=false;explorerVisited=new Set();activeExplorer='center';
+  goPhase(0);
+}
+
+/* ── BOOT ── */
+renderBrief();
+
+/* ══════════════════════════════════════════════
+   PATTERN ANALYSIS ENGINE
+══════════════════════════════════════════════ */
+function analyzePerformance(){
+  var d=diagScores; var p=practiceScores; var a=appScore||0;
+  // dimension scores 0-1
+  var vocab   = ((d[0]||0)+(p[0]||0))/2;
+  var relation= ((d[1]||0)+(p[1]||0))/2;
+  var formula = d[2]||0;
+  var proc    = ((p[2]||0)+(p[3]||0))/2;
+  var reason  = p[4]||0;
+  var transfer= ((p[5]||0)+a)/2;
+  var overall = (d[0]||0)+(d[1]||0)+(d[2]||0)+(p[0]||0)+(p[1]||0)+(p[2]||0)+(p[3]||0)+(p[4]||0)+(p[5]||0)+a;
+  var pct     = Math.round((overall/10)*100);
+
+  // detect primary error pattern
+  var pattern='';
+  var weakScore=1; var weakDim='';
+  var dims=[
+    {k:'vocabulary',v:vocab,phase:2,level:-1},
+    {k:'relationship',v:relation,phase:3,level:-1},
+    {k:'formula',v:formula,phase:4,level:2},
+    {k:'procedure',v:proc,phase:4,level:2},
+    {k:'reasoning',v:reason,phase:4,level:4},
+    {k:'transfer',v:transfer,phase:5,level:-1}
+  ];
+  dims.forEach(function(dm){if(dm.v<weakScore){weakScore=dm.v;weakDim=dm.k;}});
+
+  // specific pattern messages
+  var patternMsg='';
+  if(!d[0]&&!p[0]){
+    patternMsg='Your answers show that circle vocabulary is not yet automatic. Before any formula can be reliable, the labels need to load instantly — center, radius, diameter, circumference, area. Right now there is a half-second hesitation there, and under timed conditions, that becomes a problem.';
+    pattern='vocabulary';
+  } else if(!d[1]&&!p[1]){
+    patternMsg='On two separate problems involving radius and diameter, the formula was right but the value substituted was wrong. That is not a formula problem. That is a <b>relationship</b> problem. The rule is always the same: diameter = 2 × radius. That relationship needs to become reflexive.';
+    pattern='substitution';
+  } else if(!p[2]&&!p[3]){
+    patternMsg='The conceptual layer was solid — you identified the right relationships. The error occurred in the execution sequence. Squaring the radius before multiplying by π, or multiplying before dividing — these are procedural habits that need deliberate repetition to become automatic.';
+    pattern='procedure';
+  } else if(!p[4]&&!p[5]){
+    patternMsg='Individual calculation problems went well. The breakdown happened when two circles needed to be compared, or when the mathematics was embedded inside a real scenario. That is the reasoning layer — and it is always the last one to develop, which means you are actually further along than the score suggests.';
+    pattern='reasoning';
+  } else if(!a){
+    patternMsg='You handled the guided practice reliably. When the math was placed inside an engineering scenario without labels or formulas visible, the recognition slowed. Transfer is the proof of real understanding — and it is exactly what gets tested under pressure.';
+    pattern='transfer';
+  } else {
+    patternMsg='The error pattern is distributed — no single breakdown point dominated. This usually means the concept is forming but not yet automatic. The visual-to-formula connection is present but still requires conscious effort. Repetition at the level just below transfer will accelerate the consolidation.';
+    pattern='general';
+  }
+
+  // honest gap message
+  var gapMsg='';
+  if(pct>=85){
+    gapMsg='You solved almost every problem correctly. But on the reasoning question — comparing two circles — there was hesitation. That gap tells us something important: <b>you can calculate without yet being able to predict.</b> Under pressure, that difference shows up first. The work is not more calculation. It is explanation. Can you say in one sentence why doubling the radius quadruples the area?';
+  } else if(pct>=60){
+    gapMsg='Your diagnostic showed you recognized the circumference formula before the training began. But three levels into skill training, the execution broke down. That pattern — knowing the formula but losing it in application — is the most common performance gap. <b>It means the formula is in memory, not in understanding.</b> When understanding drives calculation, it holds under pressure.';
+  } else {
+    gapMsg='The diagnostic showed vocabulary gaps <b>before</b> you touched a single formula. That is actually the most important data point in this entire session. It tells us the training should not start with formulas — it should start with observation. With recognition. With being able to walk up to any circle and immediately say: here is the radius, here is the circumference, here is what each one measures. That is where the next session begins.';
+  }
+
+  // The One Thing
+  var oneThingMap={
+    vocabulary:'Draw a circle from memory. Label all five parts — center, radius, diameter, circumference, area — without looking at any notes. If you cannot complete this in 60 seconds, that is exactly where the next training session starts.',
+    substitution:'Write this rule once, clearly: diameter = 2 × radius, radius = diameter ÷ 2. Then take three different circle measurements and convert each one both ways. Do this until it feels automatic, not calculated.',
+    procedure:'Solve this sequence without shortcuts: A = π × r². First write r². Then multiply by π. Never skip a step. Do this with five different radius values until the sequence feels like one motion, not three.',
+    reasoning:'Pick any two circles from real life — a quarter and a dinner plate. Calculate both the circumference and the area for each. Then write one sentence explaining why the area difference is larger than the circumference difference.',
+    transfer:'Find one circular object near you right now. Without any prompting, identify whether the situation calls for circumference or area — and explain why before calculating.',
+    general:'Before the next mission, solve one circumference and one area problem without any formula reference. Just from memory. Time yourself. If it takes more than 90 seconds, the structure is not yet automatic.'
+  };
+  var oneThing=oneThingMap[pattern]||oneThingMap['general'];
+
+  // weakest phase for dynamic retrain
+  var retrain={phase:4,level:0,label:'Skill Training — Level 1'};
+  if(weakDim==='vocabulary'||weakDim==='formula')retrain={phase:2,level:-1,label:'Circle Explorer'};
+  else if(weakDim==='relationship')retrain={phase:3,level:-1,label:'Concept Construction'};
+  else if(weakDim==='procedure')retrain={phase:4,level:2,label:'Skill Training — Level 3'};
+  else if(weakDim==='reasoning')retrain={phase:4,level:4,label:'Skill Training — Level 5'};
+  else if(weakDim==='transfer')retrain={phase:5,level:-1,label:'Application Studio'};
+
+  // Coach's Promise
+  var strengthLine='';
+  if((d[0]||0)+(p[0]||0)>=1)strengthLine='Your vocabulary recognition';
+  else if((p[2]||0)+(p[3]||0)>=1)strengthLine='Your formula application';
+  else if(a)strengthLine='Your application-level thinking';
+  else strengthLine='Your completion of this full mission';
+
+  var promiseText='<b>'+strengthLine+' tells us the foundation is present.</b> The work ahead is not about intelligence — it is about making the mathematical relationships between radius, diameter, circumference, and area completely automatic. We will not move to the next academy until you can recognize these relationships anywhere, explain them without notes, and apply them inside problems you have never seen before. When that happens, you will know — because you will start seeing circles differently everywhere you go.';
+
+  return{patternMsg:patternMsg,gapMsg:gapMsg,oneThing:oneThing,retrain:retrain,promiseText:promiseText,pct:pct,weakDim:weakDim};
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 8 — THINKING MIRROR™
+══════════════════════════════════════════════ */
+var mirrorSections=0;
+var identityPicked=false;
+var analysisData=null;
+
+function renderMirror(){
+  analysisData=analyzePerformance();
+  mirrorSections=0;
+  identityPicked=false;
+  var s=document.getElementById('s8');
+  s.innerHTML=
+  '<div class="mirror-intro">'+
+    '<div class="mirror-icon">&#x1F9F9;</div>'+
+    '<p class="eyebrow blue" style="margin-bottom:10px">Phase 8 of 9 &mdash; Thinking Mirror&#8482;</p>'+
+    '<h1>Not what happened.<br>Who you are becoming.</h1>'+
+    '<p class="lead" style="margin:12px auto;text-align:center">The Scout Report showed your score. The Thinking Mirror shows your pattern. Read carefully.</p>'+
+  '</div>'+
+
+  // SECTION 1 — PATTERN
+  '<div class="mirror-section" id="ms1">'+
+    '<p class="mirror-section-num blue">01 &mdash; Pattern Recognition</p>'+
+    '<p class="mirror-heading">I noticed something about how you were thinking.</p>'+
+    '<p class="mirror-body">'+analysisData.patternMsg+'</p>'+
+    '<div style="margin-top:14px">'+
+      '<span class="pattern-tag pt-strength">Computation: Present</span>'+
+      (analysisData.weakDim==='vocabulary'?'<span class="pattern-tag pt-critical">Vocabulary: Critical</span>':
+       analysisData.weakDim==='substitution'?'<span class="pattern-tag pt-gap">Substitution: Gap</span>':
+       analysisData.weakDim==='procedure'?'<span class="pattern-tag pt-gap">Procedure: Gap</span>':
+       analysisData.weakDim==='reasoning'?'<span class="pattern-tag pt-gap">Reasoning: Gap</span>':
+       analysisData.weakDim==='transfer'?'<span class="pattern-tag pt-gap">Transfer: Gap</span>':
+       '<span class="pattern-tag pt-gap">Multiple: Developing</span>')+
+    '</div>'+
+  '</div>'+
+
+  // SECTION 2 — HONEST GAP
+  '<div class="mirror-section" id="ms2">'+
+    '<p class="mirror-section-num amber">02 &mdash; The Honest Gap</p>'+
+    '<p class="mirror-heading">Here is what the data actually says.</p>'+
+    '<p class="mirror-body">'+analysisData.gapMsg+'</p>'+
+  '</div>'+
+
+  // SECTION 3 — THE ONE THING
+  '<div class="mirror-section" id="ms3">'+
+    '<p class="mirror-section-num green">03 &mdash; The One Thing&#8482;</p>'+
+    '<p class="mirror-heading">One action. Not five. Not a list. One.</p>'+
+    '<p class="mirror-body">Before your next mission attempt, complete this specific task:</p>'+
+    '<div class="one-thing">'+
+      '<p class="ot-label">Your Assignment</p>'+
+      '<p class="ot-action">'+analysisData.oneThing+'</p>'+
+    '</div>'+
+  '</div>'+
+
+  // SECTION 4 — IDENTITY REFLECTION
+  '<div class="mirror-section" id="ms4">'+
+    '<p class="mirror-section-num purple">04 &mdash; Identity Reflection</p>'+
+    '<p class="mirror-heading">Which statement describes how you showed up today?</p>'+
+    '<p class="mirror-body" style="margin-bottom:0">Be honest. This shapes your next training prescription.</p>'+
+    '<div class="identity-opts">'+
+      [
+        {v:'rushed',text:'I rushed through the problems'},
+        {v:'guessed',text:'I guessed on several answers'},
+        {v:'visual',text:'I understood better after seeing the visual'},
+        {v:'explain',text:'I could explain most of this to someone else'},
+        {v:'confused',text:'I'm still confused about one specific relationship'},
+      ].map(function(o,i){
+        return'<div class="id-opt" id="ido'+i+'" onclick="pickIdentity(''+o.v+'','+i+')">'+
+          '<div class="id-radio"></div>'+
+          '<span>'+o.text+'</span>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+    '<div class="id-response" id="id-resp"></div>'+
+  '</div>'+
+
+  '<button class="btn-next show" id="mirror-next" style="display:none;margin-top:4px" onclick="goPhase(9)">See My Performance Prescription &rarr;</button>';
+
+  // Animate sections in sequence
+  setTimeout(function(){showMirrorSection(1);},200);
+  setTimeout(function(){showMirrorSection(2);},800);
+  setTimeout(function(){showMirrorSection(3);},1400);
+  setTimeout(function(){showMirrorSection(4);},2000);
+}
+
+function showMirrorSection(n){
+  var el=document.getElementById('ms'+n);
+  if(el)el.className='mirror-section visible';
+}
+
+var identityResponses={
+  rushed:'Speed under pressure is a confidence symptom. When the structure is not automatic, the timer becomes a threat and steps get skipped. The prescription is not to slow down permanently — it is to build the sequence until speed is earned, not forced.',
+  guessed:'Guessing tells us the visual foundation is not solid enough yet. You cannot reliably select the right answer when the relationship is not clear in your head before the options appear. The next session starts with observation — before any formula is introduced.',
+  visual:'That is important data. Visual models are becoming one of your strongest learning tools. This system is built for exactly that. More visualization before procedure is the right path. The formula should always feel like the explanation of something you already saw.',
+  explain:'If you can explain it, you are close to owning it. The remaining gaps are execution-level — arithmetic sequences, substitution habits. More deliberate practice on specific procedures will close these quickly.',
+  confused:'Naming the confusion is the most useful thing you can do. That specific relationship — whatever it is — becomes the single starting point for the next session. One relationship at a time. That is how this gets mastered.'
+};
+
+function pickIdentity(v,i){
+  document.querySelectorAll('.id-opt').forEach(function(el){el.className='id-opt';});
+  document.getElementById('ido'+i).className='id-opt chosen';
+  var resp=document.getElementById('id-resp');
+  resp.textContent=identityResponses[v];
+  resp.className='id-response show';
+  identityPicked=true;
+  document.getElementById('mirror-next').style.display='block';
+}
+
+/* ══════════════════════════════════════════════
+   PHASE 9 — PERFORMANCE PRESCRIPTION™
+══════════════════════════════════════════════ */
+function renderPrescription(){
+  if(!analysisData)analysisData=analyzePerformance();
+  var d=analysisData;
+  var s=document.getElementById('s9');
+
+  var focusMap={
+    vocabulary:'Vocabulary & Recognition',
+    substitution:'Relationship Fluency',
+    procedure:'Procedural Execution',
+    reasoning:'Comparative Reasoning',
+    transfer:'Real-World Transfer',
+    general:'Full Concept Reinforcement'
+  };
+  var timeMap={vocabulary:'8 Minutes',substitution:'10 Minutes',procedure:'12 Minutes',reasoning:'15 Minutes',transfer:'12 Minutes',general:'15 Minutes'};
+  var goalMap={
+    vocabulary:'Label all five circle parts from memory without reference.',
+    substitution:'Convert between radius and diameter automatically on any value.',
+    procedure:'Execute C = πd and A = πr² in the correct sequence without prompting.',
+    reasoning:'Explain why radius doubling quadruples area but only doubles circumference.',
+    transfer:'Identify whether a scenario needs circumference or area before solving.',
+    general:'Connect all five circle relationships into one coherent mental model.'
+  };
+
+  s.innerHTML=
+  '<div class="rx-header">'+
+    '<div class="rx-badge">Performance Prescription&#8482;</div>'+
+    '<h1>Your next move is specific.</h1>'+
+    '<p class="lead" style="text-align:center;margin:0 auto 0">Not a suggestion. A prescription. Based on every answer in this session.</p>'+
+  '</div>'+
+
+  '<div class="rx-card">'+
+    '<p class="eyebrow amber" style="margin-bottom:16px">Today's Training Prescription</p>'+
+    '<div class="rx-row">'+
+      '<div class="rx-icon" style="background:var(--blue-dim)">&#127919;</div>'+
+      '<div><p class="rx-label">Current Priority</p><p class="rx-value">'+(focusMap[d.weakDim]||focusMap['general'])+'</p><p class="rx-sub">Identified as weakest dimension from this session</p></div>'+
+    '</div>'+
+    '<div class="rx-row">'+
+      '<div class="rx-icon" style="background:var(--amber-dim)">&#9203;</div>'+
+      '<div><p class="rx-label">Prescribed Time</p><p class="rx-value">'+(timeMap[d.weakDim]||timeMap['general'])+'</p><p class="rx-sub">Focused. No distractions. This one skill.</p></div>'+
+    '</div>'+
+    '<div class="rx-row">'+
+      '<div class="rx-icon" style="background:var(--green-dim)">&#9989;</div>'+
+      '<div><p class="rx-label">Success Goal</p><p class="rx-value">'+(goalMap[d.weakDim]||goalMap['general'])+'</p><p class="rx-sub">This is how you know today's work is done.</p></div>'+
+    '</div>'+
+    '<div class="rx-row">'+
+      '<div class="rx-icon" style="background:var(--purple-dim)">&#128640;</div>'+
+      '<div><p class="rx-label">Retrain Starting Point</p><p class="rx-value">'+d.retrain.label+'</p><p class="rx-sub">Not from the beginning. From your weakest dimension.</p></div>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="promise-card">'+
+    '<p class="promise-label">Coach's Promise&#8482;</p>'+
+    '<p class="promise-text">'+d.promiseText+'</p>'+
+    '<p class="promise-sig">&#8212; Math ± Relation Coaching System</p>'+
+  '</div>'+
+
+  '<div style="background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:20px;margin-bottom:14px">'+
+    '<p class="eyebrow green" style="margin-bottom:10px">What happens next?</p>'+
+    '<p style="font-size:13px;color:var(--text2);line-height:1.8">You have two options. Retrain at your weakest point — the system drops you directly into <strong style="color:var(--text)">'+d.retrain.label+'</strong>, skipping everything you already mastered. Or restart the full mission from the beginning if you want to rebuild every layer from scratch.</p>'+
+  '</div>'+
+
+  '<button class="retrain-btn" onclick="retrainWeakest()">Retrain Weakest Dimension &rarr;</button>'+
+  '<button class="restart-full-btn" onclick="restartFull()">Restart Full Mission From Beginning</button>'+
+  '<div class="divider"></div>'+
+  '<p class="philosophy">The assessment is not the destination.<br><span>It is the starting line.</span></p>';
+}
+
+function retrainWeakest(){
+  if(!analysisData)return;
+  var r=analysisData.retrain;
+  // reset only the scores for phases we're re-entering
+  if(r.phase===2){explorerVisited=new Set();activeExplorer='center';}
+  if(r.phase===3){/* concept always available */}
+  if(r.phase===4){
+    currentLevel=r.level>=0?r.level:0;
+    // reset practice scores from that level onward
+    for(var i=currentLevel;i<6;i++)practiceScores[i]=null;
+  }
+  if(r.phase===5){appScore=null;}
+  goPhase(r.phase);
+}
+
+function restartFull(){
+  phase=0;currentDiag=0;currentLevel=0;
+  diagScores=[null,null,null];practiceScores=[null,null,null,null,null,null];
+  appScore=null;reflectionDone=false;explorerVisited=new Set();activeExplorer='center';
+  analysisData=null;
+  goPhase(0);
+}
+
+</script>
+</body>
+</html>
