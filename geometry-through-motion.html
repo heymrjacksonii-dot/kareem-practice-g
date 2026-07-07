@@ -1279,7 +1279,7 @@ function analyzePerformance(){
 
   // Coach's Promise
   var strengthLine='';
-  if((d[0]||0)+(p[0]||0)>=1)strengthLine='Your vocabulary recognition';
+  if((d[0]||0)+(p[0]||0)>=1)strengthLine=\'Your vocabulary recognition';
   else if((p[2]||0)+(p[3]||0)>=1)strengthLine='Your formula application';
   else if(a)strengthLine='Your application-level thinking';
   else strengthLine='Your completion of this full mission';
@@ -1354,7 +1354,7 @@ function renderMirror(){
         {v:'guessed',text:'I guessed on several answers'},
         {v:'visual',text:'I understood better after seeing the visual'},
         {v:'explain',text:'I could explain most of this to someone else'},
-        {v:'confused',text:'I'm still confused about one specific relationship'},
+        {v:'confused',text:'I\'m still confused about one specific relationship'},
       ].map(function(o,i){
         return'<div class="id-opt" id="ido'+i+'" onclick="pickIdentity(''+o.v+'','+i+')">'+
           '<div class="id-radio"></div>'+
@@ -1431,7 +1431,7 @@ function renderPrescription(){
   '</div>'+
 
   '<div class="rx-card">'+
-    '<p class="eyebrow amber" style="margin-bottom:16px">Today's Training Prescription</p>'+
+    '<p class="eyebrow amber" style="margin-bottom:16px">Today\'s Training Prescription</p>'+
     '<div class="rx-row">'+
       '<div class="rx-icon" style="background:var(--blue-dim)">&#127919;</div>'+
       '<div><p class="rx-label">Current Priority</p><p class="rx-value">'+(focusMap[d.weakDim]||focusMap['general'])+'</p><p class="rx-sub">Identified as weakest dimension from this session</p></div>'+
@@ -1442,7 +1442,7 @@ function renderPrescription(){
     '</div>'+
     '<div class="rx-row">'+
       '<div class="rx-icon" style="background:var(--green-dim)">&#9989;</div>'+
-      '<div><p class="rx-label">Success Goal</p><p class="rx-value">'+(goalMap[d.weakDim]||goalMap['general'])+'</p><p class="rx-sub">This is how you know today's work is done.</p></div>'+
+      '<div><p class="rx-label">Success Goal</p><p class="rx-value">'+(goalMap[d.weakDim]||goalMap['general'])+'</p><p class="rx-sub">This is how you know today\'s work is done.</p></div>'+
     '</div>'+
     '<div class="rx-row">'+
       '<div class="rx-icon" style="background:var(--purple-dim)">&#128640;</div>'+
@@ -1451,7 +1451,7 @@ function renderPrescription(){
   '</div>'+
 
   '<div class="promise-card">'+
-    '<p class="promise-label">Coach's Promise&#8482;</p>'+
+    '<p class="promise-label">Coach\'s Promise&#8482;</p>'+
     '<p class="promise-text">'+d.promiseText+'</p>'+
     '<p class="promise-sig">&#8212; Math &#177; Relation Coaching System</p>'+
   '</div>'+
@@ -1471,7 +1471,7 @@ function retrainWeakest(){
   if(!analysisData)return;
   var r=analysisData.retrain;
   // reset only the scores for phases we're re-entering
-  if(r.phase===2){explorerVisited=new Set();activeExplorer='center';}
+  if(r.phase===2){explorerVisited=new Set();activeExplorer=\'center';}
   if(r.phase===3){/* concept always available */}
   if(r.phase===4){
     currentLevel=r.level>=0?r.level:0;
