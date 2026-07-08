@@ -3,174 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geometry Through Motion - Math Plus Minus Relation</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Geometry Through Motion - Math Relation</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#3B82F6;--blue-dim:rgba(59,130,246,0.12);--blue-bd:rgba(59,130,246,0.35);
+  --blue:#3B82F6;--bdim:rgba(59,130,246,0.12);--bbd:rgba(59,130,246,0.35);
   --bg:#09090b;--bg2:#111113;--bg3:#17171b;
-  --bdr:rgba(255,255,255,0.07);--bdr2:rgba(255,255,255,0.13);
+  --br:rgba(255,255,255,0.07);--br2:rgba(255,255,255,0.13);
   --tx:#efefef;--tx2:#8888a0;--tx3:#505060;
-  --green:#22c55e;--gdim:rgba(34,197,94,0.11);--gbd:rgba(34,197,94,0.3);
-  --red:#f87171;--rdim:rgba(248,113,113,0.1);--rbd:rgba(248,113,113,0.32);
-  --amber:#f59e0b;--adim:rgba(245,158,11,0.12);--abd:rgba(245,158,11,0.35);
-  --purple:#a78bfa;--pdim:rgba(167,139,250,0.11);--pbd:rgba(167,139,250,0.3);
-  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+  --gn:#22c55e;--gd:rgba(34,197,94,0.11);--gb:rgba(34,197,94,0.3);
+  --rd:#f87171;--rdd:rgba(248,113,113,0.1);--rb:rgba(248,113,113,0.32);
+  --am:#f59e0b;--ad:rgba(245,158,11,0.12);--ab:rgba(245,158,11,0.35);
+  --pu:#a78bfa;--pd:rgba(167,139,250,0.11);--pb:rgba(167,139,250,0.3);
 }
-html,body{background:var(--bg);color:var(--tx);font-family:var(--sans);min-height:100%}
+html,body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100%}
 body{display:flex;flex-direction:column;align-items:center;padding:0 16px 80px}
-nav{width:100%;max-width:700px;display:flex;justify-content:space-between;align-items:center;padding:22px 0 18px;border-bottom:.5px solid var(--bdr);margin-bottom:0}
-.logo{font-family:var(--mono);font-size:12px;color:var(--tx2)}.logo b{color:var(--blue)}
-.nav-r{font-family:var(--mono);font-size:11px;color:var(--tx3)}
-.prog{width:100%;max-width:700px;padding:14px 0 0}
-.pips{display:flex;gap:4px;margin-bottom:6px}
-.pip{height:3px;flex:1;border-radius:2px;background:var(--bg3);transition:background .4s}
-.pip.done{background:var(--blue)}.pip.now{background:rgba(59,130,246,.45)}
-.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase}
-.page{width:100%;max-width:700px;padding-top:28px;display:none}
-.page.on{display:block}
-h1{font-size:26px;font-weight:500;line-height:1.3;margin-bottom:12px;color:var(--tx)}
-h2{font-size:19px;font-weight:500;margin-bottom:10px;color:var(--tx)}
-.sub{font-size:14px;color:var(--tx2);line-height:1.8;margin-bottom:20px}
-.card{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:22px;margin-bottom:12px}
-.ey{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
-.ey.bl{color:var(--blue)}.ey.am{color:var(--amber)}.ey.gr{color:var(--green)}.ey.pu{color:var(--purple)}
-.btn{display:inline-block;padding:13px 26px;font-family:var(--mono);font-size:12px;letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:var(--blue);color:#fff;border:none;transition:background .15s}
-.btn:hover{background:#2563eb}
-.btn-o{background:transparent;color:var(--blue);border:.5px solid var(--blue-bd)}
-.btn-o:hover{background:var(--blue-dim)}
-.btn-wide{width:100%;padding:13px;margin-top:12px;display:none}
-.btn-wide.on{display:block}
-.opt-btn{width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;font-size:14px;font-family:var(--sans);color:var(--tx2);background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;cursor:pointer;transition:all .12s}
-.opt-btn:hover:not(:disabled){background:var(--bg3);border-color:var(--bdr2);color:var(--tx)}
-.opt-btn.sel{background:var(--blue-dim);border-color:var(--blue-bd);color:var(--blue)}
-.opt-btn.ok{background:var(--gdim);border-color:var(--gbd);color:var(--green)}
-.opt-btn.no{background:var(--rdim);border-color:var(--rbd);color:var(--red)}
-.opt-btn:disabled{cursor:default}
-.fb{padding:12px 15px;border-radius:9px;border-left:2px solid;font-size:13px;line-height:1.7;font-family:var(--mono);margin-top:8px;display:none}
-.fb.ok{background:var(--gdim);border-color:var(--green);color:var(--green)}
-.fb.no{background:var(--rdim);border-color:var(--red);color:var(--red)}
-.fb.show{display:block}
-.scene{font-family:var(--mono);font-size:13px;color:var(--tx2);line-height:2;padding:15px;background:var(--bg3);border-radius:9px;border-left:2px solid var(--blue);margin-bottom:16px}
+nav{width:100%;max-width:700px;display:flex;justify-content:space-between;align-items:center;padding:20px 0 16px;border-bottom:.5px solid var(--br)}
+.logo{font-family:'Space Mono',monospace;font-size:12px;color:var(--tx2)}
+.logo b{color:var(--blue)}
+.nav-title{font-family:'Space Mono',monospace;font-size:11px;color:var(--tx3)}
+.prog-bar{width:100%;max-width:700px;padding:13px 0 0}
+.pips{display:flex;gap:3px;margin-bottom:5px}
+.pip{height:3px;flex:1;border-radius:2px;background:var(--bg3)}
+.pip.active{background:rgba(59,130,246,.45)}
+.pip.done{background:var(--blue)}
+.pip-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase}
+.phase{width:100%;max-width:700px;padding-top:26px;display:none}
+.phase.show{display:block}
+h1{font-size:25px;font-weight:500;line-height:1.3;margin-bottom:10px;color:var(--tx)}
+h2{font-size:18px;font-weight:500;margin-bottom:9px;color:var(--tx)}
+p{line-height:1.7}
+.label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px}
+.label.bl{color:var(--blue)}.label.am{color:var(--am)}.label.gr{color:var(--gn)}.label.pu{color:var(--pu)}
+.card{background:var(--bg2);border:.5px solid var(--br2);border-radius:14px;padding:20px;margin-bottom:12px}
+.scene{font-family:'Space Mono',monospace;font-size:13px;color:var(--tx2);line-height:2;padding:14px;background:var(--bg3);border-radius:8px;border-left:2px solid var(--blue);margin-bottom:14px}
 .scene b{color:var(--tx)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.chip{background:var(--bg3);border:.5px solid var(--bdr);border-radius:7px;padding:9px 12px;font-family:var(--mono);font-size:12px;color:var(--blue);display:flex;align-items:center;gap:7px}
-.chip::before{content:'\2713';opacity:.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.chip{background:var(--bg3);border:.5px solid var(--br);border-radius:7px;padding:8px 12px;font-family:'Space Mono',monospace;font-size:12px;color:var(--blue)}
+.chip::before{content:'+ ';opacity:.5}
+.main-btn{display:block;width:100%;padding:14px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:var(--blue);color:#fff;border:none;text-align:center;margin-top:14px}
+.main-btn:hover{background:#2563eb}
+.outline-btn{display:block;width:100%;padding:13px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:transparent;color:var(--blue);border:.5px solid var(--bbd);text-align:center;margin-top:10px}
+.next-btn{display:none;width:100%;padding:13px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.07em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:var(--bdim);color:var(--blue);border:.5px solid var(--bbd);text-align:center;margin-top:12px}
+.next-btn.show{display:block}
+.opt{display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--tx2);background:var(--bg2);border:.5px solid var(--br);border-radius:9px;cursor:pointer}
+.opt:hover:not(:disabled){background:var(--bg3);border-color:var(--br2);color:var(--tx)}
+.opt.right{background:var(--gd);border-color:var(--gb);color:var(--gn)}
+.opt.wrong{background:var(--rdd);border-color:var(--rb);color:var(--rd)}
+.opt:disabled{cursor:default}
+.fb{padding:12px 14px;border-radius:8px;border-left:2px solid;font-family:'Space Mono',monospace;font-size:13px;line-height:1.6;margin-top:8px;display:none}
+.fb.right{background:var(--gd);border-color:var(--gn);color:var(--gn)}
+.fb.wrong{background:var(--rdd);border-color:var(--rd);color:var(--rd)}
+.fb.show{display:block}
+.q-text{font-family:'Space Mono',monospace;font-size:14px;line-height:1.8;color:var(--tx);white-space:pre-line;margin-bottom:14px}
+.dots{display:flex;gap:5px;margin-bottom:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:.5px solid var(--br)}
+.dot.done{background:var(--blue);border-color:var(--bbd)}
+.dot.now{background:rgba(59,130,246,.4);border-color:var(--bbd)}
+.lv-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;border:.5px solid;display:inline-block;margin-bottom:12px}
+.lv-gr{color:var(--gn);border-color:var(--gb);background:var(--gd)}
+.lv-bl{color:var(--blue);border-color:var(--bbd);background:var(--bdim)}
+.lv-am{color:var(--am);border-color:var(--ab);background:var(--ad)}
+.lv-pu{color:var(--pu);border-color:var(--pb);background:var(--pd)}
+.formula-box{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:7px 14px;border-radius:7px;margin-bottom:12px;display:inline-block}
+.fm-gr{color:var(--gn);background:var(--gd);border:.5px solid var(--gb)}
+.fm-am{color:var(--am);background:var(--ad);border:.5px solid var(--ab)}
+.work-box{background:var(--bg3);border:.5px solid var(--br);border-radius:8px;padding:12px 14px;margin-top:10px;display:none}
+.work-box.show{display:block}
+.wl{font-family:'Space Mono',monospace;font-size:12px;color:var(--tx2);margin-bottom:5px;display:flex;gap:7px}
+.wl:last-child{color:var(--gn);font-weight:700;margin-bottom:0}
 /* explorer */
-.ex-wrap{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.ex-svg{flex:0 0 260px}
-.ex-parts{flex:1;min-width:200px}
-.ex-part{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;cursor:pointer;margin-bottom:8px;transition:all .15s}
-.ex-part:hover{background:var(--bg3);border-color:var(--bdr2)}
-.ex-part.on{background:var(--blue-dim);border-color:var(--blue-bd)}
-.ex-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0}
+.ex-part{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--bg2);border:.5px solid var(--br);border-radius:9px;cursor:pointer;margin-bottom:7px}
+.ex-part:hover,.ex-part.on{background:var(--bdim);border-color:var(--bbd)}
+.ex-ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;flex-shrink:0}
 .ex-name{font-size:13px;font-weight:500;color:var(--tx)}
-.ex-detail{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:18px;margin-top:0;min-height:110px}
-.ex-dtitle{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:7px}
-.ex-dbody{font-size:13px;color:var(--tx2);line-height:1.75;font-family:var(--mono)}
-.ex-formula{display:inline-block;font-family:var(--mono);font-size:13px;font-weight:700;padding:5px 12px;border-radius:6px;margin-top:10px}
-.ef-bl{color:var(--blue);background:var(--blue-dim);border:.5px solid var(--blue-bd)}
-.ef-pu{color:var(--purple);background:var(--pdim);border:.5px solid var(--pbd)}
-.ef-gr{color:var(--green);background:var(--gdim);border:.5px solid var(--gbd)}
-.ef-re{color:var(--red);background:var(--rdim);border:.5px solid var(--rbd)}
-/* levels */
-.lv-badge{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;border:.5px solid;margin-bottom:14px;display:inline-block}
-.lv1{color:var(--green);border-color:var(--gbd);background:var(--gdim)}
-.lv2{color:var(--blue);border-color:var(--blue-bd);background:var(--blue-dim)}
-.lv3,.lv4{color:var(--amber);border-color:var(--abd);background:var(--adim)}
-.lv5,.lv6{color:var(--purple);border-color:var(--pbd);background:var(--pdim)}
-.work{background:var(--bg3);border:.5px solid var(--bdr);border-radius:9px;padding:13px 15px;margin-top:10px;display:none}
-.work.show{display:block}
-.wline{font-family:var(--mono);font-size:13px;color:var(--tx2);margin-bottom:5px;display:flex;gap:7px}
-.wline:last-child{color:var(--green);font-weight:700;margin-bottom:0}
-.dots{display:flex;gap:5px;margin-bottom:16px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:.5px solid var(--bdr);transition:background .3s}
-.dot.done{background:var(--blue);border-color:var(--blue-bd)}
-.dot.now{background:rgba(59,130,246,.4);border-color:var(--blue-bd)}
+.ex-panel{background:var(--bg2);border:.5px solid var(--br2);border-radius:14px;padding:18px;margin-top:12px;display:none}
+.ex-panel.show{display:block}
+.ex-ptitle{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:7px}
+.ex-pbody{font-family:'Space Mono',monospace;font-size:12px;color:var(--tx2);line-height:1.75}
 /* concept */
-.cstep{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:20px;margin-bottom:12px}
-.cstep-n{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:9px}
-.cstep-q{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:12px;line-height:1.5}
-.rev-ans{background:var(--bg3);border-radius:9px;padding:13px 15px;font-family:var(--mono);font-size:13px;color:var(--tx2);line-height:1.7;display:none;border-left:2px solid var(--blue);margin-top:9px}
-.rev-ans.show{display:block}
-.rev-btn{padding:7px 15px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:7px;background:var(--bg3);color:var(--tx2);border:.5px solid var(--bdr2);transition:all .15s}
-.rev-btn:hover{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-bd)}
+.c-step{background:var(--bg2);border:.5px solid var(--br2);border-radius:14px;padding:19px;margin-bottom:11px}
+.c-num{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:8px}
+.c-q{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:11px;line-height:1.5}
+.c-ans{background:var(--bg3);border-radius:8px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--tx2);line-height:1.7;display:none;border-left:2px solid var(--blue);margin-top:8px}
+.c-ans.show{display:block}
+.rev-btn{padding:7px 14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:7px;background:var(--bg3);color:var(--tx2);border:.5px solid var(--br2)}
+.rev-btn:hover{background:var(--bdim);color:var(--blue);border-color:var(--bbd)}
 /* scout */
-.sc-head{text-align:center;padding:28px 0 20px}
-.sc-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;padding:5px 15px;border-radius:4px;background:var(--blue-dim);border:.5px solid var(--blue-bd);margin-bottom:14px}
-.sc-big{font-family:var(--mono);font-size:54px;font-weight:700;color:var(--tx);line-height:1;margin-bottom:4px}
-.sc-pct{font-family:var(--mono);font-size:20px;color:var(--tx3);margin-bottom:20px}
-.sc-profile{display:inline-block;padding:7px 18px;border-radius:9px;font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:7px}
-.pr-ready{background:var(--gdim);color:var(--green);border:.5px solid var(--gbd)}
-.pr-build{background:var(--blue-dim);color:var(--blue);border:.5px solid var(--blue-bd)}
-.pr-pract{background:var(--pdim);color:var(--purple);border:.5px solid var(--pbd)}
-.pr-found{background:var(--adim);color:var(--amber);border:.5px solid var(--abd)}
-.sc-pdesc{font-size:13px;color:var(--tx2);max-width:400px;margin:0 auto 24px;line-height:1.7}
-.dim-row{display:flex;align-items:center;gap:12px;background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;padding:11px 15px;margin-bottom:8px}
-.dim-lbl{font-size:12px;color:var(--tx2);font-family:var(--mono);min-width:120px}
-.dim-bar-w{flex:1;background:var(--bg3);border-radius:3px;height:5px;overflow:hidden}
-.dim-bar{height:100%;border-radius:3px}
-.dim-st{font-family:var(--mono);font-size:10px;min-width:90px;text-align:right}
-.ds-str{color:var(--green)}.ds-dev{color:var(--amber)}.ds-ned{color:var(--red)}
-.sc-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.sc-sect{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:18px}
-.sc-sect-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
-.ss-w .sc-sect-lbl{color:var(--green)}.ss-g .sc-sect-lbl{color:var(--amber)}
-.sc-item{display:flex;gap:7px;margin-bottom:9px;font-size:13px;color:var(--tx2);line-height:1.6;align-items:flex-start}
+.sc-head{text-align:center;padding:24px 0 18px}
+.sc-badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;padding:5px 14px;border-radius:4px;background:var(--bdim);border:.5px solid var(--bbd);display:inline-block;margin-bottom:12px}
+.sc-score{font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:var(--tx);line-height:1;margin-bottom:4px}
+.sc-pct{font-family:'Space Mono',monospace;font-size:19px;color:var(--tx3);margin-bottom:18px}
+.profile-tag{display:inline-block;padding:6px 16px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;margin-bottom:7px}
+.pt-gr{background:var(--gd);color:var(--gn);border:.5px solid var(--gb)}
+.pt-bl{background:var(--bdim);color:var(--blue);border:.5px solid var(--bbd)}
+.pt-am{background:var(--ad);color:var(--am);border:.5px solid var(--ab)}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc-box{background:var(--bg2);border:.5px solid var(--br2);border-radius:14px;padding:17px}
+.sc-box-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:11px}
+.sb-gn .sc-box-lbl{color:var(--gn)}.sb-am .sc-box-lbl{color:var(--am)}
+.sc-item{display:flex;gap:7px;margin-bottom:8px;font-size:13px;color:var(--tx2);line-height:1.6;align-items:flex-start}
 .sc-item:last-child{margin-bottom:0}
-.si-d{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
-.si-g{background:var(--green)}.si-a{background:var(--amber)}
-.coach-box{background:var(--bg3);border:.5px solid var(--bdr);border-radius:14px;padding:18px;margin-bottom:12px;border-left:2px solid var(--blue)}
-.coach-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:9px}
-.coach-txt{font-size:13px;color:var(--tx2);line-height:1.8;font-style:italic}
-.coach-sig{font-family:var(--mono);font-size:10px;color:var(--tx3);margin-top:9px}
-.div{height:.5px;background:var(--bdr);margin:18px 0}
-.philo{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.05em;line-height:2.2;text-align:center}
-.philo span{color:var(--blue)}
+.sid{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.sid-g{background:var(--gn)}.sid-a{background:var(--am)}
+.dim-r{display:flex;align-items:center;gap:11px;background:var(--bg2);border:.5px solid var(--br);border-radius:8px;padding:10px 14px;margin-bottom:7px}
+.dim-l{font-size:11px;color:var(--tx2);font-family:'Space Mono',monospace;min-width:110px}
+.dim-bw{flex:1;background:var(--bg3);border-radius:3px;height:5px;overflow:hidden}
+.dim-b{height:100%;border-radius:3px}
+.dim-s{font-family:'Space Mono',monospace;font-size:10px;min-width:85px;text-align:right}
+.ds-g{color:var(--gn)}.ds-a{color:var(--am)}.ds-r{color:var(--rd)}
+.coach{background:var(--bg3);border:.5px solid var(--br);border-radius:14px;padding:17px;margin-bottom:11px;border-left:2px solid var(--blue)}
+.coach-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.coach-t{font-size:13px;color:var(--tx2);line-height:1.8;font-style:italic}
+.coach-s{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);margin-top:8px}
+.div{height:.5px;background:var(--br);margin:17px 0}
+.philo{font-family:'Space Mono',monospace;font-size:11px;color:var(--tx3);letter-spacing:.05em;line-height:2.2;text-align:center}
+.philo b{color:var(--blue)}
 /* mirror */
-.ms{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:22px;margin-bottom:12px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}
-.ms.vis{opacity:1;transform:translateY(0)}
-.ms-n{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px}
-.ms-n.bl{color:var(--blue)}.ms-n.am{color:var(--amber)}.ms-n.gr{color:var(--green)}.ms-n.pu{color:var(--purple)}
-.ms-h{font-size:16px;font-weight:600;color:var(--tx);margin-bottom:11px}
-.ms-b{font-size:13px;color:var(--tx2);line-height:1.85;font-family:var(--mono)}
+.ms{background:var(--bg2);border:.5px solid var(--br2);border-radius:14px;padding:20px;margin-bottom:11px}
+.ms-n{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.ms-n.bl{color:var(--blue)}.ms-n.am{color:var(--am)}.ms-n.gr{color:var(--gn)}.ms-n.pu{color:var(--pu)}
+.ms-h{font-size:16px;font-weight:600;color:var(--tx);margin-bottom:10px}
+.ms-b{font-size:13px;color:var(--tx2);line-height:1.8;font-family:'Space Mono',monospace}
 .ms-b b{color:var(--tx)}
-.ot-box{background:var(--bg3);border:.5px solid var(--bdr2);border-radius:14px;padding:20px;margin-top:12px;text-align:center;border-top:2px solid var(--blue)}
-.ot-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:13px}
-.ot-act{font-size:15px;color:var(--tx);line-height:1.75;font-weight:500;max-width:400px;margin:0 auto}
-.id-opt{display:flex;align-items:center;gap:10px;padding:12px 15px;background:var(--bg3);border:.5px solid var(--bdr);border-radius:9px;cursor:pointer;font-size:13px;color:var(--tx2);margin-bottom:7px;transition:all .15s}
-.id-opt:hover{background:var(--bg3);border-color:var(--bdr2);color:var(--tx)}
-.id-opt.on{background:var(--blue-dim);border-color:var(--blue-bd);color:var(--blue)}
-.id-radio{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--bdr2);flex-shrink:0;transition:all .15s}
+.ot-box{background:var(--bg3);border:.5px solid var(--br2);border-radius:14px;padding:18px;margin-top:11px;text-align:center;border-top:2px solid var(--blue)}
+.ot-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:11px}
+.ot-a{font-size:14px;color:var(--tx);line-height:1.75;font-weight:500}
+.id-opt{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:.5px solid var(--br);border-radius:9px;cursor:pointer;font-size:13px;color:var(--tx2);margin-bottom:7px}
+.id-opt:hover,.id-opt.on{background:var(--bdim);border-color:var(--bbd);color:var(--blue)}
+.id-radio{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--br2);flex-shrink:0}
 .id-opt.on .id-radio{background:var(--blue);border-color:var(--blue)}
-.id-resp{background:var(--bg3);border-radius:9px;padding:13px 15px;border-left:2px solid var(--blue);font-size:13px;color:var(--tx2);line-height:1.75;font-family:var(--mono);display:none;margin-top:7px}
+.id-resp{background:var(--bg3);border-radius:8px;padding:12px 14px;border-left:2px solid var(--blue);font-size:13px;color:var(--tx2);line-height:1.7;font-family:'Space Mono',monospace;display:none;margin-top:7px}
 .id-resp.show{display:block}
 /* rx */
-.rx-row{display:flex;align-items:flex-start;gap:14px;margin-bottom:13px;padding-bottom:13px;border-bottom:.5px solid var(--bdr)}
+.rx-row{display:flex;align-items:flex-start;gap:13px;margin-bottom:12px;padding-bottom:12px;border-bottom:.5px solid var(--br)}
 .rx-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.rx-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.rx-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:4px}
-.rx-val{font-size:14px;color:var(--tx);line-height:1.5}
-.rx-sub{font-size:12px;color:var(--tx2);margin-top:2px;font-family:var(--mono)}
-.promise{background:var(--bg2);border:.5px solid var(--blue-bd);border-radius:14px;padding:24px;margin-bottom:12px;position:relative;overflow:hidden}
-.promise::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)}
-.promise-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:13px}
-.promise-txt{font-size:14px;color:var(--tx2);line-height:1.9;font-style:italic;margin-bottom:13px}
-.promise-txt b{color:var(--tx);font-style:normal}
-.promise-sig{font-family:var(--mono);font-size:10px;color:var(--tx3)}
-.retrain-btn{width:100%;padding:15px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:var(--blue);color:#fff;border:none;margin-bottom:9px;transition:background .15s}
-.retrain-btn:hover{background:#2563eb}
-.restart-btn{width:100%;padding:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:transparent;color:var(--tx3);border:.5px solid var(--bdr);transition:all .15s}
-.restart-btn:hover{color:var(--tx);border-color:var(--bdr2)}
-footer{width:100%;max-width:700px;padding:24px 0 0;border-top:.5px solid var(--bdr);margin-top:28px;display:flex;align-items:center;justify-content:space-between}
-.f-brand{font-family:var(--mono);font-size:10px;color:var(--tx3)}.f-brand b{color:var(--blue)}
-.f-link{font-family:var(--mono);font-size:10px;color:var(--tx3);text-decoration:none}
-.f-link:hover{color:var(--blue)}
+.rx-ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.rx-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:4px}
+.rx-v{font-size:13px;color:var(--tx);line-height:1.5}
+.rx-s{font-size:12px;color:var(--tx2);margin-top:2px;font-family:'Space Mono',monospace}
+.promise{background:var(--bg2);border:.5px solid var(--bbd);border-radius:14px;padding:22px;margin-bottom:11px;border-top:2px solid var(--blue)}
+.promise-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:11px}
+.promise-t{font-size:13px;color:var(--tx2);line-height:1.9;font-style:italic;margin-bottom:11px}
+.promise-t b{color:var(--tx);font-style:normal}
+.promise-s{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3)}
+.retrain{width:100%;padding:14px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:var(--blue);color:#fff;border:none;margin-bottom:8px}
+.restart{width:100%;padding:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:9px;background:transparent;color:var(--tx3);border:.5px solid var(--br)}
+footer{width:100%;max-width:700px;padding:22px 0 0;border-top:.5px solid var(--br);margin-top:26px;display:flex;align-items:center;justify-content:space-between}
+.fb-brand{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3)}.fb-brand b{color:var(--blue)}
+.fb-link{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);text-decoration:none}
+.fb-link:hover{color:var(--blue)}
 @media(max-width:540px){
-  h1{font-size:20px}.sc-2col{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}
-  .ex-wrap{flex-direction:column}.ex-svg{flex:unset;width:100%}
-  footer{flex-direction:column;gap:8px;text-align:center}.dim-lbl{min-width:90px;font-size:10px}
+  h1{font-size:21px}.sc-grid{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:8px;text-align:center}.dim-l{min-width:90px}
 }
 </style>
 </head>
@@ -178,465 +165,448 @@ footer{width:100%;max-width:700px;padding:24px 0 0;border-top:.5px solid var(--b
 
 <nav>
   <div class="logo">MATH <b>+/-</b> RELATION</div>
-  <div class="nav-r" id="nav-r">Geometry Through Motion</div>
+  <div class="nav-title">Geometry Through Motion</div>
 </nav>
 
-<div class="prog">
-  <div class="pips" id="pips">
-    <div class="pip now" id="p0"></div><div class="pip" id="p1"></div>
-    <div class="pip" id="p2"></div><div class="pip" id="p3"></div>
-    <div class="pip" id="p4"></div><div class="pip" id="p5"></div>
-    <div class="pip" id="p6"></div><div class="pip" id="p7"></div>
-    <div class="pip" id="p8"></div><div class="pip" id="p9"></div>
+<div class="prog-bar">
+  <div class="pips">
+    <div class="pip active" id="pip0"></div>
+    <div class="pip" id="pip1"></div>
+    <div class="pip" id="pip2"></div>
+    <div class="pip" id="pip3"></div>
+    <div class="pip" id="pip4"></div>
+    <div class="pip" id="pip5"></div>
+    <div class="pip" id="pip6"></div>
+    <div class="pip" id="pip7"></div>
+    <div class="pip" id="pip8"></div>
+    <div class="pip" id="pip9"></div>
   </div>
-  <div class="plabel" id="plabel">Mission Brief</div>
+  <div class="pip-label" id="pip-label">Mission Brief</div>
 </div>
 
-<div id="pg0" class="page on"></div>
-<div id="pg1" class="page"></div>
-<div id="pg2" class="page"></div>
-<div id="pg3" class="page"></div>
-<div id="pg4" class="page"></div>
-<div id="pg5" class="page"></div>
-<div id="pg6" class="page"></div>
-<div id="pg7" class="page"></div>
-<div id="pg8" class="page"></div>
-<div id="pg9" class="page"></div>
+<!-- PHASE 0: MISSION BRIEF -->
+<div class="phase show" id="ph0">
+  <div style="text-align:center;padding:36px 0 24px">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:.5px solid var(--br2);border-radius:12px;padding:8px 16px;margin-bottom:22px;font-family:'Space Mono',monospace;font-size:11px;color:var(--tx2)">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--blue)"></div>Academy Mission 01
+    </div>
+    <h1 style="font-size:30px;margin-bottom:11px">Geometry<br><span style="color:var(--blue)">Through Motion</span></h1>
+    <p style="font-size:14px;color:var(--tx2);max-width:440px;margin:0 auto 26px;line-height:1.8">Before we calculate anything, we observe. This mission teaches circles through the world you already know.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:360px;margin:0 auto 26px">
+      <div style="background:var(--bg2);border:.5px solid var(--br);border-radius:9px;padding:13px 8px;text-align:center"><div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:3px">9</div><div style="font-size:10px;color:var(--tx3);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.05em">Phases</div></div>
+      <div style="background:var(--bg2);border:.5px solid var(--br);border-radius:9px;padding:13px 8px;text-align:center"><div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:3px">5</div><div style="font-size:10px;color:var(--tx3);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.05em">Dimensions</div></div>
+      <div style="background:var(--bg2);border:.5px solid var(--br);border-radius:9px;padding:13px 8px;text-align:center"><div style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px">Scout</div><div style="font-size:10px;color:var(--tx3);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.05em">Report</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <p class="label bl">Student Briefing</p>
+    <h2>Before the formula, there is the observation.</h2>
+    <div class="scene">
+      <b>Stephen Curry shoots a three-pointer.</b><br><br>
+      The basketball leaves his fingertips.<br>
+      The ball rotates as it travels through the air.<br>
+      It follows a curved arc and passes through the rim.<br><br>
+      The question is not: What formula do I use?<br><br>
+      The question is: What mathematical relationships are happening right now?
+    </div>
+    <p style="font-size:14px;color:var(--tx2);margin-bottom:11px">The basketball in that moment contains:</p>
+    <div class="grid2">
+      <div class="chip">Circle</div><div class="chip">Rotation</div>
+      <div class="chip">Circumference</div><div class="chip">Radius</div>
+      <div class="chip">Diameter</div><div class="chip">Area</div>
+      <div class="chip">Arc</div><div class="chip">Distance</div>
+    </div>
+  </div>
+  <div class="card">
+    <p class="label am">Mission Objective</p>
+    <p style="font-size:14px;color:var(--tx2);line-height:1.8">By the end of this mission you will be able to <strong style="color:var(--tx)">recognize, calculate, explain, apply, and teach</strong> every circle relationship. Not because you memorized a formula. Because you understand what it is actually saying.</p>
+    <button class="main-btn" onclick="goTo(1)">Begin Mission &rarr;</button>
+  </div>
+</div>
+
+<!-- PHASE 1: DIAGNOSTIC -->
+<div class="phase" id="ph1">
+  <p class="label bl">Phase 1 - Diagnostic</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+    <h2>Where are you right now?</h2>
+    <div style="display:flex;align-items:center;gap:9px">
+      <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--tx3)" id="dq-counter">Q1 of 3</span>
+      <div style="display:flex;gap:5px" id="dq-dots">
+        <div class="dot now"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" id="dq-card">
+    <!-- diagnostic questions rendered by JS -->
+  </div>
+</div>
+
+<!-- PHASE 2: CIRCLE EXPLORER -->
+<div class="phase" id="ph2">
+  <p class="label bl">Phase 2 - Circle Explorer</p>
+  <h2 style="margin-bottom:8px">Discover every part of a circle.</h2>
+  <p style="font-size:14px;color:var(--tx2);margin-bottom:18px">Tap each part to learn what it measures and how it connects to everything else.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:0 0 260px" id="ex-svg-wrap">
+      <!-- SVG injected by JS -->
+    </div>
+    <div style="flex:1;min-width:200px">
+      <div class="ex-part on" id="ep0" onclick="selPart(0)"><div class="ex-ico" style="background:rgba(245,158,11,.15);color:var(--am)">C</div><div class="ex-name">Center</div></div>
+      <div class="ex-part" id="ep1" onclick="selPart(1)"><div class="ex-ico" style="background:var(--bdim);color:var(--blue)">r</div><div class="ex-name">Radius</div></div>
+      <div class="ex-part" id="ep2" onclick="selPart(2)"><div class="ex-ico" style="background:var(--pd);color:var(--pu)">d</div><div class="ex-name">Diameter</div></div>
+      <div class="ex-part" id="ep3" onclick="selPart(3)"><div class="ex-ico" style="background:var(--gd);color:var(--gn)">C</div><div class="ex-name">Circumference</div></div>
+      <div class="ex-part" id="ep4" onclick="selPart(4)"><div class="ex-ico" style="background:var(--rdd);color:var(--rd)">A</div><div class="ex-name">Area</div></div>
+    </div>
+  </div>
+  <div id="ex-panel-wrap"></div>
+  <p style="font-family:'Space Mono',monospace;font-size:11px;color:var(--tx3);margin-top:12px" id="ex-hint">Tap all 5 parts to continue.</p>
+  <button class="next-btn" id="ex-next" onclick="goTo(3)">Continue to Concept Construction &rarr;</button>
+</div>
+
+<!-- PHASE 3: CONCEPT CONSTRUCTION -->
+<div class="phase" id="ph3">
+  <p class="label am">Phase 3 - Concept Construction</p>
+  <h2 style="margin-bottom:8px">Discover the relationships before the formula.</h2>
+  <p style="font-size:14px;color:var(--tx2);margin-bottom:18px">Think through each question before revealing the answer.</p>
+  <div class="c-step">
+    <p class="c-num">Question 01</p>
+    <p class="c-q">If you wrapped a measuring tape around a basketball, what exactly would you be measuring?</p>
+    <button class="rev-btn" id="rb0" onclick="reveal(0)">Reveal Answer</button>
+    <div class="c-ans" id="ca0">You would be measuring the <b>circumference</b> - the total distance around the outside of the circle. Students confuse this with diameter (which goes across) or area (which measures the inside). Circumference is the perimeter of a circle.</div>
+  </div>
+  <div class="c-step">
+    <p class="c-num">Question 02</p>
+    <p class="c-q">Why does pi appear in the circumference formula?</p>
+    <button class="rev-btn" id="rb1" onclick="reveal(1)">Reveal Answer</button>
+    <div class="c-ans" id="ca1">Pi (approximately 3.14) is the ratio of any circle circumference to its diameter. Always. No exceptions. Divide any circle's circumference by its diameter and you get pi. The formula C = pi x d comes directly from this: circumference = pi x how wide it is.</div>
+  </div>
+  <div class="c-step">
+    <p class="c-num">Question 03</p>
+    <p class="c-q">What is the difference between circumference and area?</p>
+    <button class="rev-btn" id="rb2" onclick="reveal(2)">Reveal Answer</button>
+    <div class="c-ans" id="ca2"><b>Circumference</b> is the boundary - the distance you walk if you went all the way around the edge. Like a running track.<br><br><b>Area</b> is the inside surface - how much space the circle covers. Like the grass inside that same track. Same circle. Two completely different measurements.</div>
+  </div>
+  <div class="c-step">
+    <p class="c-num">Question 04</p>
+    <p class="c-q">If the radius doubles from 5 to 10, what happens to circumference? What happens to area?</p>
+    <button class="rev-btn" id="rb3" onclick="reveal(3)">Reveal Answer</button>
+    <div class="c-ans" id="ca3"><b>Circumference doubles</b> (31.4 to 62.8). C = pi x d, and d = 2r, so circumference is proportional to radius.<br><br><b>Area quadruples</b> (78.5 to 314). A = pi x r squared. Double the radius means 2 squared = 4 times the area. A circle twice as wide covers four times as much space.</div>
+  </div>
+  <button class="main-btn" onclick="goTo(4)">Begin Skill Training &rarr;</button>
+</div>
+
+<!-- PHASE 4: SKILL LEVELS (rendered by JS) -->
+<div class="phase" id="ph4">
+  <p class="label am">Phase 4 - Skill Training</p>
+  <div id="level-content"></div>
+</div>
+
+<!-- PHASE 5: APPLICATION -->
+<div class="phase" id="ph5">
+  <p class="label gr">Phase 5 - Application</p>
+  <h2 style="margin-bottom:8px">Recognize the math in the real world.</h2>
+  <p style="font-size:14px;color:var(--tx2);margin-bottom:18px">The mathematics does not change. Only the situation does.</p>
+  <div class="card">
+    <h2 style="margin-bottom:12px">The Basketball Robot Problem</h2>
+    <div style="background:var(--bg3);border-radius:8px;padding:13px 14px;border-left:2px solid var(--am);font-family:'Space Mono',monospace;font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:13px">
+      <b style="color:var(--tx)">A robot retrieves basketballs.</b><br><br>
+      Wheel diameter: 6 inches.<br>
+      Distance to travel: 120 inches.<br><br>
+      How many complete rotations to travel 120 inches?<br>(Use pi = 3.14, round to nearest whole)
+    </div>
+    <div style="margin-bottom:13px">
+      <div style="display:flex;gap:9px;padding:8px 0;border-bottom:.5px solid var(--br);font-size:13px;color:var(--tx2)"><div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);font-weight:700;min-width:22px">01</div><div>Rotations = total distance divided by circumference per rotation</div></div>
+      <div style="display:flex;gap:9px;padding:8px 0;border-bottom:.5px solid var(--br);font-size:13px;color:var(--tx2)"><div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);font-weight:700;min-width:22px">02</div><div>C = 3.14 x 6 = 18.84 inches per rotation</div></div>
+      <div style="display:flex;gap:9px;padding:8px 0;font-size:13px;color:var(--tx2)"><div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);font-weight:700;min-width:22px">03</div><div>120 divided by 18.84 = 6.37, rounds up to 7</div></div>
+    </div>
+    <button class="opt" id="aq0" onclick="pickApp(0)">A.  5 rotations</button>
+    <button class="opt" id="aq1" onclick="pickApp(1)">B.  6 rotations</button>
+    <button class="opt" id="aq2" onclick="pickApp(2)">C.  7 rotations</button>
+    <button class="opt" id="aq3" onclick="pickApp(3)">D.  10 rotations</button>
+    <div class="fb" id="app-fb"></div>
+  </div>
+  <button class="next-btn" id="app-next" onclick="goTo(6)">Continue to Reflection &rarr;</button>
+</div>
+
+<!-- PHASE 6: REFLECTION -->
+<div class="phase" id="ph6">
+  <p class="label pu">Phase 6 - Reflection</p>
+  <h2 style="margin-bottom:8px">Ownership is the final step.</h2>
+  <p style="font-size:14px;color:var(--tx2);margin-bottom:18px">What changed in your thinking today?</p>
+  <div class="card" style="margin-bottom:12px">
+    <p class="label bl">Select what resonates:</p>
+    <div class="grid2">
+      <div style="background:var(--bg2);border:.5px solid var(--br2);border-radius:9px;padding:14px;cursor:pointer;border-left:2px solid transparent" id="ri0" onclick="pickRef(0)">
+        <p style="font-size:11px;color:var(--tx3);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Before this I thought...</p>
+        <p style="font-size:13px;color:var(--tx2)">Formulas are something to memorize</p>
+      </div>
+      <div style="background:var(--bg2);border:.5px solid var(--br2);border-radius:9px;padding:14px;cursor:pointer;border-left:2px solid transparent" id="ri1" onclick="pickRef(1)">
+        <p style="font-size:11px;color:var(--tx3);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Now I understand...</p>
+        <p style="font-size:13px;color:var(--tx2)">Every formula describes a real relationship</p>
+      </div>
+      <div style="background:var(--bg2);border:.5px solid var(--br2);border-radius:9px;padding:14px;cursor:pointer;border-left:2px solid transparent" id="ri2" onclick="pickRef(2)">
+        <p style="font-size:11px;color:var(--tx3);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">What surprised me...</p>
+        <p style="font-size:13px;color:var(--tx2)">How differently circumference and area grow</p>
+      </div>
+      <div style="background:var(--bg2);border:.5px solid var(--br2);border-radius:9px;padding:14px;cursor:pointer;border-left:2px solid transparent" id="ri3" onclick="pickRef(3)">
+        <p style="font-size:11px;color:var(--tx3);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">I can now explain...</p>
+        <p style="font-size:13px;color:var(--tx2)">Why pi appears in every circle formula</p>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <p class="label am">Where will you see circles in real life this week?</p>
+    <textarea style="width:100%;background:var(--bg2);border:.5px solid var(--br2);border-radius:9px;padding:12px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--tx);outline:none;resize:vertical;min-height:70px;margin-bottom:0" placeholder="Basketball court, pizza, wheels, clocks, coins..."></textarea>
+  </div>
+  <button class="main-btn" onclick="goTo(7)">See My Scout Report &rarr;</button>
+</div>
+
+<!-- PHASE 7: SCOUT REPORT (rendered by JS) -->
+<div class="phase" id="ph7">
+  <div id="scout-content"></div>
+</div>
+
+<!-- PHASE 8: THINKING MIRROR (rendered by JS) -->
+<div class="phase" id="ph8">
+  <div id="mirror-content"></div>
+</div>
+
+<!-- PHASE 9: PRESCRIPTION (rendered by JS) -->
+<div class="phase" id="ph9">
+  <div id="rx-content"></div>
+</div>
 
 <footer>
-  <div class="f-brand">MATH <b>+/-</b> RELATION</div>
-  <a href="https://mathrelation.com" class="f-link" target="_blank">mathrelation.com</a>
+  <div class="fb-brand">MATH <b>+/-</b> RELATION</div>
+  <a href="https://mathrelation.com" class="fb-link" target="_blank">mathrelation.com</a>
 </footer>
 
 <script>
-var CUR = 0;
-var dScores = [null,null,null];
-var pScores = [null,null,null,null,null,null];
-var appScore = null;
-var diagIdx = 0;
-var lvlIdx = 0;
-var visited = {};
-var activePart = 'center';
-var adData = null;
+// STATE
+var dScores=[null,null,null], pScores=[null,null,null,null,null,null];
+var appScore=null, dIdx=0, lvIdx=0, exVisited={}, exActive=0, curPhase=0;
 
-var labels = ['Mission Brief','Diagnostic','Circle Explorer','Concept Construction','Skill Training','Application','Reflection','Scout Report','Thinking Mirror','Prescription'];
+var phaseLabels=['Mission Brief','Diagnostic','Circle Explorer','Concept Construction','Skill Training','Application','Reflection','Scout Report','Thinking Mirror','Prescription'];
 
-function go(n) {
-  document.getElementById('pg'+CUR).className = 'page';
-  CUR = n;
-  document.getElementById('pg'+CUR).className = 'page on';
+// NAVIGATION
+function goTo(n) {
+  document.getElementById('ph'+curPhase).className='phase';
+  curPhase=n;
+  document.getElementById('ph'+n).className='phase show';
   window.scrollTo({top:0,behavior:'smooth'});
-  for (var i=0;i<10;i++) {
-    var p = document.getElementById('p'+i);
-    if (!p) continue;
-    if (i<n) p.className='pip done';
-    else if (i===n) p.className='pip now';
-    else p.className='pip';
+  for(var i=0;i<10;i++){
+    var p=document.getElementById('pip'+i);
+    if(p) p.className='pip'+(i<n?' done':i===n?' active':'');
   }
-  document.getElementById('plabel').textContent = labels[n];
-  draw(n);
+  document.getElementById('pip-label').textContent=phaseLabels[n];
+  if(n===1) setupDiag();
+  if(n===2) setupExplorer();
+  if(n===4) drawLevel();
+  if(n===7) drawScout();
+  if(n===8) drawMirror();
+  if(n===9) drawRx();
 }
 
-function draw(n) {
-  if(n===0) drawBrief();
-  else if(n===1) drawDiag();
-  else if(n===2) drawExplorer();
-  else if(n===3) drawConcept();
-  else if(n===4) drawLevel();
-  else if(n===5) drawApp();
-  else if(n===6) drawReflect();
-  else if(n===7) drawScout();
-  else if(n===8) drawMirror();
-  else if(n===9) drawRx();
-}
-
-// PHASE 0
-function drawBrief() {
-  document.getElementById('pg0').innerHTML =
-    '<div style="text-align:center;padding:40px 0 28px">'+
-    '<div style="display:inline-flex;align-items:center;gap:9px;background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:9px 18px;margin-bottom:24px;font-family:var(--mono);font-size:11px;color:var(--tx2)"><div style="width:6px;height:6px;border-radius:50%;background:var(--blue)"></div>Academy Mission 01</div>'+
-    '<h1 style="font-size:32px;margin-bottom:12px">Geometry<br><span style="color:var(--blue)">Through Motion</span></h1>'+
-    '<p class="sub" style="max-width:460px;margin:0 auto 28px">Before we calculate anything, we observe. This mission teaches circles through the world you already know.</p>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:380px;margin:0 auto 28px">'+
-    '<div style="background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;padding:14px 8px;text-align:center"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--tx);margin-bottom:3px">9</div><div style="font-size:10px;color:var(--tx3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em">Phases</div></div>'+
-    '<div style="background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;padding:14px 8px;text-align:center"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--tx);margin-bottom:3px">5</div><div style="font-size:10px;color:var(--tx3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em">Dimensions</div></div>'+
-    '<div style="background:var(--bg2);border:.5px solid var(--bdr);border-radius:9px;padding:14px 8px;text-align:center"><div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px">Scout</div><div style="font-size:10px;color:var(--tx3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em">Report</div></div>'+
-    '</div></div>'+
-    '<div class="card">'+
-    '<p class="ey bl">Student Briefing</p>'+
-    '<h2>Before the formula, there is the observation.</h2>'+
-    '<div class="scene">'+
-    '<b>Stephen Curry shoots a three-pointer.</b><br><br>'+
-    'The basketball leaves his fingertips.<br>'+
-    'The ball rotates as it travels through the air.<br>'+
-    'It follows a curved arc and passes through the rim.<br><br>'+
-    'The question is not: What formula do I use?<br><br>'+
-    'The question is: What mathematical relationships are happening right now?'+
-    '</div>'+
-    '<p style="font-size:14px;color:var(--tx2);margin-bottom:12px">The basketball in that moment contains:</p>'+
-    '<div class="grid2">'+
-    '<div class="chip">Circle</div><div class="chip">Rotation</div>'+
-    '<div class="chip">Circumference</div><div class="chip">Radius</div>'+
-    '<div class="chip">Diameter</div><div class="chip">Area</div>'+
-    '<div class="chip">Arc</div><div class="chip">Distance</div>'+
-    '</div></div>'+
-    '<div class="card">'+
-    '<p class="ey am">Mission Objective</p>'+
-    '<p style="font-size:14px;color:var(--tx2);line-height:1.8">By the end of this mission you will be able to <strong style="color:var(--tx)">recognize, calculate, explain, apply, and teach</strong> every circle relationship.</p>'+
-    '<div style="text-align:center;margin-top:18px">'+
-    '<button class="btn" onclick="go(1)">Begin Mission &rarr;</button>'+
-    '</div></div>';
-}
-
-// PHASE 1
-var dQs = [
-  {q:"Before we start, where are you right now?
+// DIAGNOSTIC
+var dQs=[
+  {q:"Before we start training, where are you right now?
 
 What do you call the distance around the outside edge of a circle?",
    opts:["A.  Diameter","B.  Area","C.  Circumference","D.  Radius"],ci:2,
-   why:"Circumference is the total distance around the outside of any circle, like wrapping a measuring tape around a basketball."},
+   why:"Circumference is the total distance around the outside of any circle, like wrapping a tape measure around a basketball."},
   {q:"A circle has a radius of 6 cm. What is its diameter?",
    opts:["A.  3 cm","B.  6 cm","C.  12 cm","D.  18 cm"],ci:2,
-   why:"Diameter = 2 x radius = 2 x 6 = 12 cm. The diameter always passes through the center and is exactly twice the radius."},
+   why:"Diameter = 2 x radius = 2 x 6 = 12 cm. The diameter passes through the center and is exactly twice the radius."},
   {q:"Which formula finds the circumference when you know the diameter?",
    opts:["A.  A = pi x r2","B.  C = pi x d","C.  A = l x w","D.  C = (1/2) x b x h"],ci:1,
-   why:"C = pi x d is the circumference formula. Pi (3.14) is the ratio of circumference to diameter in every circle."}
+   why:"C = pi x d. Pi (3.14) is the ratio of circumference to diameter in every circle, always."}
 ];
 
-function drawDiag() {
-  var q = dQs[diagIdx];
-  var dots = '';
-  for(var i=0;i<3;i++) dots += '<div class="dot'+(i<diagIdx?' done':i===diagIdx?' now':'')+'"></div>';
-  document.getElementById('pg1').innerHTML =
-    '<p class="ey bl">Phase 1 - Diagnostic</p>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px">'+
-    '<h2>Where are you right now?</h2>'+
-    '<div style="display:flex;align-items:center;gap:10px"><span style="font-family:var(--mono);font-size:11px;color:var(--tx3)">Q'+(diagIdx+1)+' of 3</span>'+
-    '<div class="dots">'+dots+'</div></div></div>'+
-    '<div class="card">'+
-    '<p style="font-family:var(--mono);font-size:14px;line-height:1.8;color:var(--tx);white-space:pre-line;margin-bottom:14px">'+q.q+'</p>'+
-    q.opts.map(function(o,i){return'<button class="opt-btn" id="dq'+i+'" onclick="pickDiag('+i+')">'+o+'</button>';}).join('')+
+function setupDiag() {
+  dIdx=0; renderDiag();
+}
+
+function renderDiag() {
+  var q=dQs[dIdx];
+  var dots='';
+  for(var i=0;i<3;i++) dots+='<div class="dot'+(i<dIdx?' done':i===dIdx?' now':'')+'"></div>';
+  document.getElementById('dq-counter').textContent='Q'+(dIdx+1)+' of 3';
+  document.getElementById('dq-dots').innerHTML=dots;
+  document.getElementById('dq-card').innerHTML=
+    '<p class="q-text">'+q.q+'</p>'+
+    q.opts.map(function(o,i){return'<button class="opt" id="dopt'+i+'" onclick="pickDiag('+i+')">'+o+'</button>';}).join('')+
     '<div class="fb" id="dfb"></div>'+
-    '<button class="btn btn-wide" id="dnxt" onclick="nextDiag()">'+(diagIdx<2?'Next Question &rarr;':'Circle Explorer &rarr;')+'</button>'+
-    '</div>';
+    '<button class="next-btn" id="dnxt" onclick="nextDiag()">'+(dIdx<2?'Next Question':'Circle Explorer &rarr;')+'</button>';
 }
 
 function pickDiag(i) {
-  var q = dQs[diagIdx];
-  var right = i===q.ci;
-  dScores[diagIdx] = right?1:0;
-  for(var j=0;j<4;j++) {
-    var b = document.getElementById('dq'+j);
-    if(!b) continue;
-    b.disabled = true;
-    if(j===q.ci) b.className='opt-btn ok';
-    else if(j===i&&!right) b.className='opt-btn no';
-    else b.className='opt-btn';
-  }
-  var fb = document.getElementById('dfb');
-  fb.className='fb '+(right?'ok':'no')+' show';
-  fb.textContent=(right?'Correct. ':'Not quite. ')+q.why;
-  document.getElementById('dnxt').className='btn btn-wide on';
+  var q=dQs[dIdx]; var r=i===q.ci;
+  dScores[dIdx]=r?1:0;
+  for(var j=0;j<4;j++){var b=document.getElementById('dopt'+j);if(b){b.disabled=true;if(j===q.ci)b.className='opt right';else if(j===i&&!r)b.className='opt wrong';}}
+  var fb=document.getElementById('dfb'); fb.className='fb '+(r?'right':'wrong')+' show'; fb.textContent=(r?'Correct. ':'Not quite. ')+q.why;
+  document.getElementById('dnxt').className='next-btn show';
 }
 
-function nextDiag() { diagIdx++; if(diagIdx>=3) go(2); else drawDiag(); }
+function nextDiag() { dIdx++; if(dIdx>=3) goTo(2); else renderDiag(); }
 
-// PHASE 2
-var parts = [
-  {id:'center',lbl:'Center',ico:'C',icoBg:'rgba(245,158,11,.15)',icoC:'var(--amber)',
-   title:'Center',
-   body:'The exact middle point of a circle. Every measurement in a circle starts from or relates to the center. Every point on the edge is the same distance from the center.',
-   formula:null},
-  {id:'radius',lbl:'Radius',ico:'r',icoBg:'var(--blue-dim)',icoC:'var(--blue)',
-   title:'Radius (r)',
-   body:'The distance from the center to any point on the edge. If the radius doubles, the diameter doubles and the circumference doubles.',
-   formula:{txt:'d = 2 x r',cls:'ef-bl'}},
-  {id:'diameter',lbl:'Diameter',ico:'d',icoBg:'var(--pdim)',icoC:'var(--purple)',
-   title:'Diameter (d)',
-   body:'Passes through the center from one edge to the other. Always exactly twice the radius. The longest straight line inside a circle.',
-   formula:{txt:'d = 2r     r = d divided by 2',cls:'ef-pu'}},
-  {id:'circumference',lbl:'Circumference',ico:'C',icoBg:'var(--gdim)',icoC:'var(--green)',
-   title:'Circumference (C)',
-   body:'Total distance around the outside edge, like wrapping a tape measure around a basketball. Always pi times the diameter, for every circle.',
-   formula:{txt:'C = pi x d     or     C = 2 x pi x r',cls:'ef-gr'}},
-  {id:'area',lbl:'Area',ico:'A',icoBg:'var(--rdim)',icoC:'var(--red)',
-   title:'Area (A)',
-   body:'The space inside the circle. Area grows much faster than circumference because it uses radius squared. Circumference measures the edge. Area measures the inside.',
-   formula:{txt:'A = pi x r squared',cls:'ef-re'}},
+// EXPLORER
+var exParts=[
+  {lbl:'Center',title:'Center',body:'The exact middle point of a circle. Every measurement starts from or relates to the center. Every point on the edge is the same distance from the center.',formula:null,c:'#f59e0b'},
+  {lbl:'Radius',title:'Radius (r)',body:'Distance from the center to any point on the edge. If the radius doubles, the diameter doubles and the circumference doubles.',formula:'d = 2 x r',fc:'ef-bl',c:'#3B82F6'},
+  {lbl:'Diameter',title:'Diameter (d)',body:'Passes through the center from edge to edge. Always exactly twice the radius. The longest straight line you can draw inside a circle.',formula:'d = 2r     r = d divided by 2',fc:'ef-pu',c:'#a78bfa'},
+  {lbl:'Circumference',title:'Circumference (C)',body:'Total distance around the outside edge, like wrapping a tape measure around a basketball. Always pi times the diameter, for every circle.',formula:'C = pi x d     or     C = 2 x pi x r',fc:'ef-gr',c:'#22c55e'},
+  {lbl:'Area',title:'Area (A)',body:'The space inside the circle. Area grows much faster than circumference because it uses radius squared.',formula:'A = pi x r squared',fc:'ef-re',c:'#f87171'}
 ];
 
-function makeSVG(active) {
-  var cols = {center:'#f59e0b',radius:'#3B82F6',diameter:'#a78bfa',circumference:'#22c55e',area:'#f87171'};
-  var c = cols[active]||'rgba(255,255,255,0.15)';
-  var bs = 'rgba(255,255,255,0.12)';
-  var aFill = active==='area'?'rgba(248,113,113,0.08)':'none';
-  var cStroke = active==='circumference'?c:bs;
-  var cW = active==='circumference'?'2.5':'1';
+function makeSVG(i) {
+  var c=exParts[i].c, bs='rgba(255,255,255,0.12)';
+  var aFill=i===4?'rgba(248,113,113,0.08)':'none';
   return '<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">'+
-    '<circle cx="120" cy="120" r="90" fill="'+aFill+'" stroke="'+cStroke+'" stroke-width="'+cW+'"/>'+
-    (active==='circumference'?'<circle cx="120" cy="120" r="90" fill="none" stroke="'+c+'" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>':'')+
-    '<line x1="120" y1="120" x2="210" y2="120" stroke="'+(active==='radius'?c:bs)+'" stroke-width="'+(active==='radius'?'2.5':'1')+'"/>'+
-    (active==='radius'?'<text x="168" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">r</text>':'')+
-    '<line x1="30" y1="120" x2="210" y2="120" stroke="'+(active==='diameter'?c:bs)+'" stroke-width="'+(active==='diameter'?'2.5':'1')+'"'+(active==='diameter'?' stroke-dasharray="6,3"':'')+' />'+
-    (active==='diameter'?'<text x="120" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">d</text>':'')+
-    '<circle cx="120" cy="120" r="5" fill="'+(active==='center'?c:'rgba(255,255,255,0.3)')+'"/>'+
-    (active==='center'?'<text x="132" y="112" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">center</text>':'')+
-    (active==='area'?'<text x="120" y="126" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace" opacity="0.6">A = pi x r2</text>':'')+
-    (active==='circumference'?'<text x="120" y="30" text-anchor="middle" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">C</text>':'')+
-    '</svg>';
+    '<circle cx="120" cy="120" r="90" fill="'+aFill+'" stroke="'+(i===3?c:bs)+'" stroke-width="'+(i===3?2.5:1)+'"/>'+
+    (i===3?'<circle cx="120" cy="120" r="90" fill="none" stroke="'+c+'" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>':'')+
+    '<line x1="120" y1="120" x2="210" y2="120" stroke="'+(i===1?c:bs)+'" stroke-width="'+(i===1?2.5:1)+'"/>'+
+    (i===1?'<text x="168" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">r</text>':'')+
+    '<line x1="30" y1="120" x2="210" y2="120" stroke="'+(i===2?c:bs)+'" stroke-width="'+(i===2?2.5:1)+'"'+(i===2?' stroke-dasharray="6,3"':'')+' />'+
+    (i===2?'<text x="120" y="113" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace">d</text>':'')+
+    '<circle cx="120" cy="120" r="5" fill="'+(i===0?c:'rgba(255,255,255,0.3)')+'"/>'+
+    (i===0?'<text x="132" y="112" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">center</text>':'')+
+    (i===4?'<text x="120" y="126" text-anchor="middle" fill="'+c+'" font-size="13" font-family="Space Mono,monospace" opacity="0.6">A = pi x r2</text>':'')+
+    (i===3?'<text x="120" y="30" text-anchor="middle" fill="'+c+'" font-size="11" font-family="Space Mono,monospace">C</text>':'')+
+  '</svg>';
 }
 
-function drawExplorer() {
-  var pg = document.getElementById('pg2');
-  pg.innerHTML =
-    '<p class="ey bl">Phase 2 - Circle Explorer</p>'+
-    '<h2>Discover every part of a circle.</h2>'+
-    '<p class="sub">Tap each part. Learn what it measures and how it connects to everything else.</p>'+
-    '<div class="ex-wrap">'+
-    '<div class="ex-svg" id="csvg">'+makeSVG(activePart)+'</div>'+
-    '<div class="ex-parts">'+
-    parts.map(function(p,i){
-      return '<div class="ex-part'+(activePart===p.id?' on':'')+'" id="ep'+i+'" onclick="selPart('+i+')" >'+
-        '<div class="ex-icon" style="background:'+p.icoBg+';color:'+p.icoC+'">'+p.ico+'</div>'+
-        '<div class="ex-name">'+p.lbl+'</div></div>';
-    }).join('')+
-    '</div></div>'+
-    '<div class="ex-detail" id="edet"></div>'+
-    '<p style="font-family:var(--mono);font-size:11px;color:var(--tx3);margin-top:12px" id="ehint">Tap all 5 parts to continue.</p>'+
-    '<button class="btn btn-wide" id="exnxt" onclick="go(3)">Continue to Concept Construction &rarr;</button>';
-  updateDet();
+function setupExplorer() {
+  exActive=0;
+  document.getElementById('ex-svg-wrap').innerHTML=makeSVG(0);
+  showExPanel(0);
 }
 
 function selPart(i) {
-  var p = parts[i];
-  activePart = p.id;
-  visited[p.id] = true;
-  document.getElementById('csvg').innerHTML = makeSVG(p.id);
-  for(var j=0;j<parts.length;j++) {
-    var el = document.getElementById('ep'+j);
-    if(el) el.className = 'ex-part'+(j===i?' on':'');
-  }
-  updateDet();
-  if(Object.keys(visited).length >= 5) {
-    document.getElementById('ehint').textContent = 'All 5 parts explored. Ready to continue.';
-    document.getElementById('exnxt').className = 'btn btn-wide on';
+  exActive=i; exVisited[i]=true;
+  document.getElementById('ex-svg-wrap').innerHTML=makeSVG(i);
+  for(var j=0;j<5;j++){var el=document.getElementById('ep'+j);if(el)el.className='ex-part'+(j===i?' on':'');}
+  showExPanel(i);
+  if(Object.keys(exVisited).length>=5){
+    document.getElementById('ex-hint').textContent='All 5 parts explored. Ready to continue.';
+    document.getElementById('ex-next').className='next-btn show';
   }
 }
 
-function updateDet() {
-  var p = parts.find(function(x){return x.id===activePart;});
-  if(!p) return;
-  document.getElementById('edet').innerHTML =
-    '<div class="ex-detail">'+
-    '<p class="ex-dtitle">'+p.title+'</p>'+
-    '<p class="ex-dbody">'+p.body+'</p>'+
-    (p.formula?'<div class="ex-formula '+p.formula.cls+'">'+p.formula.txt+'</div>':'')+
+function showExPanel(i) {
+  var p=exParts[i];
+  document.getElementById('ex-panel-wrap').innerHTML=
+    '<div class="ex-panel show"><p class="ex-ptitle">'+p.title+'</p><p class="ex-pbody">'+p.body+'</p>'+
+    (p.formula?'<div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:5px 12px;border-radius:6px;margin-top:10px;display:inline-block;background:var(--bdim);color:var(--blue);border:.5px solid var(--bbd)">'+p.formula+'</div>':'')+
     '</div>';
 }
 
-// PHASE 3
-var cSteps = [
-  {n:'01',q:'If you wrapped a measuring tape around a basketball, what exactly would you be measuring?',
-   a:'You would be measuring the <b>circumference</b> - the total distance around the outside of the circle. Students confuse this with diameter (across) or area (inside space). Circumference is the perimeter of a circle.'},
-  {n:'02',q:'Why does pi appear in the circumference formula?',
-   a:'Pi (approximately 3.14) is the ratio of any circle circumference to its diameter. Always. No exceptions. Divide any circle circumference by its diameter and you always get pi. The formula C = pi x d comes directly from this relationship.'},
-  {n:'03',q:'What is the difference between circumference and area?',
-   a:'<b>Circumference</b> is the boundary - the distance you walk if you walked all the way around the edge. Like a running track.<br><br><b>Area</b> is the inside surface - how much space the circle covers. Like the grass inside that same track. Same circle. Two completely different measurements.'},
-  {n:'04',q:'If the radius doubles from 5 to 10, what happens to circumference? What happens to area?',
-   a:'<b>Circumference doubles</b> (31.4 to 62.8). C = pi x d, and d = 2r, so circumference is proportional to radius.<br><br><b>Area quadruples</b> (78.5 to 314). A = pi x r squared. Double the radius means 2 squared = 4 times the area. A circle twice as wide covers four times as much space.'},
-];
-
-function drawConcept() {
-  document.getElementById('pg3').innerHTML =
-    '<p class="ey am">Phase 3 - Concept Construction</p>'+
-    '<h2>Discover the relationships before the formula.</h2>'+
-    '<p class="sub">Think through each question before revealing the answer. This is where real understanding forms.</p>'+
-    cSteps.map(function(cs,i){
-      return '<div class="cstep">'+
-        '<p class="cstep-n">Question '+cs.n+'</p>'+
-        '<p class="cstep-q">'+cs.q+'</p>'+
-        '<button class="rev-btn" id="rb'+i+'" onclick="revConcept('+i+')">Reveal Answer</button>'+
-        '<div class="rev-ans" id="ra'+i+'">'+cs.a+'</div>'+
-        '</div>';
-    }).join('')+
-    '<button class="btn btn-wide on" onclick="go(4)">Begin Skill Training &rarr;</button>';
-}
-
-function revConcept(i) {
-  document.getElementById('ra'+i).className='rev-ans show';
+// CONCEPT REVEAL
+function reveal(i) {
+  document.getElementById('ca'+i).className='c-ans show';
   document.getElementById('rb'+i).style.display='none';
 }
 
-// PHASE 4
-var lvls = [
-  {badge:'lv1',name:'Level 1 - Identify',desc:'Name the parts without calculating.',
-   q:'The line from the exact center to any point on the edge is called:',
-   formula:null,
+// SKILL LEVELS
+var lvls=[
+  {tag:'lv-gr',name:'Level 1 - Identify',desc:'Name the parts without calculating.',
+   q:'The line from the exact center to any point on the edge is called:',formula:null,
    opts:['A.  Diameter','B.  Circumference','C.  Radius','D.  Area'],ci:2,
-   why:'The radius is the line from center to edge. The diameter goes all the way across through the center.',work:null},
-  {badge:'lv2',name:'Level 2 - Connect',desc:'Find relationships between measurements.',
-   q:'A circle has a radius of 7 cm. What is its diameter?',
-   formula:null,
+   why:'The radius goes from center to edge. The diameter goes all the way across through the center.',work:null},
+  {tag:'lv-bl',name:'Level 2 - Connect',desc:'Find relationships between measurements.',
+   q:'A circle has a radius of 7 cm. What is its diameter?',formula:null,
    opts:['A.  3.5 cm','B.  7 cm','C.  14 cm','D.  21 cm'],ci:2,
-   why:'Diameter = 2 x radius = 2 x 7 = 14 cm.',
-   work:['d = 2 x r','d = 2 x 7','d = 14 cm']},
-  {badge:'lv3',name:'Level 3 - Calculate C',desc:'Apply the circumference formula.',
-   q:'A circle has a diameter of 8 inches.\nFind the circumference. (Use pi = 3.14)',
-   formula:{txt:'C = pi x d',cls:'ef-gr'},
+   why:'Diameter = 2 x radius = 2 x 7 = 14 cm.',work:['d = 2 x r','d = 2 x 7','d = 14 cm']},
+  {tag:'lv-am',name:'Level 3 - Calculate C',desc:'Apply the circumference formula.',
+   q:'A circle has a diameter of 8 inches.
+Find the circumference. (Use pi = 3.14)',
+   formula:{txt:'C = pi x d',cls:'fm-gr'},
    opts:['A.  12.56 in','B.  25.12 in','C.  50.24 in','D.  200.96 in'],ci:1,
-   why:'C = pi x d = 3.14 x 8 = 25.12 inches.',
-   work:['C = pi x d','C = 3.14 x 8','C = 25.12 inches']},
-  {badge:'lv4',name:'Level 4 - Calculate A',desc:'Apply the area formula.',
-   q:'A circle has a radius of 5 cm.\nFind the area. (Use pi = 3.14)',
-   formula:{txt:'A = pi x r squared',cls:'ef-re'},
+   why:'C = pi x d = 3.14 x 8 = 25.12 inches.',work:['C = pi x d','C = 3.14 x 8','C = 25.12 inches']},
+  {tag:'lv-am',name:'Level 4 - Calculate A',desc:'Apply the area formula.',
+   q:'A circle has a radius of 5 cm.
+Find the area. (Use pi = 3.14)',
+   formula:{txt:'A = pi x r squared',cls:'fm-am'},
    opts:['A.  15.70 cm2','B.  31.40 cm2','C.  78.50 cm2','D.  314 cm2'],ci:2,
    why:'A = pi x r2 = 3.14 x 25 = 78.5 cm2. Always square the radius BEFORE multiplying by pi.',
    work:['A = pi x r2','A = 3.14 x 52','A = 3.14 x 25','A = 78.5 cm2']},
-  {badge:'lv5',name:'Level 5 - Compare',desc:'Reason about two circles.',
-   q:'Circle A: radius = 4.\nCircle B: radius = 8.\n\nHow many times greater is Circle B circumference?',
+  {tag:'lv-pu',name:'Level 5 - Compare',desc:'Reason about two circles.',
+   q:'Circle A: radius = 4.
+Circle B: radius = 8.
+
+How many times greater is Circle B circumference?',
    formula:null,
    opts:['A.  Same','B.  2 times greater','C.  4 times greater','D.  8 times greater'],ci:1,
-   why:'Circumference is proportional to radius. Double the radius = double the circumference. Area would be 4x greater.',
+   why:'Circumference is proportional to radius. Double the radius = double the circumference. Area would be 4x greater because it uses radius squared.',
    work:['C_A = 2 x 3.14 x 4 = 25.12','C_B = 2 x 3.14 x 8 = 50.24','50.24 / 25.12 = 2x greater']},
-  {badge:'lv6',name:'Level 6 - Word Problem',desc:'Recognize math inside a real situation.',
-   q:'A basketball has a diameter of 9.5 inches.\nIt rolls 10 complete rotations.\n\nHow far did it travel? (pi = 3.14)',
-   formula:{txt:'C = pi x d',cls:'ef-gr'},
+  {tag:'lv-pu',name:'Level 6 - Word Problem',desc:'Recognize math inside a real situation.',
+   q:'A basketball has a diameter of 9.5 inches.
+It rolls 10 complete rotations.
+
+How far did it travel? (pi = 3.14)',
+   formula:{txt:'C = pi x d',cls:'fm-gr'},
    opts:['A.  29.83 in','B.  94.5 in','C.  298.3 in','D.  945 in'],ci:2,
    why:'Each rotation = one circumference. C = 3.14 x 9.5 = 29.83 in. x 10 = 298.3 inches.',
-   work:['C = pi x d = 3.14 x 9.5','C = 29.83 in per rotation','10 rotations x 29.83','Distance = 298.3 inches']},
+   work:['C = pi x d = 3.14 x 9.5 = 29.83 in','Each rotation covers 29.83 in','10 rotations x 29.83','Distance = 298.3 inches']},
 ];
 
 function drawLevel() {
-  var lv = lvls[lvlIdx];
-  var dots = '';
-  for(var i=0;i<6;i++) dots+='<div class="dot'+(i<lvlIdx?' done':i===lvlIdx?' now':'')+'"></div>';
-  var fHtml = lv.formula ? '<div class="ex-formula '+lv.formula.cls+'" style="margin-bottom:12px">'+lv.formula.txt+'</div>' : '';
-  document.getElementById('pg4').innerHTML =
-    '<p class="ey am">Phase 4 - Skill Training</p>'+
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">'+
-    '<span class="lv-badge '+lv.badge+'">'+lv.name+'</span>'+
-    '<span style="font-size:12px;color:var(--tx3);font-family:var(--mono)">'+(lvlIdx+1)+' of 6</span></div>'+
+  var lv=lvls[lvIdx];
+  var dots='';
+  for(var i=0;i<6;i++) dots+='<div class="dot'+(i<lvIdx?' done':i===lvIdx?' now':'')+'"></div>';
+  document.getElementById('level-content').innerHTML=
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">'+
+    '<span class="lv-tag '+lv.tag+'">'+lv.name+'</span>'+
+    '<span style="font-size:12px;color:var(--tx3);font-family:'Space Mono',monospace">'+(lvIdx+1)+' of 6</span></div>'+
     '<div class="dots">'+dots+'</div>'+
     '<div class="card">'+
-    '<p style="font-size:13px;color:var(--tx2);font-style:italic;margin-bottom:12px">'+lv.desc+'</p>'+
-    fHtml+
-    '<p style="font-family:var(--mono);font-size:14px;line-height:1.85;color:var(--tx);white-space:pre-line;margin-bottom:14px">'+lv.q+'</p>'+
-    lv.opts.map(function(o,i){return'<button class="opt-btn" id="lq'+i+'" onclick="pickLv('+i+')">'+o+'</button>';}).join('')+
+    '<p style="font-size:13px;color:var(--tx2);font-style:italic;margin-bottom:11px">'+lv.desc+'</p>'+
+    (lv.formula?'<div class="formula-box '+lv.formula.cls+'">'+lv.formula.txt+'</div>':'')+
+    '<p class="q-text">'+lv.q+'</p>'+
+    lv.opts.map(function(o,i){return'<button class="opt" id="lopt'+i+'" onclick="pickLv('+i+')">'+o+'</button>';}).join('')+
     '<div class="fb" id="lfb"></div>'+
-    (lv.work?'<div class="work" id="lwk"><p style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;margin-bottom:9px">Working it out</p>'+
-    lv.work.map(function(w,i){return'<div class="wline">'+(i>0?'<span style="color:var(--tx3);font-size:11px">-&gt;</span>':'')+w+'</div>';}).join('')+'</div>':'')+
+    (lv.work?'<div class="work-box" id="lwk">'+
+    lv.work.map(function(w,i){return'<div class="wl">'+(i>0?'<span style="color:var(--tx3);font-size:11px">-&gt;</span>':'')+w+'</div>';}).join('')+
+    '</div>':'')+
     '</div>'+
-    '<button class="btn btn-wide" id="lnxt" onclick="nextLv()">'+(lvlIdx<5?'Next Level &rarr;':'Continue to Application &rarr;')+'</button>';
+    '<button class="next-btn" id="lnxt" onclick="nextLv()">'+(lvIdx<5?'Next Level &rarr;':'Continue to Application &rarr;')+'</button>';
 }
 
 function pickLv(i) {
-  var lv = lvls[lvlIdx];
-  var right = i===lv.ci;
-  pScores[lvlIdx] = right?1:0;
-  for(var j=0;j<lv.opts.length;j++) {
-    var b = document.getElementById('lq'+j);
-    if(!b) continue;
-    b.disabled=true;
-    if(j===lv.ci) b.className='opt-btn ok';
-    else if(j===i&&!right) b.className='opt-btn no';
-    else b.className='opt-btn';
-  }
-  var fb = document.getElementById('lfb');
-  fb.className='fb '+(right?'ok':'no')+' show';
-  fb.textContent=(right?'Correct. ':'Not quite. ')+lv.why;
-  if(lv.work) document.getElementById('lwk').className='work show';
-  document.getElementById('lnxt').className='btn btn-wide on';
+  var lv=lvls[lvIdx]; var r=i===lv.ci;
+  pScores[lvIdx]=r?1:0;
+  for(var j=0;j<lv.opts.length;j++){var b=document.getElementById('lopt'+j);if(b){b.disabled=true;if(j===lv.ci)b.className='opt right';else if(j===i&&!r)b.className='opt wrong';}}
+  var fb=document.getElementById('lfb'); fb.className='fb '+(r?'right':'wrong')+' show'; fb.textContent=(r?'Correct. ':'Not quite. ')+lv.why;
+  if(lv.work) document.getElementById('lwk').className='work-box show';
+  document.getElementById('lnxt').className='next-btn show';
 }
 
-function nextLv() { lvlIdx++; if(lvlIdx>=6) go(5); else drawLevel(); }
+function nextLv() { lvIdx++; if(lvIdx>=6) goTo(5); else drawLevel(); }
 
-// PHASE 5
-function drawApp() {
-  document.getElementById('pg5').innerHTML =
-    '<p class="ey gr">Phase 5 - Application</p>'+
-    '<h2>Recognize the math in the real world.</h2>'+
-    '<p class="sub">The mathematics does not change. Only the situation does.</p>'+
-    '<div class="card">'+
-    '<h2 style="margin-bottom:12px">The Basketball Robot Problem</h2>'+
-    '<div style="background:var(--bg3);border-radius:9px;padding:13px 15px;border-left:2px solid var(--amber);font-family:var(--mono);font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:14px">'+
-    '<b style="color:var(--tx)">A robot retrieves basketballs.</b><br><br>'+
-    'Wheel diameter: 6 inches.<br>'+
-    'Distance to travel: 120 inches.<br><br>'+
-    'How many complete rotations to travel 120 inches? (Use pi = 3.14, round to nearest whole)'+
-    '</div>'+
-    '<div style="margin-bottom:14px">'+
-    '<div style="display:flex;gap:10px;padding:9px 0;border-bottom:.5px solid var(--bdr);font-size:13px;color:var(--tx2)"><div style="font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700;min-width:22px">01</div><div>Rotations = total distance divided by circumference per rotation</div></div>'+
-    '<div style="display:flex;gap:10px;padding:9px 0;border-bottom:.5px solid var(--bdr);font-size:13px;color:var(--tx2)"><div style="font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700;min-width:22px">02</div><div>C = 3.14 x 6 = 18.84 inches per rotation</div></div>'+
-    '<div style="display:flex;gap:10px;padding:9px 0;font-size:13px;color:var(--tx2)"><div style="font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700;min-width:22px">03</div><div>120 divided by 18.84 = 6.37, rounds up to 7</div></div>'+
-    '</div>'+
-    '<button class="opt-btn" id="aq0" onclick="pickApp(0)">A.  5 rotations</button>'+
-    '<button class="opt-btn" id="aq1" onclick="pickApp(1)">B.  6 rotations</button>'+
-    '<button class="opt-btn" id="aq2" onclick="pickApp(2)">C.  7 rotations</button>'+
-    '<button class="opt-btn" id="aq3" onclick="pickApp(3)">D.  10 rotations</button>'+
-    '<div class="fb" id="afb"></div>'+
-    '</div>'+
-    '<button class="btn btn-wide" id="anxt" onclick="go(6)">Continue to Reflection &rarr;</button>';
-}
-
+// APPLICATION
 function pickApp(i) {
-  var right = i===2;
-  appScore = right?1:0;
-  for(var j=0;j<4;j++) {
-    var b = document.getElementById('aq'+j);
-    if(!b) continue;
-    b.disabled=true;
-    if(j===2) b.className='opt-btn ok';
-    else if(j===i&&!right) b.className='opt-btn no';
-    else b.className='opt-btn';
-  }
-  var fb = document.getElementById('afb');
-  fb.className='fb '+(right?'ok':'no')+' show';
-  fb.textContent=(right?'Correct. ':'Not quite. ')+'C = 3.14 x 6 = 18.84 in per rotation. 120 / 18.84 = 6.37, rounds up to 7 complete rotations.';
-  document.getElementById('anxt').className='btn btn-wide on';
+  var r=i===2; appScore=r?1:0;
+  for(var j=0;j<4;j++){var b=document.getElementById('aq'+j);if(b){b.disabled=true;if(j===2)b.className='opt right';else if(j===i&&!r)b.className='opt wrong';}}
+  var fb=document.getElementById('app-fb'); fb.className='fb '+(r?'right':'wrong')+' show';
+  fb.textContent=(r?'Correct. ':'Not quite. ')+'C = 3.14 x 6 = 18.84 in per rotation. 120 / 18.84 = 6.37, rounds up to 7 complete rotations.';
+  document.getElementById('app-next').className='next-btn show';
 }
 
-// PHASE 6
-function drawReflect() {
-  document.getElementById('pg6').innerHTML =
-    '<p class="ey pu">Phase 6 - Reflection</p>'+
-    '<h2>Ownership is the final step.</h2>'+
-    '<p class="sub">Mastery is demonstrated by understanding what changed in your thinking.</p>'+
-    '<div class="card" style="margin-bottom:12px">'+
-    '<p class="ey bl">What changed in your thinking today?</p>'+
-    '<div class="grid2">'+
-    [{q:'Before this I thought...',a:'Formulas are something to memorize'},
-     {q:'Now I understand that...',a:'Every formula describes a real relationship'},
-     {q:'What surprised me...',a:'How differently circumference and area grow'},
-     {q:'I can now explain...',a:'Why pi appears in every circle formula'}].map(function(r,i){
-      return '<div style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:9px;padding:14px;cursor:pointer;border-left:2px solid transparent;transition:all .15s" id="ri'+i+'" onclick="pickRef('+i+')">'+
-      '<p style="font-size:11px;color:var(--tx3);font-family:var(--mono);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em">'+r.q+'</p>'+
-      '<p style="font-size:13px;color:var(--tx2);line-height:1.6">'+r.a+'</p></div>';
-    }).join('')+
-    '</div></div>'+
-    '<div class="card">'+
-    '<p class="ey am">Where will you see this in real life this week?</p>'+
-    '<textarea style="width:100%;background:var(--bg2);border:.5px solid var(--bdr2);border-radius:9px;padding:13px 15px;font-size:14px;font-family:var(--sans);color:var(--tx);outline:none;resize:vertical;min-height:75px;margin-bottom:9px;transition:border-color .15s" placeholder="One place you will notice circles, circumference, or area..."></textarea>'+
-    '</div>'+
-    '<button class="btn btn-wide on" onclick="go(7)">See My Scout Report &rarr;</button>';
-}
-
+// REFLECTION
 function pickRef(i) {
-  var el = document.getElementById('ri'+i);
-  if(el) el.style.borderLeftColor='var(--blue)';
+  var el=document.getElementById('ri'+i); if(el) el.style.borderLeftColor='var(--blue)';
 }
 
-// PHASE 7
+// SCOUT REPORT
 function drawScout() {
-  var d = dScores; var p = pScores; var a = appScore||0;
-  var tot = (d[0]||0)+(d[1]||0)+(d[2]||0)+(p[0]||0)+(p[1]||0)+(p[2]||0)+(p[3]||0)+(p[4]||0)+(p[5]||0)+a;
-  var pct = Math.round((tot/10)*100);
-  var profile, pcls, pdesc, cnote;
-  if(pct>=85){profile='Ready to Advance';pcls='pr-ready';pdesc='Strong across all dimensions. Conceptual understanding and procedural fluency are both present.';cnote='Kareem demonstrates consistent understanding across recognition, calculation, and transfer. The foundation is solid. Recommended next step: Algebra Through Relationships.';}
-  else if((d[0]||0)+(d[1]||0)>=2&&(p[2]||0)+(p[3]||0)<=1){profile='Builder';pcls='pr-build';pdesc='Strong conceptual understanding. Procedural execution needs more repetition.';cnote='The relationships are understood, which is the harder skill to develop. The gaps are in procedural execution. Focused calculation drills using known formulas will close this quickly.';}
-  else if((d[0]||0)+(d[1]||0)<=1&&(p[2]||0)+(p[3]||0)>=2){profile='Practitioner';pcls='pr-pract';pdesc='Solid with calculation mechanics. Conceptual vocabulary needs reinforcement.';cnote='Procedures are reliable but the conceptual foundation needs deepening. Visualization and real-world application will make the skills more durable under pressure.';}
-  else{profile='Foundation Building';pcls='pr-found';pdesc='Both conceptual understanding and procedural fluency are developing.';cnote='Consistent structured exposure will produce the most growth. Build the visualization layer first. Once the mental model is clear, the formulas follow naturally.';}
-  var wins=[],growth=[];
-  if((d[0]||0)+(d[1]||0)+(d[2]||0)>=2) wins.push('Vocabulary knowledge demonstrated');
+  var d=dScores, p=pScores, a=appScore||0;
+  var tot=(d[0]||0)+(d[1]||0)+(d[2]||0)+(p[0]||0)+(p[1]||0)+(p[2]||0)+(p[3]||0)+(p[4]||0)+(p[5]||0)+a;
+  var pct=Math.round((tot/10)*100);
+  var pr,pcls,pdesc,cnote;
+  if(pct>=85){pr='Ready to Advance';pcls='pt-gr';pdesc='Strong across all dimensions.';cnote='The foundation is solid. Recommended next step: Algebra Through Relationships.';}
+  else if((d[0]||0)+(d[1]||0)>=2&&(p[2]||0)+(p[3]||0)<=1){pr='Builder';pcls='pt-bl';pdesc='Strong conceptual understanding. Procedural execution needs more repetition.';cnote='The relationships are understood. Gaps are in procedural execution. Focused calculation drills will close this quickly.';}
+  else{pr='Foundation Building';pcls='pt-am';pdesc='Both understanding and fluency are developing.';cnote='Consistent structured exposure will produce the most growth. Build the visualization layer first.';}
+  var wins=[], growth=[];
+  if((d[0]||0)+(d[1]||0)>=2) wins.push('Vocabulary knowledge demonstrated');
   if(p[0]) wins.push('Circle parts identified correctly');
   if(p[2]) wins.push('Circumference formula applied accurately');
   if(p[3]) wins.push('Area formula with correct order of operations');
@@ -646,69 +616,42 @@ function drawScout() {
   if(!p[4]) growth.push('Circumference vs area when radius changes');
   if(!p[5]) growth.push('Multi-step word problems');
   if(!a) growth.push('Real-world application transfer');
-  if(growth.length===0) growth.push('Push to harder real-world problems');
-  var dims = [['Knowledge',(d[0]||0+d[1]||0+d[2]||0)/3],['Recognition',((p[0]||0)+(p[4]||0))/2],['Procedure',((p[2]||0)+(p[3]||0))/2],['Reasoning',p[4]||0],['Transfer',a]];
-  function dSt(v){return v>=0.85?{l:'Strong',c:'ds-str'}:v>=0.5?{l:'Developing',c:'ds-dev'}:{l:'Needs Support',c:'ds-ned'};}
-  function dCl(v){return v>=0.85?'var(--green)':v>=0.5?'var(--amber)':'var(--red)';}
-  document.getElementById('pg7').innerHTML =
+  if(growth.length===0) growth.push('Push to harder real-world challenges');
+  document.getElementById('scout-content').innerHTML=
     '<div class="sc-head">'+
     '<div class="sc-badge">Scout Report - Geometry Through Motion</div>'+
-    '<p style="font-family:var(--mono);font-size:11px;color:var(--tx3);margin-bottom:10px">Mission Score</p>'+
-    '<p class="sc-big">'+tot+'/10</p>'+
-    '<p class="sc-pct">'+pct+'%</p>'+
-    '<div class="sc-profile '+pcls+'">Thinking Profile: '+profile+'</div>'+
-    '<p class="sc-pdesc">'+pdesc+'</p></div>'+
-    dims.map(function(dm){var st=dSt(dm[1]);return'<div class="dim-row"><span class="dim-lbl">'+dm[0]+'</span><div class="dim-bar-w"><div class="dim-bar" style="width:'+Math.round(dm[1]*100)+'%;background:'+dCl(dm[1])+'"></div></div><span class="dim-st '+st.c+'">'+st.l+'</span></div>';}).join('')+
-    '<div class="sc-2col">'+
-    '<div class="sc-sect ss-w"><p class="sc-sect-lbl">Wins</p>'+wins.map(function(w){return'<div class="sc-item"><div class="si-d si-g"></div><div>'+w+'</div></div>';}).join('')+'</div>'+
-    '<div class="sc-sect ss-g"><p class="sc-sect-lbl">Growth Areas</p>'+growth.map(function(g){return'<div class="sc-item"><div class="si-d si-a"></div><div>'+g+'</div></div>';}).join('')+'</div>'+
+    '<p style="font-family:'Space Mono',monospace;font-size:11px;color:var(--tx3);margin-bottom:10px">Mission Score</p>'+
+    '<p class="sc-score">'+tot+'/10</p><p class="sc-pct">'+pct+'%</p>'+
+    '<div class="profile-tag '+pcls+'">Thinking Profile: '+pr+'</div>'+
+    '<p style="font-size:13px;color:var(--tx2);max-width:380px;margin:8px auto 22px;line-height:1.7">'+pdesc+'</p></div>'+
+    '<div class="sc-grid">'+
+    '<div class="sc-box sb-gn"><p class="sc-box-lbl">Wins</p>'+wins.map(function(w){return'<div class="sc-item"><div class="sid sid-g"></div><div>'+w+'</div></div>';}).join('')+'</div>'+
+    '<div class="sc-box sb-am"><p class="sc-box-lbl">Growth Areas</p>'+growth.map(function(g){return'<div class="sc-item"><div class="sid sid-a"></div><div>'+g+'</div></div>';}).join('')+'</div>'+
     '</div>'+
-    '<div class="coach-box"><p class="coach-lbl">Coach Note</p><p class="coach-txt">'+cnote+'</p><p class="coach-sig">- Math +/- Relation Coaching System</p></div>'+
-    '<div style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:14px;padding:18px;margin-bottom:12px">'+
-    '<p class="ey bl">Advancement Requirement</p>'+
-    '<p style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">Target: 90% to unlock Algebra Through Relationships.</p>'+
-    '<div style="background:var(--bg3);border-radius:5px;height:7px;overflow:hidden">'+
-    '<div style="width:'+pct+'%;height:100%;background:'+(pct>=85?'var(--green)':pct>=60?'var(--amber)':'var(--red)')+'"></div></div>'+
-    '<div style="display:flex;justify-content:space-between;margin-top:5px;font-family:var(--mono);font-size:10px;color:var(--tx3)"><span>'+pct+'%</span><span>Goal: 90%</span></div></div>'+
-    '<div class="div"></div>'+
-    '<p class="philo">Calm Mind. <span>Clear Steps.</span> Strong Math.</p>'+
-    '<div style="text-align:center;margin-top:20px">'+
-    '<button class="btn" onclick="go(8)">Enter Thinking Mirror &rarr;</button></div>'+
-    '<div style="text-align:center;margin-top:10px">'+
-    '<button class="btn btn-o" onclick="resetAll()">Restart Mission</button></div>';
+    '<div class="coach"><p class="coach-l">Coach Note</p><p class="coach-t">'+cnote+'</p><p class="coach-s">- Math +/- Relation Coaching System</p></div>'+
+    '<div class="div"></div><p class="philo">Calm Mind. <b>Clear Steps.</b> Strong Math.</p>'+
+    '<button class="main-btn" onclick="goTo(8)">Enter Thinking Mirror &rarr;</button>'+
+    '<button class="outline-btn" onclick="resetAll()">Restart Mission</button>';
 }
 
-// PHASE 8
-function analyze() {
-  var d=dScores; var p=pScores; var a=appScore||0;
+// THINKING MIRROR
+function getAnalysis() {
+  var d=dScores, p=pScores, a=appScore||0;
   var tot=(d[0]||0)+(d[1]||0)+(d[2]||0)+(p[0]||0)+(p[1]||0)+(p[2]||0)+(p[3]||0)+(p[4]||0)+(p[5]||0)+a;
   var pct=Math.round((tot/10)*100);
-  var pattern='general',wk='general';
-  var pMsg,gMsg,oThing;
+  var pat='general',wk='general',pMsg,gMsg,oThing;
   var retrain={phase:4,level:0,label:'Skill Training - Level 1'};
-  if(!d[0]&&!p[0]){pattern='vocabulary';wk='vocabulary';
-    pMsg='Circle vocabulary is not yet automatic. The labels need to load instantly before any formula can be reliable. Center, radius, diameter, circumference, area - these need to be immediate, not searched for.';}
-  else if(!d[1]&&!p[1]){pattern='substitution';wk='relationship';
-    pMsg='The formula was right but the value substituted was wrong on multiple problems. This is a relationship problem, not a formula problem. Diameter = 2 x radius needs to become reflexive, not calculated.';}
-  else if(!p[2]&&!p[3]){pattern='procedure';wk='procedure';
-    pMsg='The conceptual layer was solid - you identified the right relationships. The error was in the execution sequence. Squaring the radius before multiplying by pi needs deliberate repetition to become automatic.';}
-  else if(!p[4]&&!p[5]){pattern='reasoning';wk='reasoning';
-    pMsg='Individual calculations went well. The breakdown was when two circles needed comparison, or math was embedded in a scenario. Reasoning is the last layer to develop - which means you are further along than the score shows.';}
-  else if(!a){pattern='transfer';wk='transfer';
-    pMsg='Guided practice was reliable. When math was placed inside an engineering scenario without visible labels, recognition slowed. Transfer is the proof of real understanding and is exactly what gets tested under pressure.';}
-  else{pMsg='The error pattern is distributed across dimensions. The concept is forming but not yet automatic. Repetition just below transfer level will accelerate consolidation.';}
+  if(!d[0]&&!p[0]){pat='vocabulary';wk='vocabulary';pMsg='Circle vocabulary is not yet automatic. The labels need to load instantly before any formula can be reliable.';}
+  else if(!d[1]&&!p[1]){pat='substitution';wk='relationship';pMsg='The formula was right but the value substituted was wrong. This is a relationship problem. Diameter = 2 x radius needs to become reflexive.';}
+  else if(!p[2]&&!p[3]){pat='procedure';wk='procedure';pMsg='The conceptual layer was solid. The error was in the execution sequence. Squaring the radius before multiplying by pi needs deliberate repetition.';}
+  else if(!p[4]&&!p[5]){pat='reasoning';wk='reasoning';pMsg='Individual calculations went well. The breakdown was when two circles needed comparison. Reasoning is the last layer to develop.';}
+  else if(!a){pat='transfer';wk='transfer';pMsg='Guided practice was reliable. When math was placed inside a real scenario without labels, recognition slowed. Transfer is the proof of real understanding.';}
+  else{pMsg='The error pattern is distributed. The concept is forming but not yet automatic. Repetition just below transfer level will accelerate consolidation.';}
   if(pct>=85) gMsg='You solved almost every problem correctly. But can you explain in one sentence why doubling the radius quadruples the area? That is the gap. Not calculation. Explanation.';
-  else if(pct>=60) gMsg='You recognized the formula before training began. But execution broke down mid-mission. Knowing the formula but losing it in application means it is in memory, not in understanding. When understanding drives calculation, it holds under pressure.';
-  else gMsg='Vocabulary gaps appeared before you touched a single formula. The next session starts with observation and recognition, not calculation. Walk up to any circle and name every part. That comes first.';
-  var otMap={
-    vocabulary:'Draw a circle from memory. Label all five parts without notes: center, radius, diameter, circumference, area. If you cannot do this in 60 seconds, that is where the next session starts.',
-    relationship:'Write this rule: diameter = 2 x radius, radius = diameter divided by 2. Then convert five different measurements both directions until it feels automatic, not calculated.',
-    procedure:'Solve A = pi x r squared with five different radius values. Write every step. Never skip. Do this until the sequence feels like one motion.',
-    reasoning:'Pick two circular objects. Calculate both circumference and area for each. Write one sentence explaining why the area difference is larger than the circumference difference.',
-    transfer:'Find one circular object near you. Before calculating, identify whether the situation calls for circumference or area and explain why.',
-    general:'Solve one circumference and one area problem from memory. No formula reference. Time yourself. If it takes more than 90 seconds, the structure is not yet automatic.'
-  };
-  oThing=otMap[pattern]||otMap['general'];
+  else if(pct>=60) gMsg='You recognized the formula before training began. But execution broke down mid-mission. The formula is in memory, not in understanding. When understanding drives calculation, it holds under pressure.';
+  else gMsg='Vocabulary gaps appeared before you touched a single formula. The next session starts with observation and recognition, not calculation. Name every part of a circle. That comes first.';
+  var otMap={vocabulary:'Draw a circle from memory. Label all five parts without notes. If you cannot do this in 60 seconds, that is where the next session starts.',substitution:'Write the rule: diameter = 2 x radius. Then convert five measurements both directions until it feels automatic.',procedure:'Solve A = pi x r squared five times. Write every step. Never skip. Do this until the sequence is one motion.',reasoning:'Pick two circular objects. Calculate circumference and area for each. Write one sentence explaining why the area difference is larger.',transfer:'Find one circular object near you. Before calculating, identify whether you need circumference or area and explain why.',general:'Solve one circumference and one area problem from memory. Time yourself. More than 90 seconds means the structure is not yet automatic.'};
+  oThing=otMap[pat]||otMap['general'];
   if(wk==='vocabulary') retrain={phase:2,level:-1,label:'Circle Explorer'};
   else if(wk==='relationship') retrain={phase:3,level:-1,label:'Concept Construction'};
   else if(wk==='procedure') retrain={phase:4,level:2,label:'Skill Training - Level 3'};
@@ -718,122 +661,78 @@ function analyze() {
   if((d[0]||0)+(p[0]||0)>=1) sLine='Your vocabulary recognition';
   else if((p[2]||0)+(p[3]||0)>=1) sLine='Your formula application';
   else if(a) sLine='Your application-level thinking';
-  var promTxt='<b>'+sLine+' tells us the foundation is present.</b> The work ahead is not about intelligence. It is about making the relationships between radius, diameter, circumference, and area completely automatic. We will not move to the next academy until you can recognize them anywhere, explain without notes, and apply in problems you have never seen. When that happens you will know - because you will start seeing circles differently everywhere you go.';
+  var promTxt='<b>'+sLine+' tells us the foundation is present.</b> The work ahead is not about intelligence. It is about making these relationships completely automatic. We will not move to the next academy until you can recognize them anywhere, explain without notes, and apply in problems you have never seen before.';
   return{pMsg:pMsg,gMsg:gMsg,oThing:oThing,retrain:retrain,promTxt:promTxt,pct:pct,wk:wk};
 }
 
-function drawMirror() {
-  adData = analyze();
-  document.getElementById('pg8').innerHTML =
-    '<div style="text-align:center;padding:28px 0 20px">'+
-    '<p class="ey bl">Phase 8 - Thinking Mirror</p>'+
-    '<h1>Not what happened.<br>Who you are becoming.</h1>'+
-    '<p class="sub" style="text-align:center;margin:10px auto">The Scout Report showed your score. The Thinking Mirror shows your pattern.</p>'+
-    '</div>'+
-    '<div class="ms" id="ms1">'+
-    '<p class="ms-n bl">01 - Pattern Recognition</p>'+
-    '<p class="ms-h">I noticed something about how you were thinking.</p>'+
-    '<p class="ms-b">'+adData.pMsg+'</p>'+
-    '<div style="margin-top:12px"><span style="display:inline-block;font-family:var(--mono);font-size:11px;padding:4px 11px;border-radius:4px;border:.5px solid;color:var(--green);border-color:var(--gbd);background:var(--gdim);margin-right:6px">Computation: Present</span>'+
-    '<span style="display:inline-block;font-family:var(--mono);font-size:11px;padding:4px 11px;border-radius:4px;border:.5px solid;color:var(--amber);border-color:var(--abd);background:var(--adim)">'+adData.wk.charAt(0).toUpperCase()+adData.wk.slice(1)+': Gap</span></div>'+
-    '</div>'+
-    '<div class="ms" id="ms2">'+
-    '<p class="ms-n am">02 - The Honest Gap</p>'+
-    '<p class="ms-h">Here is what the data actually says.</p>'+
-    '<p class="ms-b">'+adData.gMsg+'</p>'+
-    '</div>'+
-    '<div class="ms" id="ms3">'+
-    '<p class="ms-n gr">03 - The One Thing</p>'+
-    '<p class="ms-h">One action. Not five. One.</p>'+
-    '<p class="ms-b">Before your next attempt, complete this specific task:</p>'+
-    '<div class="ot-box"><p class="ot-lbl">Your Assignment</p><p class="ot-act">'+adData.oThing+'</p></div>'+
-    '</div>'+
-    '<div class="ms" id="ms4">'+
-    '<p class="ms-n pu">04 - Identity Reflection</p>'+
-    '<p class="ms-h">Which statement describes how you showed up today?</p>'+
-    ['I rushed through the problems',
-     'I guessed on several answers',
-     'I understood better after seeing the visual',
-     'I could explain most of this to someone else',
-     'I am still confused about one specific relationship'].map(function(txt,i){
-      return '<div class="id-opt" id="ido'+i+'" onclick="pickId('+i+')"><div class="id-radio"></div><span>'+txt+'</span></div>';
-    }).join('')+
-    '<div class="id-resp" id="iresp"></div>'+
-    '</div>'+
-    '<button class="btn btn-wide" id="mnxt" style="display:none" onclick="go(9)">See My Performance Prescription &rarr;</button>';
-  setTimeout(function(){var e=document.getElementById('ms1');if(e)e.className='ms vis';},200);
-  setTimeout(function(){var e=document.getElementById('ms2');if(e)e.className='ms vis';},800);
-  setTimeout(function(){var e=document.getElementById('ms3');if(e)e.className='ms vis';},1400);
-  setTimeout(function(){var e=document.getElementById('ms4');if(e)e.className='ms vis';},2000);
-}
+var adData=null;
+var idResps=['Speed under pressure is a confidence symptom. Build the sequence until it is automatic. Then speed is earned, not forced.','Guessing tells us the visual foundation is not solid yet. The next session starts with observation before any formula.','Visual models are becoming one of your strongest learning tools. More visualization before procedure is the right path.','If you can explain it you are close to owning it. The remaining gaps are execution-level. Deliberate practice will close them.','Naming the confusion is the most useful thing you can do. That relationship becomes the single starting point next session.'];
 
-var idR = [
-  'Speed under pressure is a confidence symptom. Build the sequence until it is automatic. Then speed is earned, not forced.',
-  'Guessing tells us the visual foundation is not solid yet. The next session starts with observation before any formula is introduced.',
-  'Visual models are becoming one of your strongest learning tools. More visualization before procedure is the right path.',
-  'If you can explain it you are close to owning it. The remaining gaps are execution-level. Deliberate practice will close them.',
-  'Naming the confusion is the most useful thing you can do. That specific relationship becomes the single starting point next session.'
-];
+function drawMirror() {
+  adData=getAnalysis();
+  document.getElementById('mirror-content').innerHTML=
+    '<div style="text-align:center;padding:24px 0 18px">'+
+    '<p class="label bl">Phase 8 - Thinking Mirror</p>'+
+    '<h1>Not what happened.<br>Who you are becoming.</h1>'+
+    '<p style="font-size:14px;color:var(--tx2);margin:10px auto;max-width:440px">The Scout Report showed your score. The Thinking Mirror shows your pattern.</p>'+
+    '</div>'+
+    '<div class="ms"><p class="ms-n bl">01 - Pattern Recognition</p><p class="ms-h">I noticed something about how you were thinking.</p><p class="ms-b">'+adData.pMsg+'</p></div>'+
+    '<div class="ms"><p class="ms-n am">02 - The Honest Gap</p><p class="ms-h">Here is what the data actually says.</p><p class="ms-b">'+adData.gMsg+'</p></div>'+
+    '<div class="ms"><p class="ms-n gr">03 - The One Thing</p><p class="ms-h">One action. Not five. One.</p><p class="ms-b">Before your next attempt, complete this:</p><div class="ot-box"><p class="ot-l">Your Assignment</p><p class="ot-a">'+adData.oThing+'</p></div></div>'+
+    '<div class="ms"><p class="ms-n pu">04 - Identity Reflection</p><p class="ms-h">Which statement describes how you showed up today?</p>'+
+    ['I rushed through the problems','I guessed on several answers','I understood better after seeing the visual','I could explain most of this to someone else','I am still confused about one specific relationship'].map(function(t,i){
+      return '<div class="id-opt" id="ido'+i+'" onclick="pickId('+i+')"><div class="id-radio"></div><span>'+t+'</span></div>';
+    }).join('')+
+    '<div class="id-resp" id="iresp"></div></div>'+
+    '<button class="next-btn" id="mnxt" style="display:none" onclick="goTo(9)">See My Performance Prescription &rarr;</button>';
+}
 
 function pickId(i) {
-  for(var j=0;j<5;j++){var el=document.getElementById('ido'+j);if(el)el.className='id-opt';}
-  var sel=document.getElementById('ido'+i);if(sel)sel.className='id-opt on';
-  var resp=document.getElementById('iresp');
-  if(resp){resp.textContent=idR[i];resp.className='id-resp show';}
-  var nxt=document.getElementById('mnxt');if(nxt)nxt.style.display='block';
+  for(var j=0;j<5;j++){var e=document.getElementById('ido'+j);if(e)e.className='id-opt';}
+  var s=document.getElementById('ido'+i); if(s)s.className='id-opt on';
+  var r=document.getElementById('iresp'); if(r){r.textContent=idResps[i];r.className='id-resp show';}
+  var n=document.getElementById('mnxt'); if(n)n.style.display='block';
 }
 
-// PHASE 9
+// PRESCRIPTION
 function drawRx() {
-  if(!adData) adData=analyze();
+  if(!adData) adData=getAnalysis();
   var d=adData;
   var fMap={vocabulary:'Vocabulary and Recognition',relationship:'Relationship Fluency',procedure:'Procedural Execution',reasoning:'Comparative Reasoning',transfer:'Real-World Transfer',general:'Full Concept Reinforcement'};
   var tMap={vocabulary:'8 Minutes',relationship:'10 Minutes',procedure:'12 Minutes',reasoning:'15 Minutes',transfer:'12 Minutes',general:'15 Minutes'};
-  var gMap={vocabulary:'Label all five circle parts from memory.',relationship:'Convert between radius and diameter automatically.',procedure:'Execute circumference and area formulas in correct sequence.',reasoning:'Explain why doubling radius quadruples area but only doubles circumference.',transfer:'Identify whether a scenario needs circumference or area before solving.',general:'Connect all five circle relationships into one coherent mental model.'};
-  document.getElementById('pg9').innerHTML =
-    '<div style="text-align:center;padding:24px 0 18px">'+
-    '<div style="display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 15px;border-radius:4px;background:var(--adim);color:var(--amber);border:.5px solid var(--abd);margin-bottom:14px">Performance Prescription</div>'+
+  var gMap={vocabulary:'Label all five circle parts from memory.',relationship:'Convert between radius and diameter automatically.',procedure:'Execute formulas in correct sequence without prompting.',reasoning:'Explain why doubling radius quadruples area.',transfer:'Identify whether a problem needs circumference or area.',general:'Connect all five circle relationships into one mental model.'};
+  document.getElementById('rx-content').innerHTML=
+    '<div style="text-align:center;padding:20px 0 16px">'+
+    '<div style="display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:4px;background:var(--ad);color:var(--am);border:.5px solid var(--ab);margin-bottom:12px">Performance Prescription</div>'+
     '<h1>Your next move is specific.</h1>'+
-    '<p class="sub" style="text-align:center;margin:8px auto">Not a suggestion. A prescription based on every answer in this session.</p>'+
+    '<p style="font-size:14px;color:var(--tx2);margin:8px auto;max-width:400px">Not a suggestion. A prescription based on every answer in this session.</p></div>'+
+    '<div class="card" style="margin-bottom:11px">'+
+    '<div class="rx-row"><div class="rx-ico" style="background:var(--bdim)">+</div><div><p class="rx-l">Current Priority</p><p class="rx-v">'+(fMap[d.wk]||fMap.general)+'</p></div></div>'+
+    '<div class="rx-row"><div class="rx-ico" style="background:var(--ad)">T</div><div><p class="rx-l">Prescribed Time</p><p class="rx-v">'+(tMap[d.wk]||tMap.general)+'</p></div></div>'+
+    '<div class="rx-row"><div class="rx-ico" style="background:var(--gd)">*</div><div><p class="rx-l">Success Goal</p><p class="rx-v">'+(gMap[d.wk]||gMap.general)+'</p></div></div>'+
+    '<div class="rx-row"><div class="rx-ico" style="background:var(--pd)">&gt;</div><div><p class="rx-l">Retrain Starting Point</p><p class="rx-v">'+d.retrain.label+'</p><p class="rx-s">Not from the beginning. From your weakest dimension.</p></div></div>'+
     '</div>'+
-    '<div class="card" style="margin-bottom:12px">'+
-    '<div class="rx-row"><div class="rx-ico" style="background:var(--blue-dim)">&#9679;</div><div><p class="rx-lbl">Current Priority</p><p class="rx-val">'+(fMap[d.wk]||fMap.general)+'</p></div></div>'+
-    '<div class="rx-row"><div class="rx-ico" style="background:var(--adim)">&#9201;</div><div><p class="rx-lbl">Prescribed Time</p><p class="rx-val">'+(tMap[d.wk]||tMap.general)+'</p></div></div>'+
-    '<div class="rx-row"><div class="rx-ico" style="background:var(--gdim)">&#10003;</div><div><p class="rx-lbl">Success Goal</p><p class="rx-val">'+(gMap[d.wk]||gMap.general)+'</p></div></div>'+
-    '<div class="rx-row"><div class="rx-ico" style="background:var(--pdim)">&#9654;</div><div><p class="rx-lbl">Retrain Starting Point</p><p class="rx-val">'+d.retrain.label+'</p><p class="rx-sub">Not from the beginning. From your weakest dimension.</p></div></div>'+
-    '</div>'+
-    '<div class="promise">'+
-    '<p class="promise-lbl">Coach's Promise</p>'+
-    '<p class="promise-txt">'+d.promTxt+'</p>'+
-    '<p class="promise-sig">- Math +/- Relation Coaching System</p>'+
-    '</div>'+
-    '<div class="card" style="margin-bottom:14px">'+
-    '<p class="ey gr">What happens next?</p>'+
-    '<p style="font-size:13px;color:var(--tx2);line-height:1.8">Retrain at your weakest point - the system drops you into <strong style="color:var(--tx)">'+d.retrain.label+'</strong>, skipping what you already mastered. Or restart the full mission.</p>'+
-    '</div>'+
-    '<button class="retrain-btn" onclick="retrain()">Retrain Weakest Dimension &rarr;</button>'+
-    '<button class="restart-btn" onclick="resetAll()">Restart Full Mission From Beginning</button>'+
-    '<div class="div"></div>'+
-    '<p class="philo">The assessment is not the destination.<br><span>It is the starting line.</span></p>';
+    '<div class="promise"><p class="promise-l">Coach's Promise</p><p class="promise-t">'+d.promTxt+'</p><p class="promise-s">- Math +/- Relation Coaching System</p></div>'+
+    '<div class="card" style="margin-bottom:12px"><p class="label gr">What happens next?</p><p style="font-size:13px;color:var(--tx2);line-height:1.8">Retrain at your weakest point - the system drops you into <strong style="color:var(--tx)">'+d.retrain.label+'</strong>, skipping what you already mastered.</p></div>'+
+    '<button class="retrain" onclick="doRetrain()">Retrain Weakest Dimension &rarr;</button>'+
+    '<button class="restart" onclick="resetAll()">Restart Full Mission From Beginning</button>'+
+    '<div class="div"></div><p class="philo">The assessment is not the destination.<br><b>It is the starting line.</b></p>';
 }
 
-function retrain() {
+function doRetrain() {
   if(!adData) return;
   var r=adData.retrain;
-  if(r.phase===2){visited={};activePart='center';}
-  if(r.phase===4){lvlIdx=r.level>=0?r.level:0;for(var i=lvlIdx;i<6;i++)pScores[i]=null;}
-  if(r.phase===5){appScore=null;}
-  go(r.phase);
+  if(r.phase===2){exVisited={};exActive=0;}
+  if(r.phase===4){lvIdx=r.level>=0?r.level:0;for(var i=lvIdx;i<6;i++)pScores[i]=null;}
+  if(r.phase===5) appScore=null;
+  goTo(r.phase);
 }
 
 function resetAll() {
-  CUR=0;dScores=[null,null,null];pScores=[null,null,null,null,null,null];
-  appScore=null;diagIdx=0;lvlIdx=0;visited={};activePart='center';adData=null;
-  go(0);
+  dScores=[null,null,null];pScores=[null,null,null,null,null,null];
+  appScore=null;dIdx=0;lvIdx=0;exVisited={};exActive=0;adData=null;
+  goTo(0);
 }
-
-// Boot
-drawBrief();
 </script>
 </body>
 </html>
